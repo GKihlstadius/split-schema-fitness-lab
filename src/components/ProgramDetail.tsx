@@ -134,25 +134,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
           </Card>
         </div>
       )}
-
-      {/* Program Benefits */}
-      <Card className="bg-secondary border-0 shadow-none">
-        <CardHeader>
-          <CardTitle className="text-lg font-light text-primary">
-            Fördelar med programmet
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {program.benefits.map((benefit, idx) => (
-              <div key={idx} className="flex items-start gap-3">
-                <div className="w-1 h-1 bg-primary rounded-full mt-3 flex-shrink-0" />
-                <p className="text-foreground font-light">{benefit}</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
