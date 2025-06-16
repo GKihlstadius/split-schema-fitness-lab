@@ -8,9 +8,13 @@ const Index = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-end items-start mb-8">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex justify-between items-start mb-16">
+          <div className="flex-1">
+            <h1 className="text-2xl font-light text-gray-900 mb-2">Träning</h1>
+            <p className="text-gray-500 font-light">Välj ditt program</p>
+          </div>
           <ProgramSelector 
             programs={workoutPrograms}
             selectedProgram={selectedProgram}
