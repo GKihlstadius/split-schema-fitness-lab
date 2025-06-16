@@ -244,5 +244,102 @@ export const workoutPrograms: WorkoutProgram[] = [
       'Perfect for intermediate lifters',
       'Balanced push/pull training'
     ]
+  },
+  {
+    id: '4',
+    name: "🧩 Whole Body Split",
+    goal: 'Hypertrophy',
+    frequency: '6/WEEK',
+    difficulty: 'INTERMEDIATE',
+    duration: '12 WEEKS',
+    focus: 'Whole Body Development',
+    description: 'Ett komplett helkroppsprogram med fokus på alla muskelgrupper fördelat över 6 träningsdagar per vecka för optimal utveckling.',
+    weeklyPlan: [
+      {
+        day: 'Måndag',
+        muscleGroups: ['Chest', 'Triceps', 'Shoulders'],
+        focus: 'Överkropp: Press',
+        exercises: [
+          { name: 'Chest Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
+          { name: 'Chest Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
+          { name: 'Triceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Triceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Shoulders Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Shoulders Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] }
+        ]
+      },
+      {
+        day: 'Tisdag',
+        muscleGroups: ['Legs', 'Glutes', 'Calves'],
+        focus: 'Ben (framsida + baksida + glute)',
+        exercises: [
+          { name: 'Quads Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
+          { name: 'Quads Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
+          { name: 'Hamstrings Exercise', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Glutes Exercise', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Secondary'] },
+          { name: 'Calves Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+        ]
+      },
+      {
+        day: 'Onsdag',
+        muscleGroups: ['Back', 'Biceps', 'Forearms'],
+        focus: 'Överkropp: Drag',
+        exercises: [
+          { name: 'Back Exercise 1', sets: '4', reps: '6-8', tags: ['Primary'] },
+          { name: 'Back Exercise 2', sets: '3', reps: '8-10', tags: ['Primary'] },
+          { name: 'Back Exercise 3', sets: '3', reps: '10-12', tags: ['Primary'] },
+          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Forearms Exercise', sets: '3', reps: '15-20', tags: ['Secondary'] }
+        ]
+      },
+      {
+        day: 'Torsdag',
+        muscleGroups: ['Chest', 'Triceps', 'Shoulders'],
+        focus: 'Pressfokus igen',
+        exercises: [
+          { name: 'Chest Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
+          { name: 'Chest Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
+          { name: 'Triceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Triceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Shoulders Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Shoulders Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] }
+        ]
+      },
+      {
+        day: 'Fredag',
+        muscleGroups: ['Legs', 'Glutes', 'Calves'],
+        focus: 'Ben igen',
+        exercises: [
+          { name: 'Quads Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
+          { name: 'Quads Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
+          { name: 'Hamstrings Exercise', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Glutes Exercise', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Secondary'] },
+          { name: 'Calves Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+        ]
+      },
+      {
+        day: 'Lördag',
+        muscleGroups: ['Back', 'Biceps', 'Forearms'],
+        focus: 'Rygg & Armar',
+        exercises: [
+          { name: 'Back Exercise 1', sets: '4', reps: '6-8', tags: ['Primary'] },
+          { name: 'Back Exercise 2', sets: '3', reps: '8-10', tags: ['Primary'] },
+          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
+          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
+          { name: 'Forearms Exercise 1', sets: '3', reps: '15-20', tags: ['Secondary'] },
+          { name: 'Forearms Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+        ]
+      }
+    ],
+    benefits: [
+      'Komplett helkroppsutveckling med fokus på alla muskelgrupper',
+      '6-dagars split för maximal träningsvolym',
+      'Balanserad fördelning mellan press- och dragövningar',
+      'Optimal återhämtning genom att rotera muskelgrupper',
+      'Perfekt för att bygga både styrka och muskelmassa'
+    ]
   }
 ];
