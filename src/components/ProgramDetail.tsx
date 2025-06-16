@@ -12,12 +12,28 @@ interface ProgramDetailProps {
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
+  const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   
   useEffect(() => {
     if (selectedDay && dayWorkoutRef.current) {
       dayWorkoutRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [selectedDay]);
+
+  const handleCloseDay = () => {
+    const currentDay = selectedDay;
+    setSelectedDay(null);
+    
+    // Scroll back to the day card after a short delay to ensure state has updated
+    if (currentDay && dayCardRefs.current[currentDay]) {
+      setTimeout(() => {
+        dayCardRefs.current[currentDay]?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }, 100);
+    }
+  };
 
   const getMuscleGroupClass = (muscle: string) => {
     const lowerMuscle = muscle.toLowerCase();
@@ -73,6 +89,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
           {program.weeklyPlan.map((day) => (
             <Card 
               key={day.day} 
+              ref={(el) => { dayCardRefs.current[day.day] = el; }}
               className={`border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer ${
                 selectedDay === day.day ? 'ring-2 ring-primary' : ''
               }`}
@@ -122,7 +139,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
             <Button 
               variant="ghost" 
               className="text-muted-foreground hover:text-foreground"
-              onClick={() => setSelectedDay(null)}
+              onClick={handleCloseDay}
             >
               Stäng
             </Button>

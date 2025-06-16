@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
 import { workoutPrograms } from '@/data/workoutPrograms';
 import { Navbar } from '@/components/Navbar';
+import { saveSelectedWorkoutProgram, loadSelectedWorkoutProgram } from '@/utils/localStorage';
 
 const Workout = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
+
+  // Ladda sparat träningsprogram vid start
+  useEffect(() => {
+    const savedProgramId = loadSelectedWorkoutProgram();
+    if (savedProgramId) {
+      const savedProgram = workoutPrograms.find(program => program.id === savedProgramId);
+      if (savedProgram) {
+        setSelectedProgram(savedProgram);
+      }
+    }
+  }, []);
+
+  // Hantera programval och spara automatiskt
+  const handleProgramSelect = (program: typeof workoutPrograms[0]) => {
+    setSelectedProgram(program);
+    saveSelectedWorkoutProgram(program.id);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,7 +35,7 @@ const Workout = () => {
           <ProgramSelector 
             programs={workoutPrograms}
             selectedProgram={selectedProgram}
-            onSelectProgram={setSelectedProgram}
+            onSelectProgram={handleProgramSelect}
           />
         </div>
         <ProgramDetail program={selectedProgram} />

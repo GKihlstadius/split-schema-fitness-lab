@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,14 +20,20 @@ interface DailyMealPlannerProps {
   targetProtein?: number;
   targetCarbs?: number;
   targetFat?: number;
+  onCurrentMealChange?: (meal: Meal | undefined) => void; // Callback för att rapportera aktuell måltid
 }
 
-export const DailyMealPlanner: React.FC<DailyMealPlannerProps> = ({
+interface DailyMealPlannerRef {
+  addCompleteMeal: (meal: Meal) => void;
+}
+
+export const DailyMealPlanner = forwardRef<DailyMealPlannerRef, DailyMealPlannerProps>(({
   targetKcal = 0,
   targetProtein = 0,
   targetCarbs = 0,
-  targetFat = 0
-}) => {
+  targetFat = 0,
+  onCurrentMealChange
+}, ref) => {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [newMealName, setNewMealName] = useState<string>('');
@@ -79,13 +85,16 @@ export const DailyMealPlanner: React.FC<DailyMealPlannerProps> = ({
       const meal = meals.find(m => m.id === selectedMealId);
       if (meal) {
         setMealItems(meal.items);
+        onCurrentMealChange?.(meal); // Rapportera aktuell måltid
       } else {
         setMealItems([]);
+        onCurrentMealChange?.(undefined);
       }
     } else {
       setMealItems([]);
+      onCurrentMealChange?.(undefined);
     }
-  }, [selectedMealId, meals]);
+  }, [selectedMealId, meals, onCurrentMealChange]);
   
   // Beräkna totala näringsvärden när måltider ändras
   useEffect(() => {
@@ -162,6 +171,26 @@ export const DailyMealPlanner: React.FC<DailyMealPlannerProps> = ({
     setActiveTab(newMeal.id);
     setSelectedMealId(newMeal.id);
   };
+
+  // Lägg till en komplett måltid från QuickMeals
+  const addCompleteMeal = (meal: Meal) => {
+    const newMeal: Meal = {
+      ...meal,
+      id: uuidv4() // Ge den ett nytt ID
+    };
+    
+    setMeals([...meals, newMeal]);
+    
+    toast({
+      title: "Måltid tillagd!",
+      description: `"${meal.name}" har lagts till i din dagliga plan.`
+    });
+  };
+
+  // Exponera funktioner via ref
+  useImperativeHandle(ref, () => ({
+    addCompleteMeal
+  }));
   
   // Ta bort en måltid
   const removeMeal = (id: string) => {
@@ -684,4 +713,4 @@ ${totals.kcal} kcal, ${totals.protein}g protein, ${totals.carbs}g kolhydrater, $
       </CardContent>
     </Card>
   );
-}; 
+}); 

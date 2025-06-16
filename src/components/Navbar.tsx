@@ -3,7 +3,7 @@ import { Dumbbell, Utensils } from 'lucide-react';
 
 export const Navbar = () => {
   return (
-    <nav className="border-b">
+    <nav>
       <div className="container flex h-16 items-center px-4">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
