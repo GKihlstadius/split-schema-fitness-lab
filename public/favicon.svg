@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bakgrund -->
+  <rect width="32" height="32" rx="8" fill="black"/>
+  
+  <!-- Stiliserad "S" -->
+  <path d="M21.5 10.75C21.5 9.09315 20.1569 7.75 18.5 7.75H13.5C11.8431 7.75 10.5 9.09315 10.5 10.75V10.75C10.5 12.4069 11.8431 13.75 13.5 13.75H18.5C20.1569 13.75 21.5 15.0931 21.5 16.75V16.75C21.5 18.4069 20.1569 19.75 18.5 19.75H13.5C11.8431 19.75 10.5 18.4069 10.5 16.75" 
+        stroke="white" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Horisontella linjer som representerar schema/workout splits -->
+  <line x1="8" y1="24" x2="24" y2="24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="11" y1="27" x2="21" y2="27" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg> 
