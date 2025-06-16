@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Menu } from 'lucide-react';
+import { Menu, Calendar, Dumbbell, BarChart2 } from 'lucide-react';
 import { WorkoutProgram } from '@/types/workout';
 
 interface WorkoutSidebarProps {
@@ -98,6 +97,21 @@ export const WorkoutSidebar: React.FC<WorkoutSidebarProps> = ({
               <p className="text-xs text-gray-500">{program.goal}</p>
             </div>
           ))}
+        </div>
+
+        <div className="flex flex-col gap-4 p-4 border-t">
+          <Button variant="ghost" className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            Veckoöversikt
+          </Button>
+          <Button variant="ghost" className="flex items-center gap-2">
+            <Dumbbell className="h-4 w-4" />
+            Dagens Pass
+          </Button>
+          <Button variant="ghost" className="flex items-center gap-2">
+            <BarChart2 className="h-4 w-4" />
+            Statistik
+          </Button>
         </div>
       </div>
 

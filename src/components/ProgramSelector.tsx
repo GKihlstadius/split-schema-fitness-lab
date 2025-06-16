@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,13 +28,12 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
     <div className="relative">
       {/* Program Selector Button */}
       <Button
-        variant="ghost"
+        variant="outline"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-0 py-0 h-auto bg-transparent hover:bg-transparent text-gray-900 font-light"
+        className="flex items-center gap-2 px-4 py-2 h-auto border-gray-200 hover:bg-gray-50 text-gray-900 font-light"
       >
-        <div className="text-right">
-          <div className="text-sm font-light">{selectedProgram.name}</div>
-          <div className="text-xs text-gray-400">{selectedProgram.frequency}</div>
+        <div className="text-left">
+          <div className="font-medium">{selectedProgram.name}</div>
         </div>
         <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
@@ -50,9 +48,9 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
           />
           
           {/* Dropdown Content */}
-          <div className="absolute top-full right-0 mt-4 w-80 bg-white border border-gray-100 rounded-lg shadow-sm z-50 overflow-hidden">
+          <div className="absolute top-full right-0 mt-2 w-80 bg-white border border-gray-100 rounded-lg shadow-sm z-50 overflow-hidden">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-gray-50">
+            <div className="px-4 py-3 border-b border-gray-50">
               <div className="flex gap-2 flex-wrap">
                 <Button
                   variant={!filterGoal ? "default" : "ghost"}
@@ -81,7 +79,7 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
               {filteredPrograms.map((program, index) => (
                 <div
                   key={program.id}
-                  className={`p-6 cursor-pointer transition-colors hover:bg-gray-25 ${
+                  className={`p-4 cursor-pointer transition-colors hover:bg-gray-25 ${
                     selectedProgram.id === program.id ? 'bg-gray-25' : ''
                   }`}
                   onClick={() => {

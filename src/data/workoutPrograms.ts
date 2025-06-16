@@ -1,4 +1,3 @@
-
 import { WorkoutProgram } from '@/types/workout';
 
 export const workoutPrograms: WorkoutProgram[] = [
@@ -13,75 +12,81 @@ export const workoutPrograms: WorkoutProgram[] = [
     description: 'A comprehensive hypertrophy program designed by Dr. Mike Israetel, focusing on maximum muscle growth through evidence-based training principles.',
     weeklyPlan: [
       {
-        day: 'Monday',
-        muscleGroups: ['Chest', 'Triceps'],
+        day: 'Måndag',
+        muscleGroups: ['Chest', 'Triceps', 'Calves', 'Shoulders', 'Biceps'],
         focus: 'Upper Body Push',
         exercises: [
-          { name: 'Barbell Bench Press', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Incline Dumbbell Press', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Dips', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Close-Grip Bench Press', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Overhead Tricep Extension', sets: '3', reps: '10-12', tags: ['Secondary'] }
+          { name: 'Chest Exercise 1', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Triceps Exercise', sets: '3-4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Calf Raises', sets: '3-4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Shoulder Press', sets: '3-4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Bicep Curls', sets: '3-4', reps: '10-15', tags: ['Biceps'] }
         ]
       },
       {
-        day: 'Tuesday',
-        muscleGroups: ['Back', 'Biceps'],
-        focus: 'Upper Body Pull',
-        exercises: [
-          { name: 'Deadlift', sets: '4', reps: '5-6', tags: ['Primary'] },
-          { name: 'Pull-ups', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Barbell Rows', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Barbell Curls', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Hammer Curls', sets: '3', reps: '12-15', tags: ['Secondary'] }
-        ]
-      },
-      {
-        day: 'Wednesday',
-        muscleGroups: ['Legs', 'Glutes'],
+        day: 'Tisdag',
+        muscleGroups: ['Hamstrings', 'Quads'],
         focus: 'Lower Body',
         exercises: [
-          { name: 'Squats', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Romanian Deadlift', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Bulgarian Split Squats', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Leg Curls', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Calf Raises', sets: '4', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Hamstring Exercise', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
+          { name: 'Quad Exercise', sets: '4', reps: '8-12', tags: ['Quads'] }
         ]
       },
       {
-        day: 'Thursday',
-        muscleGroups: ['Shoulders', 'Arms'],
-        focus: 'Shoulders & Arms',
+        day: 'Onsdag',
+        muscleGroups: ['Back', 'Biceps', 'Forearms'],
+        focus: 'Upper Body Pull',
         exercises: [
-          { name: 'Overhead Press', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Lateral Raises', sets: '3', reps: '12-15', tags: ['Primary'] },
-          { name: 'Rear Delt Flyes', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Arnold Press', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Face Pulls', sets: '3', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Back Exercise 1', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 3', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Bicep Curls', sets: '3-4', reps: '10-15', tags: ['Biceps'] },
+          { name: 'Forearm Exercise', sets: '3-4', reps: '12-15', tags: ['Forearms'] }
         ]
       },
       {
-        day: 'Friday',
-        muscleGroups: ['Chest', 'Back'],
-        focus: 'Upper Body Volume',
+        day: 'Torsdag',
+        muscleGroups: ['Triceps', 'Chest', 'Calves', 'Shoulders', 'Biceps'],
+        focus: 'Upper Body Push 2',
         exercises: [
-          { name: 'Incline Barbell Press', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'T-Bar Rows', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Dumbbell Flyes', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Cable Rows', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Push-ups', sets: '3', reps: 'To failure', tags: ['Finisher'] }
+          { name: 'Triceps Exercise 1', sets: '3-4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Triceps Exercise 2', sets: '3-4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Chest Exercise 1', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Calf Raises', sets: '3-4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Shoulder Press', sets: '3-4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Bicep Curls', sets: '3-4', reps: '10-15', tags: ['Biceps'] }
         ]
       },
       {
-        day: 'Saturday',
-        muscleGroups: ['Legs', 'Core'],
-        focus: 'Lower Body & Core',
+        day: 'Fredag',
+        muscleGroups: ['Hamstrings', 'Quads', 'Glutes'],
+        focus: 'Lower Body 2',
         exercises: [
-          { name: 'Front Squats', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Walking Lunges', sets: '3', reps: '12 each leg', tags: ['Primary'] },
-          { name: 'Leg Press', sets: '3', reps: '15-20', tags: ['Secondary'] },
-          { name: 'Planks', sets: '3', reps: '60 seconds', tags: ['Core'] },
-          { name: 'Russian Twists', sets: '3', reps: '20 each side', tags: ['Core'] }
+          { name: 'Hamstring Exercise', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
+          { name: 'Quad Exercise', sets: '4', reps: '8-12', tags: ['Quads'] },
+          { name: 'Glute Exercise', sets: '4', reps: '10-15', tags: ['Glutes'] }
+        ]
+      },
+      {
+        day: 'Lördag',
+        muscleGroups: ['Back', 'Shoulders', 'Biceps', 'Forearms'],
+        focus: 'Upper Body Pull 2',
+        exercises: [
+          { name: 'Back Exercise 1', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Shoulder Exercise', sets: '3-4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Bicep Curls', sets: '3-4', reps: '10-15', tags: ['Biceps'] },
+          { name: 'Forearm Exercise', sets: '3-4', reps: '12-15', tags: ['Forearms'] }
+        ]
+      },
+      {
+        day: 'Söndag',
+        muscleGroups: ['Rest'],
+        focus: 'Vila / Återhämtning',
+        exercises: [
+          { name: 'Vila / Återhämtning', sets: '-', reps: '-', tags: ['Rest'] }
         ]
       }
     ],

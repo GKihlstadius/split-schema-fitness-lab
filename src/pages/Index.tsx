@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
@@ -9,12 +8,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex justify-between items-start mb-16">
-          <div className="flex-1">
-            <h1 className="text-2xl font-light text-gray-900 mb-2">Träning</h1>
-            <p className="text-gray-500 font-light">Välj ditt program</p>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="flex justify-end mb-8">
           <ProgramSelector 
             programs={workoutPrograms}
             selectedProgram={selectedProgram}
