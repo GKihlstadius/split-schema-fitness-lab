@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
-import { Header } from '@/components/Header';
 import { workoutPrograms } from '@/data/workoutPrograms';
 
 const Index = () => {
@@ -9,7 +8,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex justify-end mb-8">
           <ProgramSelector 
