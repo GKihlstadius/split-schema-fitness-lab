@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,14 +37,9 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
     <div className="p-6 max-w-6xl mx-auto">
       {/* Program Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-red-600 rounded flex items-center justify-center">
-            <span className="text-white font-bold">RP</span>
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{program.name}</h1>
-            <p className="text-lg text-gray-600">{program.goal}</p>
-          </div>
+        <div className="mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{program.name}</h1>
+          <p className="text-lg text-gray-600">{program.goal}</p>
         </div>
         
         <div className="flex flex-wrap gap-3 mb-6">
