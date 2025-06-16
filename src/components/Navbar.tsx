@@ -12,7 +12,7 @@ export const Navbar = () => {
           </Link>
         </div>
         <div className="ml-auto flex items-center gap-4">
-          <Link to="/workout" className="flex items-center gap-1 hover:text-primary transition-colors">
+          <Link to="/" className="flex items-center gap-1 hover:text-primary transition-colors">
             <Dumbbell className="h-4 w-4" />
             <span>Träning</span>
           </Link>
