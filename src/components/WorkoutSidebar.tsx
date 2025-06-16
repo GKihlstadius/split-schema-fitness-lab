@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Menu, Filter } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { WorkoutProgram } from '@/types/workout';
 
 interface WorkoutSidebarProps {
@@ -29,12 +29,7 @@ export const WorkoutSidebar: React.FC<WorkoutSidebarProps> = ({
     <>
       {/* Mobile Header */}
       <div className="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
-            <span className="text-white font-bold text-sm">RP</span>
-          </div>
-          <span className="font-semibold text-gray-900">Workout Programs</span>
-        </div>
+        <span className="font-semibold text-gray-900">Workout Programs</span>
         <Button
           variant="ghost"
           size="sm"
@@ -50,19 +45,7 @@ export const WorkoutSidebar: React.FC<WorkoutSidebarProps> = ({
       }`}>
         {/* Header */}
         <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-red-600 rounded flex items-center justify-center">
-              <span className="text-white font-bold">RP</span>
-            </div>
-            <div>
-              <h1 className="font-bold text-lg text-gray-900">Renaissance</h1>
-              <p className="text-sm text-gray-500">Hypertrophy Beta</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Programs</h2>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Programs</h2>
 
           {/* Filter */}
           <div className="flex gap-2 flex-wrap">
@@ -95,20 +78,14 @@ export const WorkoutSidebar: React.FC<WorkoutSidebarProps> = ({
               key={program.id}
               className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
                 selectedProgram.id === program.id
-                  ? 'border-red-300 bg-red-50'
+                  ? 'border-blue-300 bg-blue-50'
                   : 'border-gray-200 bg-white hover:border-gray-300'
               }`}
               onClick={() => onSelectProgram(program)}
             >
-              <div className="flex items-start justify-between mb-2">
-                <div className="w-6 h-6 bg-red-600 rounded flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-xs">RP</span>
-                </div>
-              </div>
+              <h3 className="font-semibold text-gray-900 mb-3">{program.name}</h3>
               
-              <h3 className="font-semibold text-gray-900 mb-1">{program.name}</h3>
-              
-              <div className="flex gap-2 mb-2">
+              <div className="flex gap-2 mb-3">
                 <Badge variant="outline" className="text-xs">
                   {program.frequency}
                 </Badge>
