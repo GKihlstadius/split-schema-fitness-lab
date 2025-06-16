@@ -1,12 +1,18 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B6B" />
+      <stop offset="100%" stop-color="#4A4AFF" />
+    </linearGradient>
+  </defs>
+  
   <!-- Bakgrund -->
-  <rect width="512" height="512" rx="128" fill="black"/>
+  <circle cx="100" cy="100" r="95" fill="url(#gradient)" />
+  <circle cx="100" cy="100" r="85" fill="#000000" />
   
-  <!-- Stiliserad "S" -->
-  <path d="M346 172C346 145.49 324.51 124 298 124H214C187.49 124 166 145.49 166 172V172C166 198.51 187.49 220 214 220H298C324.51 220 346 241.49 346 268V268C346 294.51 324.51 316 298 316H214C187.49 316 166 294.51 166 268" 
-        stroke="white" stroke-width="48" stroke-linecap="round"/>
+  <!-- GJ Text -->
+  <text x="100" y="120" font-family="Arial, sans-serif" font-weight="900" font-size="80" fill="white" text-anchor="middle">GJ</text>
   
-  <!-- Horisontella linjer som representerar schema/workout splits -->
-  <line x1="128" y1="388" x2="384" y2="388" stroke="white" stroke-width="24" stroke-linecap="round"/>
-  <line x1="176" y1="436" x2="336" y2="436" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <!-- Text -->
+  <text x="100" y="160" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="white" text-anchor="middle">GYM JANNE</text>
 </svg> 

@@ -1,27 +1,29 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import NutritionHub from "./pages/NutritionHub";
+import Workout from "./pages/Workout";
+import WorkoutDetails from "./pages/WorkoutDetails";
+import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className="app">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/nutrition" element={<NutritionHub />} />
+            <Route path="/workout" element={<Workout />} />
+            <Route path="/workout/:day" element={<WorkoutDetails />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster />
+      </div>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

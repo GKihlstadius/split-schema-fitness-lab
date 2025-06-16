@@ -1,10 +1,10 @@
-
 export interface Exercise {
   name: string;
   sets: string;
   reps: string;
   notes?: string;
   tags?: string[];
+  alternatives?: string[];
 }
 
 export interface DayPlan {
