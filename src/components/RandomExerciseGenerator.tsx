@@ -16,34 +16,30 @@ export function RandomExerciseGenerator({ dayPlan, onApplyRandomExercises }: Ran
   const generateAndApplyRandomExercises = () => {
     setIsGenerating(true);
     
-    // Skapa nya övningar baserat på muskelgrupperna i dayPlan
-    const newExercises: WorkoutExercise[] = [];
-    
-    // För varje muskelgrupp i dagens pass, generera en eller flera övningar
-    dayPlan.muscleGroups.forEach(muscleGroup => {
-      if (muscleGroup === 'Rest') return; // Skippa vila
+    // Skapa nya övningar genom att bara byta namn, behåll sets/reps från originalet
+    const newExercises: WorkoutExercise[] = dayPlan.exercises.map(originalExercise => {
+      // Skippa vila-övningar
+      if (originalExercise.tags?.includes('Rest')) {
+        return originalExercise;
+      }
       
-      // Beräkna hur många övningar som behövs för denna muskelgrupp
-      // Baserat på hur många övningar som finns i det ursprungliga passet
-      const originalExercisesForMuscle = dayPlan.exercises.filter(ex => 
-        ex.tags?.includes(muscleGroup)
-      ).length;
+      // Hitta muskelgrupp för denna övning
+      const muscleGroup = originalExercise.tags?.[0];
+      if (!muscleGroup) {
+        return originalExercise; // Behåll originalet om ingen muskelgrupp finns
+      }
       
-      // Minst 1 övning per muskelgrupp, eller samma antal som i originalet
-      const exerciseCount = Math.max(1, originalExercisesForMuscle);
+      // Hämta en slumpmässig övning för samma muskelgrupp
+      const randomExercises = getRandomExercises(muscleGroup, 1);
+      if (randomExercises.length === 0) {
+        return originalExercise; // Behåll originalet om inga alternativ finns
+      }
       
-      // Hämta slumpmässiga övningar för denna muskelgrupp
-      const randomExercisesForMuscle = getRandomExercises(muscleGroup, exerciseCount);
-      
-      // Lägg till övningarna i resultatlistan
-      randomExercisesForMuscle.forEach(randomEx => {
-        newExercises.push({
-          name: randomEx.name,
-          sets: '3-4', // Standard sets
-          reps: randomEx.difficulty === 'beginner' ? '12-15' : '8-12', // Anpassa reps efter svårighetsgrad
-          tags: [muscleGroup]
-        });
-      });
+      // Returnera övning med nytt namn men ursprungliga sets/reps/tags/notes
+      return {
+        ...originalExercise,
+        name: randomExercises[0].name
+      };
     });
     
     // Applicera övningarna direkt

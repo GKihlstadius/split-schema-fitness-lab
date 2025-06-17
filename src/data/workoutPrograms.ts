@@ -16,12 +16,12 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Triceps', 'Calves', 'Shoulders', 'Biceps'],
         focus: 'Upper Body Push',
         exercises: [
-          { name: 'Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
-          { name: 'Incline Dumbbell Press', sets: '3', reps: '8-12', tags: ['Chest'] },
-          { name: 'Close-Grip Bench Press', sets: '3', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Bench Press', sets: '5', reps: '8-12', tags: ['Chest'] },
+          { name: 'Incline Dumbbell Press', sets: '4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Close-Grip Bench Press', sets: '4', reps: '10-15', tags: ['Triceps'] },
           { name: 'Standing Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
-          { name: 'Overhead Press', sets: '3', reps: '8-12', tags: ['Shoulders'] },
-          { name: 'Barbell Curls', sets: '2', reps: '10-15', tags: ['Biceps'] }
+          { name: 'Overhead Press', sets: '4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Barbell Curls', sets: '3', reps: '10-15', tags: ['Biceps'] }
         ]
       },
       {
@@ -30,8 +30,8 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Lower Body',
         exercises: [
           { name: 'Romanian Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Squats', sets: '4', reps: '8-12', tags: ['Quads'] },
-          { name: 'Walking Lunges', sets: '3', reps: '12-15', tags: ['Quads'] }
+          { name: 'Squats', sets: '5', reps: '8-12', tags: ['Quads'] },
+          { name: 'Walking Lunges', sets: '4', reps: '12-15', tags: ['Quads'] }
         ]
       },
       {
@@ -39,11 +39,11 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps', 'Forearms'],
         focus: 'Upper Body Pull',
         exercises: [
-          { name: 'Pull-ups', sets: '4', reps: '8-12', tags: ['Back'] },
-          { name: 'Barbell Rows', sets: '4', reps: '8-12', tags: ['Back'] },
-          { name: 'Cable Rows', sets: '3', reps: '8-12', tags: ['Back'] },
+          { name: 'Pull-ups', sets: '5', reps: '8-12', tags: ['Back'] },
+          { name: 'Barbell Rows', sets: '5', reps: '8-12', tags: ['Back'] },
+          { name: 'Cable Rows', sets: '4', reps: '8-12', tags: ['Back'] },
           { name: 'Hammer Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
-          { name: 'Farmers Walk', sets: '2', reps: '30s', tags: ['Forearms'] }
+          { name: 'Farmers Walk', sets: '3', reps: '30s', tags: ['Forearms'] }
         ]
       },
       {
@@ -51,13 +51,13 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Triceps', 'Chest', 'Calves', 'Shoulders', 'Biceps'],
         focus: 'Upper Body Push 2',
         exercises: [
-          { name: 'Dips', sets: '3', reps: '10-15', tags: ['Triceps'] },
-          { name: 'Overhead Tricep Extension', sets: '3', reps: '10-15', tags: ['Triceps'] },
-          { name: 'Dumbbell Bench Press', sets: '3', reps: '8-12', tags: ['Chest'] },
+          { name: 'Dips', sets: '4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Overhead Tricep Extension', sets: '4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Dumbbell Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
           { name: 'Dumbbell Flyes', sets: '3', reps: '12-15', tags: ['Chest'] },
-          { name: 'Seated Calf Raises', sets: '3', reps: '15-20', tags: ['Calves'] },
-          { name: 'Lateral Raises', sets: '3', reps: '12-15', tags: ['Shoulders'] },
-          { name: 'Cable Curls', sets: '2', reps: '10-15', tags: ['Biceps'] }
+          { name: 'Seated Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Lateral Raises', sets: '4', reps: '12-15', tags: ['Shoulders'] },
+          { name: 'Cable Curls', sets: '3', reps: '10-15', tags: ['Biceps'] }
         ]
       },
       {
@@ -66,8 +66,8 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Lower Body 2',
         exercises: [
           { name: 'Stiff Leg Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Leg Press', sets: '4', reps: '12-15', tags: ['Quads'] },
-          { name: 'Hip Thrusts', sets: '3', reps: '12-15', tags: ['Glutes'] }
+          { name: 'Leg Press', sets: '5', reps: '12-15', tags: ['Quads'] },
+          { name: 'Hip Thrusts', sets: '4', reps: '12-15', tags: ['Glutes'] }
         ]
       },
       {
@@ -76,10 +76,10 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Upper Body Pull 2',
         exercises: [
           { name: 'T-Bar Rows', sets: '4', reps: '8-12', tags: ['Back'] },
-          { name: 'Lat Pulldowns', sets: '3', reps: '8-12', tags: ['Back'] },
-          { name: 'Rear Delt Flyes', sets: '3', reps: '12-15', tags: ['Shoulders'] },
+          { name: 'Lat Pulldowns', sets: '4', reps: '8-12', tags: ['Back'] },
+          { name: 'Rear Delt Flyes', sets: '4', reps: '12-15', tags: ['Shoulders'] },
           { name: 'Preacher Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
-          { name: 'Wrist Curls', sets: '2', reps: '15-20', tags: ['Forearms'] }
+          { name: 'Wrist Curls', sets: '3', reps: '15-20', tags: ['Forearms'] }
         ]
       },
       {
@@ -125,10 +125,10 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps'],
         focus: 'Pull Volume Training',
         exercises: [
-          { name: 'Weighted Pull-ups', sets: '4', reps: '6-8', tags: ['Back'] },
-          { name: 'Barbell Rows', sets: '4', reps: '8-10', tags: ['Back'] },
+          { name: 'Weighted Pull-ups', sets: '5', reps: '6-8', tags: ['Back'] },
+          { name: 'Barbell Rows', sets: '5', reps: '8-10', tags: ['Back'] },
           { name: 'Cable Curls', sets: '4', reps: '10-12', tags: ['Biceps'] },
-          { name: 'Preacher Curls', sets: '3', reps: '12-15', tags: ['Biceps'] }
+          { name: 'Preacher Curls', sets: '4', reps: '12-15', tags: ['Biceps'] }
         ]
       },
       {
@@ -138,7 +138,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         exercises: [
           { name: 'Back Squats', sets: '5', reps: '6-8', tags: ['Quads'] },
           { name: 'Romanian Deadlifts', sets: '4', reps: '8-10', tags: ['Hamstrings'] },
-          { name: 'Leg Press', sets: '4', reps: '12-15', tags: ['Quads'] },
+          { name: 'Leg Press', sets: '5', reps: '12-15', tags: ['Quads'] },
           { name: 'Leg Curls', sets: '4', reps: '12-15', tags: ['Hamstrings'] }
         ]
       },
@@ -159,9 +159,9 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Upper Body Density',
         exercises: [
           { name: 'Dumbbell Bench Press', sets: '4', reps: '10-12', tags: ['Chest'] },
-          { name: 'Cable Rows', sets: '4', reps: '10-12', tags: ['Back'] },
-          { name: 'Pec Deck', sets: '3', reps: '12-15', tags: ['Chest'] },
-          { name: 'Lat Pulldowns', sets: '3', reps: '12-15', tags: ['Back'] }
+          { name: 'Cable Rows', sets: '5', reps: '10-12', tags: ['Back'] },
+          { name: 'Pec Deck', sets: '4', reps: '12-15', tags: ['Chest'] },
+          { name: 'Lat Pulldowns', sets: '4', reps: '12-15', tags: ['Back'] }
         ]
       },
       {
@@ -169,10 +169,10 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Shoulders', 'Calves', 'Quads'],
         focus: 'Weak Point Training',
         exercises: [
-          { name: 'Front Squats', sets: '4', reps: '10-12', tags: ['Quads'] },
+          { name: 'Front Squats', sets: '5', reps: '10-12', tags: ['Quads'] },
           { name: 'Arnold Press', sets: '4', reps: '10-12', tags: ['Shoulders'] },
           { name: 'Lateral Raises', sets: '4', reps: '15-20', tags: ['Shoulders'] },
-          { name: 'Calf Raises', sets: '4', reps: '20-25', tags: ['Calves'] }
+          { name: 'Calf Raises', sets: '8', reps: '20-25', tags: ['Calves'] }
         ]
       }
     ],
@@ -198,9 +198,9 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Triceps'],
         focus: 'Power Upper Push',
         exercises: [
-          { name: 'Barbell Bench Press', sets: '5', reps: '3-5', tags: ['Primary'] },
-          { name: 'Weighted Dips', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Close-Grip Bench Press', sets: '4', reps: '6-8', tags: ['Secondary'] }
+          { name: 'Barbell Bench Press', sets: '5', reps: '3-5', tags: ['Chest'] },
+          { name: 'Weighted Dips', sets: '5', reps: '6-8', tags: ['Chest'] },
+          { name: 'Close-Grip Bench Press', sets: '4', reps: '6-8', tags: ['Triceps'] }
         ]
       },
       {
@@ -208,9 +208,9 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps'],
         focus: 'Power Upper Pull',
         exercises: [
-          { name: 'Deadlift', sets: '5', reps: '3-5', tags: ['Primary'] },
-          { name: 'Weighted Pull-ups', sets: '4', reps: '5-7', tags: ['Primary'] },
-          { name: 'Barbell Rows', sets: '4', reps: '6-8', tags: ['Secondary'] }
+          { name: 'Deadlift', sets: '5', reps: '3-5', tags: ['Back'] },
+          { name: 'Weighted Pull-ups', sets: '5', reps: '5-7', tags: ['Back'] },
+          { name: 'Barbell Rows', sets: '5', reps: '6-8', tags: ['Back'] }
         ]
       },
       {
@@ -218,19 +218,19 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Shoulders'],
         focus: 'Shoulder Power',
         exercises: [
-          { name: 'Overhead Press', sets: '5', reps: '3-5', tags: ['Primary'] },
-          { name: 'Push Press', sets: '4', reps: '5-6', tags: ['Primary'] },
-          { name: 'Lateral Raises', sets: '4', reps: '10-12', tags: ['Secondary'] }
+          { name: 'Overhead Press', sets: '5', reps: '3-5', tags: ['Shoulders'] },
+          { name: 'Push Press', sets: '4', reps: '5-6', tags: ['Shoulders'] },
+          { name: 'Lateral Raises', sets: '4', reps: '10-12', tags: ['Shoulders'] }
         ]
       },
       {
         day: 'Thursday',
-        muscleGroups: ['Arms'],
+        muscleGroups: ['Triceps', 'Biceps'],
         focus: 'Arm Strength',
         exercises: [
-          { name: 'Barbell Curls', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Skull Crushers', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Hammer Curls', sets: '3', reps: '8-10', tags: ['Secondary'] }
+          { name: 'Barbell Curls', sets: '4', reps: '6-8', tags: ['Biceps'] },
+          { name: 'Skull Crushers', sets: '4', reps: '6-8', tags: ['Triceps'] },
+          { name: 'Hammer Curls', sets: '4', reps: '8-10', tags: ['Biceps'] }
         ]
       },
       {
@@ -238,9 +238,9 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Back'],
         focus: 'Upper Body Volume',
         exercises: [
-          { name: 'Incline Bench Press', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'T-Bar Rows', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Cable Flyes', sets: '3', reps: '12-15', tags: ['Secondary'] }
+          { name: 'Incline Bench Press', sets: '5', reps: '8-10', tags: ['Chest'] },
+          { name: 'T-Bar Rows', sets: '5', reps: '8-10', tags: ['Back'] },
+          { name: 'Cable Flyes', sets: '4', reps: '12-15', tags: ['Chest'] }
         ]
       }
     ],
@@ -266,25 +266,25 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Triceps', 'Shoulders'],
         focus: 'Överkropp: Press',
         exercises: [
-          { name: 'Chest Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Chest Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
-          { name: 'Triceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Triceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Shoulders Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Shoulders Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] }
+          { name: 'Chest Exercise 1', sets: '5', reps: '8-10', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '4', reps: '10-12', tags: ['Chest'] },
+          { name: 'Triceps Exercise 1', sets: '4', reps: '10-12', tags: ['Triceps'] },
+          { name: 'Triceps Exercise 2', sets: '4', reps: '12-15', tags: ['Triceps'] },
+          { name: 'Shoulders Exercise 1', sets: '4', reps: '10-12', tags: ['Shoulders'] },
+          { name: 'Shoulders Exercise 2', sets: '4', reps: '12-15', tags: ['Shoulders'] }
         ]
       },
       {
         day: 'Tisdag',
-        muscleGroups: ['Legs', 'Glutes', 'Calves'],
+        muscleGroups: ['Quads', 'Hamstrings', 'Glutes', 'Calves'],
         focus: 'Ben (framsida + baksida + glute)',
         exercises: [
-          { name: 'Quads Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Quads Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
-          { name: 'Hamstrings Exercise', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Glutes Exercise', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Secondary'] },
-          { name: 'Calves Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Quads Exercise 1', sets: '5', reps: '8-10', tags: ['Quads'] },
+          { name: 'Quads Exercise 2', sets: '4', reps: '10-12', tags: ['Quads'] },
+          { name: 'Hamstrings Exercise', sets: '4', reps: '10-12', tags: ['Hamstrings'] },
+          { name: 'Glutes Exercise', sets: '4', reps: '12-15', tags: ['Glutes'] },
+          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Calves Exercise 2', sets: '4', reps: '15-20', tags: ['Calves'] }
         ]
       },
       {
@@ -292,12 +292,12 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps', 'Forearms'],
         focus: 'Överkropp: Drag',
         exercises: [
-          { name: 'Back Exercise 1', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Back Exercise 2', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Back Exercise 3', sets: '3', reps: '10-12', tags: ['Primary'] },
-          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Forearms Exercise', sets: '3', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Back Exercise 1', sets: '5', reps: '6-8', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '4', reps: '8-10', tags: ['Back'] },
+          { name: 'Back Exercise 3', sets: '4', reps: '10-12', tags: ['Back'] },
+          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Biceps'] },
+          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Biceps'] },
+          { name: 'Forearms Exercise', sets: '4', reps: '15-20', tags: ['Forearms'] }
         ]
       },
       {
@@ -305,25 +305,25 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Triceps', 'Shoulders'],
         focus: 'Pressfokus igen',
         exercises: [
-          { name: 'Chest Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Chest Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
-          { name: 'Triceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Triceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Shoulders Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Shoulders Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] }
+          { name: 'Chest Exercise 1', sets: '4', reps: '8-10', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '4', reps: '10-12', tags: ['Chest'] },
+          { name: 'Triceps Exercise 1', sets: '4', reps: '10-12', tags: ['Triceps'] },
+          { name: 'Triceps Exercise 2', sets: '4', reps: '12-15', tags: ['Triceps'] },
+          { name: 'Shoulders Exercise 1', sets: '4', reps: '10-12', tags: ['Shoulders'] },
+          { name: 'Shoulders Exercise 2', sets: '4', reps: '12-15', tags: ['Shoulders'] }
         ]
       },
       {
         day: 'Fredag',
-        muscleGroups: ['Legs', 'Glutes', 'Calves'],
+        muscleGroups: ['Quads', 'Hamstrings', 'Glutes', 'Calves'],
         focus: 'Ben igen',
         exercises: [
-          { name: 'Quads Exercise 1', sets: '4', reps: '8-10', tags: ['Primary'] },
-          { name: 'Quads Exercise 2', sets: '3', reps: '10-12', tags: ['Primary'] },
-          { name: 'Hamstrings Exercise', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Glutes Exercise', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Secondary'] },
-          { name: 'Calves Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Quads Exercise 1', sets: '5', reps: '8-10', tags: ['Quads'] },
+          { name: 'Quads Exercise 2', sets: '4', reps: '10-12', tags: ['Quads'] },
+          { name: 'Hamstrings Exercise', sets: '4', reps: '10-12', tags: ['Hamstrings'] },
+          { name: 'Glutes Exercise', sets: '4', reps: '12-15', tags: ['Glutes'] },
+          { name: 'Calves Exercise 1', sets: '4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Calves Exercise 2', sets: '4', reps: '15-20', tags: ['Calves'] }
         ]
       },
       {
@@ -331,12 +331,12 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps', 'Forearms'],
         focus: 'Rygg & Armar',
         exercises: [
-          { name: 'Back Exercise 1', sets: '4', reps: '6-8', tags: ['Primary'] },
-          { name: 'Back Exercise 2', sets: '3', reps: '8-10', tags: ['Primary'] },
-          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Secondary'] },
-          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Secondary'] },
-          { name: 'Forearms Exercise 1', sets: '3', reps: '15-20', tags: ['Secondary'] },
-          { name: 'Forearms Exercise 2', sets: '3', reps: '15-20', tags: ['Secondary'] }
+          { name: 'Back Exercise 1', sets: '5', reps: '6-8', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '4', reps: '8-10', tags: ['Back'] },
+          { name: 'Biceps Exercise 1', sets: '3', reps: '10-12', tags: ['Biceps'] },
+          { name: 'Biceps Exercise 2', sets: '3', reps: '12-15', tags: ['Biceps'] },
+          { name: 'Forearms Exercise 1', sets: '3', reps: '15-20', tags: ['Forearms'] },
+          { name: 'Forearms Exercise 2', sets: '3', reps: '15-20', tags: ['Forearms'] }
         ]
       }
     ],

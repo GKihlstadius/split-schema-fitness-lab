@@ -10,26 +10,27 @@ interface ProgramDetailProps {
   program: WorkoutProgram;
 }
 
-// RP (Renaissance Periodization) rekommendationer
+// RP (Renaissance Periodization) rekommendationer för hypertrofi
 const rpRecommendations = {
-  'Chest': { sets: '10-20', frequency: 2 },
-  'Back': { sets: '14-22', frequency: 2 },
-  'Shoulders': { sets: '8-16', frequency: 2 },
-  'Biceps': { sets: '6-8', frequency: 2 },
-  'Triceps': { sets: '6-8', frequency: 2 },
-  'Quads': { sets: '10-20', frequency: 2 },
-  'Hamstrings': { sets: '8-16', frequency: 2 },
-  'Glutes': { sets: '4-12', frequency: 2 },
-  'Calves': { sets: '8-16', frequency: 2 },
-  'Forearms': { sets: '4-10', frequency: 2 },
-  'Core': { sets: '0-16', frequency: 3 },
-  'Abs': { sets: '0-16', frequency: 3 }
+  'Chest': { sets: '9-15', frequency: 3, days: '3 (Mån, Tor, ev. Lör)' },
+  'Triceps': { sets: '9-12', frequency: 3, days: '3 (Mån, Tor, ev. Ons)' },
+  'Shoulders': { sets: '9-12', frequency: 3, days: '3 (Mån, Tor, Lör)' },
+  'Biceps': { sets: '9-12', frequency: 3, days: '3 (Mån, Ons, Tor, Lör)' },
+  'Back': { sets: '9-12', frequency: 3, days: '3 (Ons, Lör, ev. Mån)' },
+  'Hamstrings': { sets: '6-10', frequency: 2, days: '2 (Tis, Fre)' },
+  'Quads': { sets: '6-10', frequency: 2, days: '2 (Tis, Fre)' },
+  'Glutes': { sets: '3-4', frequency: 1, days: '1 (Fre)' },
+  'Calves': { sets: '6-10', frequency: 2, days: '2 (Mån, Tor)' },
+  'Forearms': { sets: '4-6', frequency: 2, days: '2 (Ons, Lör)' },
+  'Core': { sets: '0-16', frequency: 3, days: '3 (valfritt)' },
+  'Abs': { sets: '0-16', frequency: 3, days: '3 (valfritt)' }
 };
 
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
+  const analysisRef = useRef<HTMLDivElement>(null);
   const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   
   useEffect(() => {
@@ -198,10 +199,20 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
       </div>
 
       {/* Training Analysis Toggle Button */}
-      <div className="mb-12">
+      <div className="mb-12" ref={analysisRef}>
         <Button
           variant="outline"
-          onClick={() => setShowAnalysis(!showAnalysis)}
+          onClick={() => {
+            setShowAnalysis(!showAnalysis);
+            if (!showAnalysis && analysisRef.current) {
+              setTimeout(() => {
+                analysisRef.current?.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'start' 
+                });
+              }, 100);
+            }
+          }}
           className="w-full md:w-auto flex items-center gap-2 border-border hover:bg-muted/50"
         >
           <Info className="h-4 w-4 text-blue-500" />
@@ -242,7 +253,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
                               </Badge>
                             </td>
                             <td className="py-3 text-muted-foreground">
-                              {stats.frequency} ({stats.days.slice(0, 3).join(', ')}{stats.days.length > 3 ? '...' : ''})
+                              {rp ? rp.days : `${stats.frequency} (${stats.days.slice(0, 3).join(', ')})`}
                             </td>
                             <td className="py-3 text-muted-foreground">
                               {rp ? `${rp.sets} set` : 'N/A'}
