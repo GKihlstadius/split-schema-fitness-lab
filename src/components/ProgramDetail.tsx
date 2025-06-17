@@ -4,10 +4,27 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
+import { CheckCircle, Info } from 'lucide-react';
 
 interface ProgramDetailProps {
   program: WorkoutProgram;
 }
+
+// RP (Renaissance Periodization) rekommendationer
+const rpRecommendations = {
+  'Chest': { sets: '10-20', frequency: 2 },
+  'Back': { sets: '14-22', frequency: 2 },
+  'Shoulders': { sets: '8-16', frequency: 2 },
+  'Biceps': { sets: '6-8', frequency: 2 },
+  'Triceps': { sets: '6-8', frequency: 2 },
+  'Quads': { sets: '10-20', frequency: 2 },
+  'Hamstrings': { sets: '8-16', frequency: 2 },
+  'Glutes': { sets: '4-12', frequency: 2 },
+  'Calves': { sets: '8-16', frequency: 2 },
+  'Forearms': { sets: '4-10', frequency: 2 },
+  'Core': { sets: '0-16', frequency: 3 },
+  'Abs': { sets: '0-16', frequency: 3 }
+};
 
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -33,6 +50,54 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
         });
       }, 100);
     }
+  };
+
+  // Räkna träningsfrekvens och set per muskelgrupp
+  const calculateMuscleGroupStats = () => {
+    const stats: { [key: string]: { frequency: number; sets: number; days: string[] } } = {};
+    
+    program.weeklyPlan.forEach(day => {
+      if (day.muscleGroups.includes('Rest')) return;
+      
+      day.muscleGroups.forEach(muscle => {
+        if (!stats[muscle]) {
+          stats[muscle] = { frequency: 0, sets: 0, days: [] };
+        }
+        
+        if (!stats[muscle].days.includes(day.day)) {
+          stats[muscle].frequency++;
+          stats[muscle].days.push(day.day);
+        }
+        
+        // Räkna set för denna muskelgrupp denna dag
+        const muscleSets = day.exercises
+          .filter(exercise => exercise.tags.includes(muscle))
+          .reduce((total, exercise) => {
+            const setCount = exercise.sets.includes('-') ? 
+              parseInt(exercise.sets.split('-')[1]) || parseInt(exercise.sets.split('-')[0]) || 3 :
+              parseInt(exercise.sets) || 3;
+            return total + setCount;
+          }, 0);
+        
+        stats[muscle].sets += muscleSets;
+      });
+    });
+    
+    return stats;
+  };
+
+  const muscleStats = calculateMuscleGroupStats();
+
+  // Kontrollera om schemat matchar RP-rekommendationer
+  const checkRPCompliance = (muscle: string, actualSets: number, actualFreq: number) => {
+    const rp = rpRecommendations[muscle as keyof typeof rpRecommendations];
+    if (!rp) return false;
+    
+    const [minSets, maxSets] = rp.sets.split('-').map(s => parseInt(s));
+    const frequencyOk = actualFreq >= rp.frequency;
+    const setsOk = actualSets >= minSets && actualSets <= maxSets;
+    
+    return frequencyOk && setsOk;
   };
 
   const getMuscleGroupClass = (muscle: string) => {
@@ -80,6 +145,76 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
         </div>
 
         <p className="text-foreground mb-8 max-w-2xl font-light leading-relaxed">{program.description}</p>
+      </div>
+
+      {/* Science-baserad analys */}
+      <div className="mb-12">
+        <Card className="border-border shadow-none">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-light text-foreground flex items-center gap-2">
+              <Info className="h-5 w-5 text-blue-500" />
+              Träningsanalys (enligt RP)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 font-light">Muskelgrupp</th>
+                    <th className="text-left py-2 font-light">Träningsdagar</th>
+                    <th className="text-left py-2 font-light">Rek. set (RP)</th>
+                    <th className="text-left py-2 font-light">Ditt schema</th>
+                    <th className="text-left py-2 font-light">Matchar?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(muscleStats)
+                    .filter(([muscle]) => muscle !== 'Rest')
+                    .map(([muscle, stats]) => {
+                      const rp = rpRecommendations[muscle as keyof typeof rpRecommendations];
+                      const isCompliant = checkRPCompliance(muscle, stats.sets, stats.frequency);
+                      
+                      return (
+                        <tr key={muscle} className="border-b border-border/50">
+                          <td className="py-3">
+                            <Badge 
+                              variant="secondary" 
+                              className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
+                            >
+                              {muscle}
+                            </Badge>
+                          </td>
+                          <td className="py-3 text-muted-foreground">
+                            {stats.frequency} ({stats.days.slice(0, 3).join(', ')}{stats.days.length > 3 ? '...' : ''})
+                          </td>
+                          <td className="py-3 text-muted-foreground">
+                            {rp ? `${rp.sets} set` : 'N/A'}
+                          </td>
+                          <td className="py-3 font-medium">
+                            {stats.sets} set
+                          </td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-1">
+                              <CheckCircle 
+                                className={`h-4 w-4 ${isCompliant ? 'text-green-500' : 'text-orange-500'}`} 
+                              />
+                              <span className={`text-xs font-medium ${isCompliant ? 'text-green-600' : 'text-orange-600'}`}>
+                                {isCompliant ? 'Ja' : 'Behöver justering'}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4 text-xs text-muted-foreground">
+              <p><strong>RP:</strong> Renaissance Periodization rekommendationer för hypertrofi</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Weekly Split */}
