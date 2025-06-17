@@ -16,8 +16,8 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Chest', 'Triceps', 'Calves', 'Shoulders', 'Biceps'],
         focus: 'Upper Body Push',
         exercises: [
-          { name: 'Bench Press', sets: '5', reps: '8-12', tags: ['Chest'] },
-          { name: 'Incline Dumbbell Press', sets: '4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Incline Dumbbell Press', sets: '3', reps: '8-12', tags: ['Chest'] },
           { name: 'Close-Grip Bench Press', sets: '4', reps: '10-15', tags: ['Triceps'] },
           { name: 'Standing Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
           { name: 'Overhead Press', sets: '4', reps: '8-12', tags: ['Shoulders'] },
@@ -30,8 +30,8 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Lower Body',
         exercises: [
           { name: 'Romanian Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Squats', sets: '5', reps: '8-12', tags: ['Quads'] },
-          { name: 'Walking Lunges', sets: '4', reps: '12-15', tags: ['Quads'] }
+          { name: 'Squats', sets: '3', reps: '8-12', tags: ['Quads'] },
+          { name: 'Walking Lunges', sets: '2', reps: '12-15', tags: ['Quads'] }
         ]
       },
       {
@@ -39,9 +39,9 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Biceps', 'Forearms'],
         focus: 'Upper Body Pull',
         exercises: [
-          { name: 'Pull-ups', sets: '5', reps: '8-12', tags: ['Back'] },
-          { name: 'Barbell Rows', sets: '5', reps: '8-12', tags: ['Back'] },
-          { name: 'Cable Rows', sets: '4', reps: '8-12', tags: ['Back'] },
+          { name: 'Pull-ups', sets: '3', reps: '8-12', tags: ['Back'] },
+          { name: 'Barbell Rows', sets: '3', reps: '8-12', tags: ['Back'] },
+          { name: 'Cable Rows', sets: '2', reps: '8-12', tags: ['Back'] },
           { name: 'Hammer Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
           { name: 'Farmers Walk', sets: '3', reps: '30s', tags: ['Forearms'] }
         ]
@@ -54,7 +54,7 @@ export const workoutPrograms: WorkoutProgram[] = [
           { name: 'Dips', sets: '4', reps: '10-15', tags: ['Triceps'] },
           { name: 'Overhead Tricep Extension', sets: '4', reps: '10-15', tags: ['Triceps'] },
           { name: 'Dumbbell Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
-          { name: 'Dumbbell Flyes', sets: '3', reps: '12-15', tags: ['Chest'] },
+          { name: 'Dumbbell Flyes', sets: '2', reps: '12-15', tags: ['Chest'] },
           { name: 'Seated Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
           { name: 'Lateral Raises', sets: '4', reps: '12-15', tags: ['Shoulders'] },
           { name: 'Cable Curls', sets: '3', reps: '10-15', tags: ['Biceps'] }
@@ -66,7 +66,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         focus: 'Lower Body 2',
         exercises: [
           { name: 'Stiff Leg Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Leg Press', sets: '5', reps: '12-15', tags: ['Quads'] },
+          { name: 'Leg Press', sets: '3', reps: '12-15', tags: ['Quads'] },
           { name: 'Hip Thrusts', sets: '4', reps: '12-15', tags: ['Glutes'] }
         ]
       },
@@ -75,8 +75,8 @@ export const workoutPrograms: WorkoutProgram[] = [
         muscleGroups: ['Back', 'Shoulders', 'Biceps', 'Forearms'],
         focus: 'Upper Body Pull 2',
         exercises: [
-          { name: 'T-Bar Rows', sets: '4', reps: '8-12', tags: ['Back'] },
-          { name: 'Lat Pulldowns', sets: '4', reps: '8-12', tags: ['Back'] },
+          { name: 'T-Bar Rows', sets: '2', reps: '8-12', tags: ['Back'] },
+          { name: 'Lat Pulldowns', sets: '2', reps: '8-12', tags: ['Back'] },
           { name: 'Rear Delt Flyes', sets: '4', reps: '12-15', tags: ['Shoulders'] },
           { name: 'Preacher Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
           { name: 'Wrist Curls', sets: '3', reps: '15-20', tags: ['Forearms'] }
