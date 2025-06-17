@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
-import { CheckCircle, Info } from 'lucide-react';
+import { CheckCircle, Info, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ProgramDetailProps {
   program: WorkoutProgram;
@@ -28,6 +28,7 @@ const rpRecommendations = {
 
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
   const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   
@@ -147,76 +148,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
         <p className="text-foreground mb-8 max-w-2xl font-light leading-relaxed">{program.description}</p>
       </div>
 
-      {/* Science-baserad analys */}
-      <div className="mb-12">
-        <Card className="border-border shadow-none">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-light text-foreground flex items-center gap-2">
-              <Info className="h-5 w-5 text-blue-500" />
-              Träningsanalys (enligt RP)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left py-2 font-light">Muskelgrupp</th>
-                    <th className="text-left py-2 font-light">Träningsdagar</th>
-                    <th className="text-left py-2 font-light">Rek. set (RP)</th>
-                    <th className="text-left py-2 font-light">Ditt schema</th>
-                    <th className="text-left py-2 font-light">Matchar?</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(muscleStats)
-                    .filter(([muscle]) => muscle !== 'Rest')
-                    .map(([muscle, stats]) => {
-                      const rp = rpRecommendations[muscle as keyof typeof rpRecommendations];
-                      const isCompliant = checkRPCompliance(muscle, stats.sets, stats.frequency);
-                      
-                      return (
-                        <tr key={muscle} className="border-b border-border/50">
-                          <td className="py-3">
-                            <Badge 
-                              variant="secondary" 
-                              className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
-                            >
-                              {muscle}
-                            </Badge>
-                          </td>
-                          <td className="py-3 text-muted-foreground">
-                            {stats.frequency} ({stats.days.slice(0, 3).join(', ')}{stats.days.length > 3 ? '...' : ''})
-                          </td>
-                          <td className="py-3 text-muted-foreground">
-                            {rp ? `${rp.sets} set` : 'N/A'}
-                          </td>
-                          <td className="py-3 font-medium">
-                            {stats.sets} set
-                          </td>
-                          <td className="py-3">
-                            <div className="flex items-center gap-1">
-                              <CheckCircle 
-                                className={`h-4 w-4 ${isCompliant ? 'text-green-500' : 'text-orange-500'}`} 
-                              />
-                              <span className={`text-xs font-medium ${isCompliant ? 'text-green-600' : 'text-orange-600'}`}>
-                                {isCompliant ? 'Ja' : 'Behöver justering'}
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-4 text-xs text-muted-foreground">
-              <p><strong>RP:</strong> Renaissance Periodization rekommendationer för hypertrofi</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Weekly Split */}
       <div className="mb-12">
         <h3 className="text-xl font-light text-primary mb-6">Veckoschema</h3>
@@ -264,6 +195,83 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
             </Card>
           ))}
         </div>
+      </div>
+
+      {/* Training Analysis Toggle Button */}
+      <div className="mb-12">
+        <Button
+          variant="outline"
+          onClick={() => setShowAnalysis(!showAnalysis)}
+          className="w-full md:w-auto flex items-center gap-2 border-border hover:bg-muted/50"
+        >
+          <Info className="h-4 w-4 text-blue-500" />
+          <span>Träningsanalys (enligt RP)</span>
+          {showAnalysis ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+        </Button>
+
+        {/* Science-baserad analys - Collapsible */}
+        {showAnalysis && (
+          <Card className="border-border shadow-none mt-4">
+            <CardContent className="pt-6">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 font-light">Muskelgrupp</th>
+                      <th className="text-left py-2 font-light">Träningsdagar</th>
+                      <th className="text-left py-2 font-light">Rek. set (RP)</th>
+                      <th className="text-left py-2 font-light">Ditt schema</th>
+                      <th className="text-left py-2 font-light">Matchar?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(muscleStats)
+                      .filter(([muscle]) => muscle !== 'Rest')
+                      .map(([muscle, stats]) => {
+                        const rp = rpRecommendations[muscle as keyof typeof rpRecommendations];
+                        const isCompliant = checkRPCompliance(muscle, stats.sets, stats.frequency);
+                        
+                        return (
+                          <tr key={muscle} className="border-b border-border/50">
+                            <td className="py-3">
+                              <Badge 
+                                variant="secondary" 
+                                className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
+                              >
+                                {muscle}
+                              </Badge>
+                            </td>
+                            <td className="py-3 text-muted-foreground">
+                              {stats.frequency} ({stats.days.slice(0, 3).join(', ')}{stats.days.length > 3 ? '...' : ''})
+                            </td>
+                            <td className="py-3 text-muted-foreground">
+                              {rp ? `${rp.sets} set` : 'N/A'}
+                            </td>
+                            <td className="py-3 font-medium">
+                              {stats.sets} set
+                            </td>
+                            <td className="py-3">
+                              <div className="flex items-center gap-1">
+                                <CheckCircle 
+                                  className={`h-4 w-4 ${isCompliant ? 'text-green-500' : 'text-orange-500'}`} 
+                                />
+                                <span className={`text-xs font-medium ${isCompliant ? 'text-green-600' : 'text-orange-600'}`}>
+                                  {isCompliant ? 'Ja' : 'Behöver justering'}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-4 text-xs text-muted-foreground">
+                <p><strong>RP:</strong> Renaissance Periodization rekommendationer för hypertrofi</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Selected Day Workout View */}
