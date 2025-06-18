@@ -30,155 +30,103 @@ export const signInWithGoogle = async () => {
 
 // Registrera med e-post
 export const signUpWithEmail = async (email: string, password: string) => {
-  console.log('🔄 Supabase signup - börjar registrering för:', email);
-  
   try {
-    // Skapa en redirect URL som inkluderar email för att förenkla inloggning efter bekräftelse
-    const redirectUrl = getRedirectUrl(`/auth/callback?email=${encodeURIComponent(email)}`);
-    console.log('🔗 Redirect URL för registrering:', redirectUrl);
+    console.log('🔑 Försöker registrera användare med email:', email);
     
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
     });
 
-    console.log('📊 Supabase signup response:', { data, error });
+    console.log('📧 Registreringsresultat:', { data, error });
 
     if (error) {
-      console.error('❌ Supabase signup error:', error);
-      return { success: false, error: error.message };
+      console.error('❌ Registreringsfel:', error.message);
+      return { 
+        success: false, 
+        error: error.message 
+      };
     }
 
-    console.log('✅ Supabase signup success:', data);
-    return { success: true, data };
-  } catch (networkError) {
-    console.error('🌐 Network error under signup:', networkError);
-    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+    // Om registrering lyckades
+    if (data.user) {
+      console.log('✅ Registrering lyckades för användare:', data.user.id);
+      return { 
+        success: true, 
+        user: data.user,
+      };
+    }
+
+    return { success: false, error: 'Okänt fel vid registrering' };
+  } catch (error) {
+    console.error('💥 Unexpected error i signUpWithEmail:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ett oväntat fel uppstod' 
+    };
   }
 };
 
 // Logga in med e-post
 export const signInWithEmail = async (email: string, password: string) => {
-  console.log('🔄 Supabase signin - börjar inloggning för:', email);
-  
   try {
+    console.log('🔑 Försöker logga in användare med email:', email);
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    console.log('📊 Supabase signin response:', { data, error });
+    console.log('🔐 Inloggningsresultat:', { data, error });
 
     if (error) {
-      console.error('❌ Supabase signin error:', error);
-      
-      // Enkel hantering för obekräftad email
-      if (error.message.includes('Email not confirmed')) {
-        return { 
-          success: false, 
-          error: 'E-postadressen är inte bekräftad. Kontrollera din e-post för bekräftelselänk.',
-          needsEmailConfirmation: true
-        };
-      }
-      
-      return { success: false, error: error.message };
+      console.error('❌ Inloggningsfel:', error.message);
+      return { 
+        success: false, 
+        error: error.message 
+      };
     }
 
-    console.log('✅ Supabase signin success:', data);
-    return { success: true, data };
-  } catch (networkError) {
-    console.error('🌐 Network error under signin:', networkError);
-    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+    if (data.user && data.session) {
+      console.log('✅ Inloggning lyckades för användare:', data.user.id);
+      return { 
+        success: true, 
+        user: data.user, 
+        session: data.session 
+      };
+    }
+
+    return { success: false, error: 'Okänt fel vid inloggning' };
+  } catch (error) {
+    console.error('💥 Unexpected error i signInWithEmail:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ett oväntat fel uppstod' 
+    };
   }
 };
 
-// Manuellt bekräfta email med token
-export const confirmEmail = async (token: string, refreshToken?: string) => {
-  console.log('🔄 Supabase confirm email - bekräftar email med token');
-  
-  try {
-    // Försök att sätta session med token
-    const { data, error } = await supabase.auth.setSession({
-      access_token: token,
-      refresh_token: refreshToken || ''
-    });
-    
-    console.log('📊 Supabase confirm email response:', { data, error });
-    
-    if (error) {
-      console.error('❌ Supabase confirm email error:', error);
-      return { success: false, error: error.message };
-    }
-    
-    if (data.session) {
-      console.log('✅ Email bekräftad, session skapad');
-      return { success: true, data };
-    } else {
-      console.log('⚠️ Ingen session skapad efter bekräftelse');
-      return { success: false, error: 'Kunde inte skapa session efter bekräftelse' };
-    }
-  } catch (networkError) {
-    console.error('🌐 Network error under email confirmation:', networkError);
-    return { success: false, error: `Nätverksfel: ${networkError.message}` };
-  }
-};
 
-// Skicka nytt bekräftelsemail
-export const resendConfirmationEmail = async (email: string) => {
-  console.log('🔄 Supabase resend - skickar nytt bekräftelsemail till:', email);
-  
-  try {
-    // Skapa en redirect URL som inkluderar email för att förenkla inloggning efter bekräftelse
-    const redirectUrl = getRedirectUrl(`/auth/callback?email=${encodeURIComponent(email)}`);
-    console.log('🔗 Redirect URL för bekräftelsemail:', redirectUrl);
-    
-    const { data, error } = await supabase.auth.resend({
-      type: 'signup',
-      email,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
-    });
-    
-    console.log('📊 Supabase resend response:', { data, error });
-    
-    if (error) {
-      console.error('❌ Supabase resend error:', error);
-      return { success: false, error: error.message };
-    }
-    
-    console.log('✅ Nytt bekräftelsemail skickat');
-    return { success: true, data };
-  } catch (networkError) {
-    console.error('🌐 Network error under resend:', networkError);
-    return { success: false, error: `Nätverksfel: ${networkError.message}` };
-  }
-};
 
 // Återställ lösenord
 export const resetPassword = async (email: string) => {
-  console.log('🔄 Supabase password reset - skickar mail till:', email);
-  
   try {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: getRedirectUrl('/auth/reset-password')
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
     });
 
-    console.log('📊 Supabase reset password response:', { data, error });
-
     if (error) {
-      console.error('❌ Supabase reset password error:', error);
+      console.error('❌ Fel vid återställning av lösenord:', error.message);
       return { success: false, error: error.message };
     }
 
-    console.log('✅ Supabase reset password mail skickat');
-    return { success: true, data };
-  } catch (networkError) {
-    console.error('🌐 Network error under password reset:', networkError);
-    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+    return { success: true };
+  } catch (error) {
+    console.error('💥 Unexpected error i resetPassword:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ett oväntat fel uppstod' 
+    };
   }
 };
 
@@ -208,17 +156,45 @@ export const updatePassword = async (newPassword: string) => {
 
 // Logga ut
 export const signOut = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error('Error signing out:', error);
-    throw error;
+  try {
+    console.log('🚪 Loggar ut användare');
+    
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      console.error('❌ Utloggningsfel:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    console.log('✅ Utloggning lyckades');
+    return { success: true };
+  } catch (error) {
+    console.error('💥 Unexpected error i signOut:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ett oväntat fel uppstod' 
+    };
   }
 };
 
 // Hämta nuvarande användare
-export const getCurrentUser = async (): Promise<User | null> => {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+export const getCurrentUser = async () => {
+  try {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    
+    if (error) {
+      console.error('❌ Fel vid hämtning av användare:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, user };
+  } catch (error) {
+    console.error('💥 Unexpected error i getCurrentUser:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Ett oväntat fel uppstod' 
+    };
+  }
 };
 
 // Kontrollera om användaren är inloggad

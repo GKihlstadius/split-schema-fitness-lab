@@ -6,16 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dumbbell, Mail, Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
-import { signInWithEmail, signUpWithEmail, resendConfirmationEmail } from '@/utils/supabaseAuth';
+import { signInWithEmail, signUpWithEmail } from '@/utils/supabaseAuth';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isResending, setIsResending] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [needsEmailConfirmation, setNeedsEmailConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,12 +23,6 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Kontrollera om vi kom från ProtectedRoute med needsEmailConfirmation
-    if (location.state?.needsEmailConfirmation) {
-      setNeedsEmailConfirmation(true);
-      setError('Din e-postadress är inte bekräftad. Vänligen kontrollera din e-post eller skicka ett nytt bekräftelsemail.');
-    }
-    
     // Kontrollera om vi har email i URL:en (från EmailConfirmation)
     const queryParams = new URLSearchParams(location.search);
     const emailFromQuery = queryParams.get('email');
@@ -56,7 +48,6 @@ const Login = () => {
     setIsLoading(true);
     setError('');
     setSuccess('');
-    setNeedsEmailConfirmation(false);
 
     try {
       console.log('🔍 Försöker autentisera:', { isRegistering, email: formData.email });
@@ -66,8 +57,7 @@ const Login = () => {
         console.log('📧 Registreringsresultat:', result);
         
         if (result.success) {
-          setSuccess('Konto skapat! Kontrollera din e-post för att verifiera ditt konto innan du kan logga in.');
-          setNeedsEmailConfirmation(true);
+          setSuccess('Konto skapat! Du kan nu logga in med dina uppgifter.');
           // Rensa lösenordsfälten
           setFormData(prev => ({ 
             ...prev, 
@@ -82,7 +72,6 @@ const Login = () => {
           // Kontrollera om felet är att användaren redan finns
           if (result.error.includes('already registered')) {
             setError('Det finns redan ett konto med denna e-postadress. Försök logga in istället.');
-            setNeedsEmailConfirmation(true);
           } else {
             setError(result.error || 'Ett fel uppstod vid registrering');
           }
@@ -95,14 +84,7 @@ const Login = () => {
           navigate('/');
         } else {
           console.error('❌ Inloggningsfel:', result.error);
-          
-          // Kontrollera om emailen behöver bekräftas
-          if (result.needsEmailConfirmation || result.error.includes('not confirmed')) {
-            setNeedsEmailConfirmation(true);
-            setError('E-postadressen är inte bekräftad. Vänligen kontrollera din e-post för bekräftelselänk eller skicka ett nytt bekräftelsemail.');
-          } else {
-            setError(result.error || 'Felaktigt e-post eller lösenord');
-          }
+          setError(result.error || 'Felaktigt e-post eller lösenord');
         }
       }
     } catch (error) {
@@ -110,32 +92,6 @@ const Login = () => {
       setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleResendConfirmation = async () => {
-    if (!formData.email) {
-      setError('Vänligen ange din e-postadress först');
-      return;
-    }
-    
-    setIsResending(true);
-    setError('');
-    setSuccess('');
-    
-    try {
-      const result = await resendConfirmationEmail(formData.email);
-      
-      if (result.success) {
-        setSuccess('Ett nytt bekräftelsemail har skickats till din e-postadress. Kontrollera din inkorg (och skräppost).');
-      } else {
-        setError(result.error || 'Kunde inte skicka bekräftelsemail. Försök igen senare.');
-      }
-    } catch (error) {
-      console.error('💥 Resend confirmation error:', error);
-      setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
-    } finally {
-      setIsResending(false);
     }
   };
 
@@ -153,7 +109,6 @@ const Login = () => {
     setIsRegistering(!isRegistering);
     setError('');
     setSuccess('');
-    setNeedsEmailConfirmation(false);
     setFormData({ email: '', password: '', confirmPassword: '' });
   };
 
@@ -264,20 +219,6 @@ const Login = () => {
               </Button>
             </form>
 
-            {/* Skicka nytt bekräftelsemail knapp */}
-            {needsEmailConfirmation && (
-              <div className="mt-4">
-                <Button 
-                  onClick={handleResendConfirmation}
-                  variant="outline"
-                  className="w-full"
-                  disabled={isResending}
-                >
-                  {isResending ? 'Skickar...' : 'Skicka nytt bekräftelsemail'}
-                </Button>
-              </div>
-            )}
-
             {/* Glömt lösenord länk - visas bara för inloggning */}
             {!isRegistering && (
               <div className="text-center">
@@ -297,8 +238,8 @@ const Login = () => {
             {/* Information för nya användare */}
             {isRegistering && (
               <div className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-                <p className="font-medium mb-1">📧 Viktigt att veta:</p>
-                <p>Efter registrering får du ett verifieringsmail. Klicka på länken i mailet för att aktivera ditt konto innan du kan logga in.</p>
+                <p className="font-medium mb-1">🚀 Enkelt och snabbt:</p>
+                <p>Skapa ditt konto och börja träna direkt - ingen email-bekräftelse behövs!</p>
               </div>
             )}
 

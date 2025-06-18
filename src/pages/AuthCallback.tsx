@@ -18,14 +18,9 @@ const AuthCallback = () => {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const queryParams = new URLSearchParams(location.search);
 
-        // Kontrollera om detta är en email bekräftelse
-        const isEmailConfirmation = location.hash.includes('type=signup') || 
-                                   location.search.includes('type=signup');
-
         console.log('📊 Auth params:', { 
           hash: Object.fromEntries(hashParams.entries()),
-          query: Object.fromEntries(queryParams.entries()),
-          isEmailConfirmation
+          query: Object.fromEntries(queryParams.entries())
         });
 
         // Hämta tokens från antingen hash eller query
@@ -33,16 +28,6 @@ const AuthCallback = () => {
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
         const type = hashParams.get('type') || queryParams.get('type');
         
-        // Om detta är en email bekräftelse, skicka till EmailConfirmation
-        if (isEmailConfirmation) {
-          console.log('📧 Detta är en email bekräftelse, omdirigerar till EmailConfirmation');
-          
-          // Skapa en URL med tokens för EmailConfirmation
-          const redirectUrl = `/email-confirmation${location.search}${location.hash}`;
-          navigate(redirectUrl, { replace: true });
-          return;
-        }
-
         // Om detta är en lösenordsåterställning, skicka till ResetPassword
         if (type === 'recovery') {
           console.log('🔑 Detta är en lösenordsåterställning');
