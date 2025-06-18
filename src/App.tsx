@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import NutritionHub from "./pages/NutritionHub";
 import WorkoutDetails from "./pages/WorkoutDetails";
@@ -11,11 +12,29 @@ import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient();
 
+// Komponent för att hantera auth hash redirect
+const AuthHashHandler = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Kontrollera om vi har auth tokens i hash på hem-sidan
+    if (location.pathname === '/' && location.hash.includes('access_token')) {
+      console.log('🔄 Hittade auth tokens på hem-sidan, omdirigerar till auth callback');
+      // Omdirigera till auth callback med hash
+      navigate('/auth/callback' + location.hash, { replace: true });
+    }
+  }, [location, navigate]);
+
+  return null;
+};
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app">
         <BrowserRouter>
+          <AuthHashHandler />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/auth/callback" element={<AuthCallback />} />

@@ -11,15 +11,51 @@ const AuthCallback = () => {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Supabase hanterar automatiskt OAuth callback
+        console.log('🔄 AuthCallback: Börjar hantera auth callback');
+        console.log('🔍 Current URL:', window.location.href);
+        
+        // Kontrollera om vi har hash-baserade tokens (typiskt för email auth)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const hasHashTokens = hashParams.has('access_token');
+        
+        if (hasHashTokens) {
+          console.log('🔑 Hittade tokens i URL hash, hanterar...');
+          // Supabase kommer automatiskt att hantera hash-baserade tokens
+          const { data, error } = await supabase.auth.getSession();
+          
+          if (error) {
+            console.error('❌ Auth callback error från hash:', error);
+            setStatus('error');
+            setMessage('Inloggningen misslyckades. Försök igen.');
+            
+            setTimeout(() => {
+              navigate('/login');
+            }, 3000);
+            return;
+          }
+
+          if (data.session) {
+            console.log('✅ Session skapad från hash tokens');
+            setStatus('success');
+            setMessage('Registrering lyckades! Omdirigerar...');
+            
+            // Rensa URL hash och omdirigera
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setTimeout(() => {
+              navigate('/', { replace: true });
+            }, 1500);
+            return;
+          }
+        }
+
+        // Fallback: Kontrollera befintlig session
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('Auth callback error:', error);
+          console.error('❌ Auth callback error:', error);
           setStatus('error');
           setMessage('Inloggningen misslyckades. Försök igen.');
           
-          // Omdirigera till login efter 3 sekunder
           setTimeout(() => {
             navigate('/login');
           }, 3000);
@@ -27,14 +63,15 @@ const AuthCallback = () => {
         }
 
         if (data.session) {
+          console.log('✅ Befintlig session hittad');
           setStatus('success');
           setMessage('Inloggning lyckades! Omdirigerar...');
           
-          // Omdirigera till huvudsidan efter kort delay
           setTimeout(() => {
             navigate('/', { replace: true });
           }, 1500);
         } else {
+          console.log('❌ Ingen session hittades');
           setStatus('error');
           setMessage('Ingen aktiv session hittades.');
           
@@ -43,7 +80,7 @@ const AuthCallback = () => {
           }, 3000);
         }
       } catch (error) {
-        console.error('Unexpected error during auth callback:', error);
+        console.error('💥 Unexpected error during auth callback:', error);
         setStatus('error');
         setMessage('Ett oväntat fel uppstod.');
         
