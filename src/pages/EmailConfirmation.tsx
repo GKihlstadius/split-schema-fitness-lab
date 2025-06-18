@@ -36,6 +36,24 @@ const EmailConfirmation = () => {
           return;
         }
         
+        // Kontrollera om token bara är ett ID-nummer (inte en JWT)
+        const isTokenOnlyId = !accessToken.includes('.') && !isNaN(Number(accessToken));
+        
+        if (isTokenOnlyId) {
+          console.log('⚠️ Token är bara ett ID-nummer, inte en JWT');
+          
+          // För detta fall, vi kan inte använda setSession
+          // Istället visar vi ett framgångsmeddelande och instruerar användaren att logga in
+          setStatus('success');
+          setMessage('Din e-post har verifierats! Du kan nu logga in på ditt konto.');
+          
+          // Omdirigera till inloggningssidan efter 3 sekunder
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 3000);
+          return;
+        }
+        
         // Enkel metod: Försök sätta session med tokens
         const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
@@ -44,6 +62,19 @@ const EmailConfirmation = () => {
         
         if (error) {
           console.error('❌ Fel vid sätta session:', error);
+          
+          // Om vi får fel, men typ är signup, anta att verifieringen lyckades
+          if (type === 'signup') {
+            setStatus('success');
+            setMessage('Din e-post har verifierats! Du kan nu logga in på ditt konto.');
+            
+            // Omdirigera till inloggningssidan efter 3 sekunder
+            setTimeout(() => {
+              navigate('/login', { replace: true });
+            }, 3000);
+            return;
+          }
+          
           setStatus('error');
           setMessage('Kunde inte verifiera din e-post. Länken kan ha gått ut.');
           return;

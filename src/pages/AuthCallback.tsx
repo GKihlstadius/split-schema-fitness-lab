@@ -53,6 +53,21 @@ const AuthCallback = () => {
           return;
         }
 
+        // Kontrollera om token bara är ett ID-nummer (inte en JWT)
+        const isTokenOnlyId = accessToken && !accessToken.includes('.') && !isNaN(Number(accessToken));
+        
+        if (isTokenOnlyId) {
+          console.log('⚠️ Token är bara ett ID-nummer, inte en JWT');
+          
+          // För detta fall, vi kan inte använda setSession
+          // Istället omdirigerar vi till login
+          setMessage('Autentisering slutförd. Omdirigerar till inloggning...');
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 2000);
+          return;
+        }
+
         // För alla andra fall, försök sätta session
         if (accessToken) {
           console.log('🔑 Tokens hittade, försöker sätta session');
