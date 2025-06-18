@@ -20,6 +20,14 @@ const AuthCallback = () => {
         const accessToken = hashParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token');
         
+        console.log('🔍 Auth callback tokens:', {
+          hasHashTokens,
+          isPasswordReset,
+          isEmailConfirmation,
+          hasAccessToken: !!accessToken,
+          hasRefreshToken: !!refreshToken
+        });
+        
         if (hasHashTokens) {
           if (isPasswordReset) {
             // Lösenordsåterställning - gå till reset password
@@ -33,7 +41,7 @@ const AuthCallback = () => {
             try {
               // Använd verifyOtp för email confirmation
               const { data, error } = await supabase.auth.verifyOtp({
-                token_hash: window.location.hash.substring(1),
+                token_hash: accessToken,
                 type: 'signup'
               });
 
