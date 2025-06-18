@@ -39,15 +39,20 @@ const AuthCallback = () => {
             setMessage('E-post bekräftad! Slutför inloggning...');
             
             try {
-              // Använd verifyOtp för email confirmation
+              // För email confirmation, använd hela hash-strängen
+              const tokenHash = window.location.hash.substring(1);
+              console.log('🔍 Attempting email verification with token hash');
+              
               const { data, error } = await supabase.auth.verifyOtp({
-                token_hash: accessToken,
+                token_hash: tokenHash,
                 type: 'signup'
               });
 
               if (error) {
                 console.error('❌ Email verification error:', error);
-                // Fallback: Försök med setSession
+                console.log('🔄 Trying fallback with setSession');
+                
+                // Fallback: Försök med setSession direkt
                 const { error: sessionError } = await supabase.auth.setSession({
                   access_token: accessToken,
                   refresh_token: refreshToken || ''
@@ -55,18 +60,21 @@ const AuthCallback = () => {
                 
                 if (sessionError) {
                   console.error('❌ Session error:', sessionError);
-                  setMessage('Något gick fel. Försök logga in manuellt.');
+                  setMessage('Email confirmation misslyckades. Försök logga in manuellt.');
                   setTimeout(() => navigate('/login'), 3000);
                   return;
+                } else {
+                  console.log('✅ Fallback session lyckades');
                 }
+              } else {
+                console.log('✅ Email verification lyckades via verifyOtp');
               }
               
-              console.log('✅ Email bekräftelse lyckades');
-              setMessage('Klar! Omdirigerar...');
+              setMessage('Email bekräftad! Omdirigerar...');
               
             } catch (verificationError) {
               console.error('❌ Verification process error:', verificationError);
-              setMessage('Något gick fel. Försök logga in manuellt.');
+              setMessage('Email confirmation misslyckades. Försök logga in manuellt.');
               setTimeout(() => navigate('/login'), 3000);
               return;
             }
