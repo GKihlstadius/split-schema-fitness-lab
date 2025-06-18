@@ -9,8 +9,20 @@ console.log('🔧 Supabase config:', {
   url: supabaseUrl,
   keyPrefix: supabaseAnonKey.substring(0, 20) + '...',
   hasUrl: !!import.meta.env.VITE_SUPABASE_URL,
-  hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY
+  hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+  currentOrigin: window.location.origin
 });
+
+// Hjälpfunktion för att få rätt redirect URL baserat på miljö
+export const getRedirectUrl = (path: string = '/auth/callback') => {
+  // I utveckling: använd localhost
+  // I production: använd deployed URL
+  const baseUrl = window.location.origin;
+  const redirectUrl = `${baseUrl}${path}`;
+  
+  console.log('🔗 Redirect URL för auth:', redirectUrl);
+  return redirectUrl;
+};
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

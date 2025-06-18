@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase, getRedirectUrl } from '@/lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
 
 export interface UserData {
@@ -16,7 +16,7 @@ export const signInWithGoogle = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`
+      redirectTo: getRedirectUrl('/auth/callback')
     }
   });
   
@@ -36,6 +36,9 @@ export const signUpWithEmail = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: getRedirectUrl('/auth/callback')
+      }
     });
 
     console.log('📊 Supabase signup response:', { data, error });
@@ -84,7 +87,7 @@ export const resetPassword = async (email: string) => {
   
   try {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`
+      redirectTo: getRedirectUrl('/auth/reset-password')
     });
 
     console.log('📊 Supabase reset password response:', { data, error });
@@ -222,7 +225,7 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
     
     console.log('✅ Användarinställningar sparade till Supabase!');
   } catch (networkError: any) {
-    console.error('�� Nätverksfel vid sparning av användarinställningar:', networkError);
+    console.error('🌐 Nätverksfel vid sparning av användarinställningar:', networkError);
     
     if (networkError.message?.includes('user_settings') || networkError.message?.includes('Databasfel')) {
       // Re-throw specifika felmeddelanden
