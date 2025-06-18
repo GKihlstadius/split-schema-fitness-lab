@@ -16,71 +16,36 @@ const AuthCallback = () => {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasHashTokens = hashParams.has('access_token');
         const isPasswordReset = hashParams.get('type') === 'recovery';
-        const isEmailConfirmation = hashParams.get('type') === 'signup' || window.location.href.includes('type=signup');
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        
-        console.log('🔍 Auth callback tokens:', {
-          hasHashTokens,
-          isPasswordReset,
-          isEmailConfirmation,
-          hasAccessToken: !!accessToken,
-          hasRefreshToken: !!refreshToken
-        });
         
         if (hasHashTokens) {
+          // Vänta lite för att Supabase ska hantera tokens
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        
           if (isPasswordReset) {
             // Lösenordsåterställning - gå till reset password
             navigate('/auth/reset-password' + window.location.hash, { replace: true });
             return;
           }
           
-          // ENKEL LÖSNING: Använd bara setSession för alla tokens
-          setMessage('Bekräftar inloggning...');
+          // Kontrollera session
+          const { data } = await supabase.auth.getSession();
           
-          try {
-            console.log('🔄 Setting session with tokens');
-            
-            const { data, error } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken || ''
-            });
-            
-            if (error) {
-              console.error('❌ Session error:', error);
-              setMessage('Inloggning misslyckades. Försök igen.');
-              setTimeout(() => navigate('/login'), 3000);
-              return;
-            }
-            
-            console.log('✅ Session satt framgångsrikt:', data.session?.user?.email);
+          if (data.session) {
+            console.log('✅ Inloggning lyckades');
             setMessage('Klar! Omdirigerar...');
-            
-          } catch (sessionError) {
-            console.error('❌ Session error:', sessionError);
-            setMessage('Inloggning misslyckades. Försök igen.');
-            setTimeout(() => navigate('/login'), 3000);
-            return;
-          }
           
-          // Kontrollera slutlig session
-          const { data: sessionData } = await supabase.auth.getSession();
-          
-          if (sessionData.session) {
-            console.log('✅ Session bekräftad, användare inloggad');
-            
             // Rensa URL och gå till huvudsidan
             window.history.replaceState({}, document.title, window.location.pathname);
-            setTimeout(() => {
+          setTimeout(() => {
               navigate('/', { replace: true });
             }, 500);
-            return;
+          return;
           }
         }
 
         // Fallback: kolla befintlig session
         const { data } = await supabase.auth.getSession();
-        
+
         if (data.session) {
           console.log('✅ Session hittad');
           setTimeout(() => {
