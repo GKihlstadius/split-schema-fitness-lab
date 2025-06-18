@@ -30,12 +30,13 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
       <Button
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 h-auto border-gray-200 hover:bg-gray-50 text-gray-900 font-light"
+        className="flex items-center justify-between gap-2 px-4 py-3 h-auto min-w-[280px] border-gray-200 hover:bg-gray-50 text-gray-900 font-light"
       >
-        <div className="text-left">
+        <div className="text-left flex-1">
           <div className="font-medium">{selectedProgram.name}</div>
+          <div className="text-xs text-gray-500 mt-0.5">Välj träningsprogram</div>
         </div>
-        <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
       {/* Dropdown */}
@@ -48,7 +49,7 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
           />
           
           {/* Dropdown Content */}
-          <div className="absolute top-full right-0 mt-2 w-80 bg-white border border-gray-100 rounded-lg shadow-sm z-50 overflow-hidden">
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 md:left-auto md:right-0 md:transform-none mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-100 rounded-lg shadow-sm z-50 overflow-hidden">
             {/* Header */}
             <div className="px-4 py-3 border-b border-gray-50">
               <div className="flex gap-2 flex-wrap">
