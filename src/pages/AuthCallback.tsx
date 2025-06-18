@@ -16,6 +16,7 @@ const AuthCallback = () => {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasHashTokens = hashParams.has('access_token');
         const isPasswordReset = hashParams.get('type') === 'recovery';
+        const isEmailConfirmation = hashParams.get('type') === 'signup' || window.location.href.includes('type=signup');
         
         if (hasHashTokens) {
           // Vänta lite för att Supabase ska hantera tokens
@@ -27,12 +28,17 @@ const AuthCallback = () => {
             return;
           }
           
+          if (isEmailConfirmation) {
+            setMessage('E-post bekräftad! Klar...');
+          } else {
+            setMessage('Klar! Omdirigerar...');
+          }
+          
           // Kontrollera session
           const { data } = await supabase.auth.getSession();
           
           if (data.session) {
             console.log('✅ Inloggning lyckades');
-            setMessage('Klar! Omdirigerar...');
             
             // Rensa URL och gå till huvudsidan
             window.history.replaceState({}, document.title, window.location.pathname);
