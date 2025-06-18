@@ -94,8 +94,8 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
           saveToLocalStorage();
         } else {
           toast({
-            title: "Ändringar sparade!",
-            description: `Träningsprogrammet för ${dayPlan.day} har uppdaterats i databasen`,
+            title: "Ändringar sparade! ✅",
+            description: `${dayPlan.day} uppdaterat i molnet`,
           });
         }
       } else {
@@ -126,10 +126,21 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
       
       localStorage.setItem(storageKey, JSON.stringify(saveData));
       
-      toast({
-        title: "Ändringar sparade lokalt!",
-        description: `Träningsprogrammet för ${dayPlan.day} har uppdaterats`,
-      });
+      // Kontrollera om det är konfigurationsproblem
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || supabaseUrl.includes('your-project') || !supabaseKey || supabaseKey.includes('your-anon-key')) {
+        toast({
+          title: "Sparad lokalt ⚠️",
+          description: `${dayPlan.day} sparat. Molnsynkronisering är inte konfigurerad än.`,
+        });
+      } else {
+        toast({
+          title: "Sparad lokalt ⚠️", 
+          description: `${dayPlan.day} sparat. Molnsynkronisering misslyckades.`,
+        });
+      }
     } catch (error) {
       console.error('Error saving to localStorage:', error);
       toast({

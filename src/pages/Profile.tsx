@@ -269,12 +269,34 @@ const Profile = () => {
       try {
         // Försök spara till Supabase först
         await saveUserSettings(currentUser.id, allSettings);
-        setMessage('Profil uppdaterad i molnet!');
-      } catch (supabaseError) {
+        setMessage('Profil uppdaterad i molnet! ✅');
+      } catch (supabaseError: any) {
         console.warn('Supabase sparande misslyckades, använder localStorage som backup:', supabaseError);
+        
         // Backup: Spara till localStorage
         localStorage.setItem(`profile_${currentUser.id}`, JSON.stringify(allSettings));
-        setMessage('Profil uppdaterad lokalt (molnsynk kommer senare)!');
+        
+        // Kontrollera om det är konfigurationsproblem
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        
+        let errorMessage = '';
+        
+        if (!supabaseUrl || supabaseUrl.includes('your-project') || !supabaseKey || supabaseKey.includes('your-anon-key')) {
+          errorMessage = '⚠️ Profil sparad lokalt. Molnsynkronisering är inte konfigurerad än. Kontakta admin för att aktivera molnsparning.';
+        } else if (supabaseError.message?.includes('user_settings existerar inte')) {
+          errorMessage = '⚠️ Profil sparad lokalt. Databasen saknar nödvändiga tabeller. Kontakta admin för att köra databas-setup.';
+        } else if (supabaseError.message?.includes('Åtkomst nekad')) {
+          errorMessage = '⚠️ Profil sparad lokalt. Säkerhetsinställningar blockerar molnsparning. Kontakta admin.';
+        } else if (supabaseError.message?.includes('Autentisering misslyckades')) {
+          errorMessage = '⚠️ Profil sparad lokalt. Din inloggning har gått ut. Logga in igen för molnsparning.';
+        } else if (supabaseError.message?.includes('Dublettsparning problem')) {
+          errorMessage = '⚠️ Profil sparad lokalt. Molndatabasen har dublettdata. Försök igen eller kontakta admin.';
+        } else {
+          errorMessage = `⚠️ Profil sparad lokalt. Molnfel: ${supabaseError.message}`;
+        }
+        
+        setMessage(errorMessage);
       }
     } catch (error) {
       console.error('Error saving profile:', error);

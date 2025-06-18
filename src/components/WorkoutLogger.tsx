@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { BookOpen, Plus, Save } from 'lucide-react';
+import { BookOpen, Plus, Save, Calendar } from 'lucide-react';
 import { supabase, WorkoutLog } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Exercise } from '@/types/workout';
@@ -26,18 +26,70 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
   const [isOpen, setIsOpen] = useState(false);
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const { toast } = useToast();
 
-  // Initiera loggdata för alla övningar
+  // Ladda befintliga loggar för valt datum
+  const loadExistingLogs = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      let existingLogs: any[] = [];
+
+      if (user) {
+        try {
+          // Försök ladda från Supabase först
+          const { data } = await supabase
+            .from('workout_logs')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('program_name', programName)
+            .eq('day', day)
+            .eq('date', selectedDate);
+          
+          existingLogs = data || [];
+        } catch (supabaseError) {
+          console.warn('Supabase laddning misslyckades, försöker localStorage backup:', supabaseError);
+        }
+      }
+
+      // Backup: Försök ladda från localStorage om Supabase misslyckades eller användaren inte är inloggad
+      if (existingLogs.length === 0) {
+        const storageKey = `workout_logs_${user?.id || 'local'}_${programName}_${day}_${selectedDate}`;
+        const localData = localStorage.getItem(storageKey);
+        if (localData) {
+          existingLogs = JSON.parse(localData);
+        }
+      }
+
+      // Skapa initial data för alla övningar
+      const initialLogs = exercises.map(exercise => {
+        const existingLog = existingLogs?.find(log => log.exercise_name === exercise.name);
+        return {
+          exercise_name: exercise.name,
+          sets: existingLog?.sets || 0,
+          reps: existingLog?.reps || 0,
+          weight: existingLog?.weight || 0
+        };
+      });
+      
+      setExerciseLogs(initialLogs);
+    } catch (error) {
+      console.error('Error loading existing logs:', error);
+      // Fallback till tom data
+      const initialLogs = exercises.map(exercise => ({
+        exercise_name: exercise.name,
+        sets: 0,
+        reps: 0,
+        weight: 0
+      }));
+      setExerciseLogs(initialLogs);
+    }
+  };
+
+  // Initiera/uppdatera loggdata när övningar eller datum ändras
   useEffect(() => {
-    const initialLogs = exercises.map(exercise => ({
-      exercise_name: exercise.name,
-      sets: 0,
-      reps: 0,
-      weight: 0
-    }));
-    setExerciseLogs(initialLogs);
-  }, [exercises]);
+    loadExistingLogs();
+  }, [exercises, selectedDate, programName, day]);
 
   const updateExerciseLog = (index: number, field: keyof ExerciseLog, value: number) => {
     setExerciseLogs(prev => prev.map((log, i) => 
@@ -49,29 +101,19 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
     setIsLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast({
-          title: "Fel",
-          description: "Du måste vara inloggad för att spara träningslogg",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const today = new Date().toISOString().split('T')[0];
       
-      // Förbered data för att spara
+      // Förbered data för att spara med valt datum
       const logsToSave = exerciseLogs
         .filter(log => log.sets > 0 || log.reps > 0 || log.weight > 0)
         .map(log => ({
-          user_id: user.id,
+          user_id: user?.id || 'local-user',
           program_name: programName,
           day: day,
           exercise_name: log.exercise_name,
           sets: log.sets,
           reps: log.reps,
           weight: log.weight,
-          date: today
+          date: selectedDate
         }));
 
       if (logsToSave.length === 0) {
@@ -83,26 +125,63 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
         return;
       }
 
-      // Ta bort befintliga loggar för samma dag och program
-      await supabase
-        .from('workout_logs')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('program_name', programName)
-        .eq('day', day)
-        .eq('date', today);
+      let savedToCloud = false;
+      
+      if (user) {
+        try {
+          // Försök spara till Supabase först
+          await supabase
+            .from('workout_logs')
+            .delete()
+            .eq('user_id', user.id)
+            .eq('program_name', programName)
+            .eq('day', day)
+            .eq('date', selectedDate);
 
-      // Spara nya loggar
-      const { error } = await supabase
-        .from('workout_logs')
-        .insert(logsToSave);
+          const { error } = await supabase
+            .from('workout_logs')
+            .insert(logsToSave);
 
-      if (error) throw error;
+          if (error) throw error;
+          savedToCloud = true;
+        } catch (supabaseError) {
+          console.warn('Supabase sparning misslyckades, använder localStorage backup:', supabaseError);
+        }
+      }
 
-      toast({
-        title: "Träningslogg sparad!",
-        description: `${logsToSave.length} övningar loggade för ${day}`,
-      });
+      // Backup: Spara till localStorage
+      const storageKey = `workout_logs_${user?.id || 'local'}_${programName}_${day}_${selectedDate}`;
+      localStorage.setItem(storageKey, JSON.stringify(logsToSave));
+
+      const formattedDate = new Date(selectedDate).toLocaleDateString('sv-SE');
+      
+      if (savedToCloud) {
+        toast({
+          title: "Träningslogg sparad! ✅",
+          description: `${logsToSave.length} övningar loggade för ${day} (${formattedDate}) - Sparat i molnet`,
+        });
+      } else {
+        // Kontrollera om det är konfigurationsproblem
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        
+        if (!user) {
+          toast({
+            title: "Träningslogg sparad! 📅",
+            description: `${logsToSave.length} övningar loggade för ${day} (${formattedDate}) - Sparat lokalt`,
+          });
+        } else if (!supabaseUrl || supabaseUrl.includes('your-project') || !supabaseKey || supabaseKey.includes('your-anon-key')) {
+          toast({
+            title: "Träningslogg sparad! ⚠️",
+            description: `${logsToSave.length} övningar loggade för ${day} (${formattedDate}) - Sparat lokalt. Molnsynkronisering är inte konfigurerad.`,
+          });
+        } else {
+          toast({
+            title: "Träningslogg sparad! ⚠️",
+            description: `${logsToSave.length} övningar loggade för ${day} (${formattedDate}) - Sparat lokalt. Molnsynkronisering misslyckades.`,
+          });
+        }
+      }
 
       setIsOpen(false);
     } catch (error) {
@@ -138,8 +217,29 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
         </DialogHeader>
         
         <div className="space-y-4">
+          {/* Datumväljare */}
+          <Card className="bg-muted/30">
+            <CardContent className="pt-4">
+              <div className="flex items-center gap-3">
+                <Calendar className="h-5 w-5 text-muted-foreground" />
+                <div className="flex-1">
+                  <Label htmlFor="workout-date" className="text-sm font-medium">
+                    Träningsdatum
+                  </Label>
+                  <Input
+                    id="workout-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
           <p className="text-sm text-muted-foreground">
-            Logga dina reps och vikt för varje övning. Data sparas automatiskt med dagens datum.
+            Logga dina reps och vikt för varje övning. Data sparas med valt datum.
           </p>
           
           {exercises.map((exercise, index) => (

@@ -105,6 +105,21 @@ CREATE TABLE IF NOT EXISTS user_workout_customizations (
   UNIQUE(user_id, program_name, day)
 );
 
+-- Träningslogg-tabell
+CREATE TABLE IF NOT EXISTS workout_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  program_name TEXT NOT NULL,
+  day TEXT NOT NULL,
+  exercise_name TEXT NOT NULL,
+  sets INTEGER NOT NULL DEFAULT 0,
+  reps INTEGER NOT NULL DEFAULT 0,
+  weight DECIMAL(5,2) NOT NULL DEFAULT 0,
+  date DATE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+);
+
 -- ========================================
 -- 2. AKTIVERA ROW LEVEL SECURITY (RLS)
 -- ========================================
@@ -117,6 +132,7 @@ ALTER TABLE meal_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE weight_tracking ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_goals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_workout_customizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workout_logs ENABLE ROW LEVEL SECURITY;
 
 -- ========================================
 -- 3. TA BORT BEFINTLIGA POLICIES
@@ -169,6 +185,12 @@ DROP POLICY IF EXISTS "Users can view own workout customizations" ON user_workou
 DROP POLICY IF EXISTS "Users can insert own workout customizations" ON user_workout_customizations;
 DROP POLICY IF EXISTS "Users can update own workout customizations" ON user_workout_customizations;
 DROP POLICY IF EXISTS "Users can delete own workout customizations" ON user_workout_customizations;
+
+-- workout_logs policies
+DROP POLICY IF EXISTS "Users can view own workout logs" ON workout_logs;
+DROP POLICY IF EXISTS "Users can insert own workout logs" ON workout_logs;
+DROP POLICY IF EXISTS "Users can update own workout logs" ON workout_logs;
+DROP POLICY IF EXISTS "Users can delete own workout logs" ON workout_logs;
 
 -- ========================================
 -- 4. SKAPA RLS POLICIES
@@ -310,6 +332,23 @@ CREATE POLICY "Users can delete own workout customizations"
 ON user_workout_customizations FOR DELETE 
 USING (auth.uid() = user_id);
 
+-- workout_logs policies
+CREATE POLICY "Users can view own workout logs" 
+ON workout_logs FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own workout logs" 
+ON workout_logs FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own workout logs" 
+ON workout_logs FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own workout logs" 
+ON workout_logs FOR DELETE 
+USING (auth.uid() = user_id);
+
 -- ========================================
 -- 5. SKAPA FUNCTIONS OCH TRIGGERS
 -- ========================================
@@ -329,6 +368,7 @@ DROP TRIGGER IF EXISTS update_saved_workout_programs_updated_at ON saved_workout
 DROP TRIGGER IF EXISTS update_meal_plans_updated_at ON meal_plans;
 DROP TRIGGER IF EXISTS update_user_goals_updated_at ON user_goals;
 DROP TRIGGER IF EXISTS update_user_workout_customizations_updated_at ON user_workout_customizations;
+DROP TRIGGER IF EXISTS update_workout_logs_updated_at ON workout_logs;
 
 -- Skapa triggers för updated_at
 CREATE TRIGGER update_user_settings_updated_at 
@@ -349,6 +389,10 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_user_workout_customizations_updated_at 
 BEFORE UPDATE ON user_workout_customizations 
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_workout_logs_updated_at 
+BEFORE UPDATE ON workout_logs 
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ========================================
@@ -387,6 +431,11 @@ CREATE INDEX IF NOT EXISTS idx_user_goals_is_active ON user_goals(user_id, is_ac
 CREATE INDEX IF NOT EXISTS idx_user_workout_customizations_user_id ON user_workout_customizations(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_workout_customizations_program_day ON user_workout_customizations(user_id, program_name, day);
 
+-- workout_logs indexer
+CREATE INDEX IF NOT EXISTS idx_workout_logs_user_id ON workout_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_workout_logs_date ON workout_logs(user_id, date);
+CREATE INDEX IF NOT EXISTS idx_workout_logs_program_day ON workout_logs(user_id, program_name, day, date);
+
 -- ========================================
 -- 7. VERIFIERING
 -- ========================================
@@ -408,7 +457,8 @@ WHERE tablename IN (
     'meal_history', 
     'weight_tracking', 
     'user_goals',
-    'user_workout_customizations'
+    'user_workout_customizations',
+    'workout_logs'
 )
 ORDER BY tablename;
 
@@ -431,7 +481,8 @@ WHERE tablename IN (
     'meal_history', 
     'weight_tracking', 
     'user_goals',
-    'user_workout_customizations'
+    'user_workout_customizations',
+    'workout_logs'
 )
 ORDER BY tablename, policyname;
 
@@ -439,7 +490,7 @@ ORDER BY tablename, policyname;
 DO $$
 BEGIN
     RAISE NOTICE '✅ Gym Janne databas-setup komplett!';
-    RAISE NOTICE '📊 Skapade tabeller: 8';
+    RAISE NOTICE '📊 Skapade tabeller: 9';
     RAISE NOTICE '🔒 RLS aktiverat på alla tabeller';
     RAISE NOTICE '🛡️ Policies skapade för alla tabeller';
     RAISE NOTICE '⚡ Indexer skapade för prestanda';

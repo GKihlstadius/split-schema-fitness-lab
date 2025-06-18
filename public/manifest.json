@@ -1,7 +1,7 @@
 {
-  "name": "Split Schema",
-  "short_name": "Split Schema",
-  "description": "Anpassade träningsprogram för optimal träning och resultat",
+  "name": "Gym Janne",
+  "short_name": "Gym Janne",
+  "description": "Gym Janne - Anpassade träningsprogram för optimal träning och resultat",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

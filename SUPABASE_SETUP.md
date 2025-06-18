@@ -1,119 +1,103 @@
-# Supabase Setup Guide för Gym Janne
+# 🔧 Supabase Setup & Molnsynkronisering
 
-## 1. Skapa Supabase-projekt
+## Problem: "Profil sparad lokalt (molnsynk kommer senare)"
 
-1. Gå till [Supabase](https://supabase.com) och skapa ett konto
-2. Skapa ett nytt projekt
-3. Vänta tills projektet är klart (detta kan ta några minuter)
+Om du ser meddelanden som **"Profil sparad lokalt"** eller **"Sparad lokalt ⚠️"** betyder det att molnsynkroniseringen inte fungerar och all data sparas bara lokalt i din webbläsare.
 
-## 2. Konfigurera miljövariabler
+## 🎯 Snabb Fix
 
-1. Kopiera `.env.example` till `.env`
-2. Hämta dina Supabase-uppgifter från **Settings > API** i Supabase Dashboard
-3. Fyll i `.env`-filen:
+### 1. Skapa Supabase-projekt
+1. Gå till [supabase.com](https://supabase.com)
+2. Skapa gratis konto
+3. Klicka "New Project"
+4. Välj organisation och namnge projektet (t.ex. "fitness-lab")
+5. Vänta 2-3 minuter medan projektet skapas
+
+### 2. Hämta API-nycklar
+1. Gå till ditt projekt på Supabase
+2. Klicka **Settings** → **API**
+3. Kopiera:
+   - **Project URL** (ser ut som: `https://abc123def.supabase.co`)
+   - **anon/public key** (lång sträng som börjar med `eyJ...`)
+
+### 3. Konfigurera applikationen
+
+Skapa en `.env` fil i projektets rot-mapp med:
 
 ```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+# Ersätt med dina riktiga värden från Supabase
+VITE_SUPABASE_URL=https://ditt-projekt-id.supabase.co
+VITE_SUPABASE_ANON_KEY=ditt-anon-key-här
 ```
 
-## 3. Skapa databastabeller
+### 4. Skapa databastabeller
 
-Kör följande SQL i Supabase SQL Editor:
+Kör detta SQL i Supabase SQL Editor:
 
-```sql
--- Skapa användarinställningar-tabell
-CREATE TABLE user_settings (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users NOT NULL,
-  settings JSONB DEFAULT '{}',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE(user_id)
-);
+1. Öppna filen `database-setup.sql` i ditt projekt
+2. Kopiera allt innehåll 
+3. Gå till ditt Supabase projekt → SQL Editor
+4. Klistra in och kör SQL-koden
+5. Bekräfta att alla 9 tabeller skapats
 
--- Skapa sparade träningsprogram-tabell
-CREATE TABLE saved_workout_programs (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users NOT NULL,
-  program_id TEXT NOT NULL,
-  program_name TEXT NOT NULL,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+**Viktigt:** Om du redan har kört en äldre version av setup och saknar vissa tabeller (som `workout_logs`), kör då den uppdaterade `database-setup.sql` filen igen. Den är designad för att säkert lägga till saknade tabeller utan att påverka befintlig data.
 
--- Skapa måltidsplaner-tabell
-CREATE TABLE meal_plans (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users NOT NULL,
-  name TEXT NOT NULL,
-  meals JSONB DEFAULT '[]',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+**Snabb alternativ:** Du kan använda `supabase-setup-fixed.sql` för enkel setup med de mest kritiska tabellerna.
 
--- Lägg till RLS (Row Level Security)
-ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE saved_workout_programs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE meal_plans ENABLE ROW LEVEL SECURITY;
+### 5. Starta om utvecklingsservern
 
--- Skapa policies för användarspecifik data
-CREATE POLICY "Users can view own settings" ON user_settings FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own settings" ON user_settings FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own settings" ON user_settings FOR UPDATE USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can view own workout programs" ON saved_workout_programs FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own workout programs" ON saved_workout_programs FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own workout programs" ON saved_workout_programs FOR UPDATE USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can view own meal plans" ON meal_plans FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own meal plans" ON meal_plans FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own meal plans" ON meal_plans FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own meal plans" ON meal_plans FOR DELETE USING (auth.uid() = user_id);
+```bash
+npm run dev
 ```
 
-## 4. Konfigurera Google OAuth
+## ✅ Verifiering
 
-1. Gå till **Authentication > Providers** i Supabase Dashboard
-2. Aktivera Google Provider
-3. Skapa ett Google OAuth-projekt:
-   - Gå till [Google Cloud Console](https://console.cloud.google.com/)
-   - Skapa ett nytt projekt eller välj ett befintligt
-   - Aktivera Google+ API
-   - Skapa OAuth 2.0-credentials
-   - Lägg till din Supabase callback URL: `https://your-project-id.supabase.co/auth/v1/callback`
-4. Kopiera Client ID och Client Secret till Supabase
-5. Spara konfigurationen
+När allt fungerar ska du se:
+- **"Profil uppdaterad i molnet! ✅"** när du sparar profilen
+- **"Ändringar sparade! ✅"** när du sparar träningsändringar
 
-## 5. Testa integrationen
+## 🆘 Felsökning
 
-1. Starta utvecklingsservern: `npm run dev`
-2. Navigera till inloggningssidan
-3. Klicka "Fortsätt med Google"
-4. Logga in med ditt Google-konto
-5. Du bör omdirigeras tillbaka till appen som inloggad
+### Problemet kvarstår?
 
-## 6. Fördelar med denna setup
+1. **Kontrollera .env-filen** - Den måste heta exakt `.env` (inte `.env.txt`)
+2. **Starta om servern** - Ctrl+C och kör `npm run dev` igen
+3. **Kontrollera URL:en** - Den ska vara din riktiga Supabase URL
+4. **Kontrollera nyckeln** - Den ska vara din riktiga anon key
+5. **Kolla konsolen** - Öppna F12 och se om det finns fler felmeddelanden
 
-✅ **Permanent datalagring** - All data sparas säkert i molnet
-✅ **Synkronisering** - Data synkroniseras mellan alla enheter
-✅ **Säkerhet** - Google OAuth + Row Level Security
-✅ **Skalbarhet** - Supabase hanterar automatisk skalning
-✅ **Backup** - Automatiska säkerhetskopior
-✅ **Prestanda** - Snabb global CDN
+### Vanliga fel:
 
-## Troubleshooting
+**❌ "Invalid API key"**
+- Din VITE_SUPABASE_ANON_KEY är fel eller saknas
 
-### Problem: "Invalid OAuth state"
-- Kontrollera att callback URL:en är korrekt konfigurerad i Google Console
-- Se till att Supabase URL:en i .env-filen är korrekt
+**❌ "Failed to fetch"** 
+- Din VITE_SUPABASE_URL är fel eller saknas
 
-### Problem: "CORS error"
-- Lägg till din domän i Supabase Authentication Settings under "Site URL"
+**❌ "Table doesn't exist"** eller **"Tabellen user_settings existerar inte"**
+- Du har inte kört database-setup.sql än
+- Eller du kör en gammal databas som saknar vissa tabeller
 
-### Problem: "Database error"
-- Kontrollera att alla tabeller är skapade korrekt
-- Verifiera att RLS policies är aktiverade
+**❌ "Databasen saknar nödvändiga tabeller"**
+- Kör den uppdaterade database-setup.sql filen igen
 
-## Support
+**❌ "duplicate key value violates unique constraint"**
+- Det finns dublettdata i databasen
+- Kör `fix-user-settings-duplicates.sql` i Supabase SQL Editor
 
-För support, kontakta Supabase-dokumentationen eller skapa en issue i detta repo. 
+### Kontakta support
+
+Om problem kvarstår, inkludera detta i din buggrapport:
+1. Meddelandet du ser när du sparar
+2. Eventuella fel i utvecklarkonsolen (F12)
+3. Om .env-filen existerar och har rätt format
+
+## 🔐 Säkerhet
+
+- Lägg **aldrig** till .env-filen i Git
+- Använd bara anon/public nyckeln (inte service role key)
+- Supabase Row Level Security (RLS) skyddar användardata automatiskt
+
+---
+
+**💡 Tips:** Applikationen fungerar fullt ut även utan molnsynkronisering - all data sparas säkert i din webbläsare. Molnsynkronisering är bara en bonus för att komma åt data från flera enheter. 

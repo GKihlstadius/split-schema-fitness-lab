@@ -122,17 +122,66 @@ export const getUserSettings = async (userId: string): Promise<Record<string, an
 
 // Spara användarinställningar till Supabase
 export const saveUserSettings = async (userId: string, settings: Record<string, any>) => {
-  const { error } = await supabase
-    .from('user_settings')
-    .upsert({
-      user_id: userId,
-      settings,
-      updated_at: new Date().toISOString()
-    });
+  console.log('🔄 Försöker spara användarinställningar till Supabase för user:', userId);
+  
+  try {
+    // Först försök upsert (create or update)
+    let { error } = await supabase
+      .from('user_settings')
+      .upsert({
+        user_id: userId,
+        settings,
+        updated_at: new Date().toISOString()
+      });
 
-  if (error) {
-    console.error('Error saving user settings:', error);
-    throw error;
+    // Om det är duplicate key constraint fel, försök bara uppdatera istället
+    if (error && error.code === '23505') {
+      console.log('🔄 Duplicate key constraint, försöker bara uppdatera befintlig rad...');
+      
+      const updateResult = await supabase
+        .from('user_settings')
+        .update({
+          settings,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId);
+        
+      error = updateResult.error;
+    }
+
+    if (error) {
+      console.error('❌ Supabase fel vid sparning av användarinställningar:', error);
+      console.error('📊 Error details:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      
+      // Specifika felmeddelanden baserat på felkod
+      if (error.code === '42P01') {
+        throw new Error('Tabellen user_settings existerar inte i databasen. Databasen behöver konfigureras.');
+      } else if (error.code === 'PGRST301') {
+        throw new Error('Åtkomst nekad till user_settings tabellen. Kontrollera RLS policies.');
+      } else if (error.code === '23505') {
+        throw new Error('Dublettsparning problem. Försök igen eller kontakta admin.');
+      } else if (error.message.includes('JWT')) {
+        throw new Error('Autentisering misslyckades. Logga in igen.');
+      } else {
+        throw new Error(`Databasfel: ${error.message}`);
+      }
+    }
+    
+    console.log('✅ Användarinställningar sparade till Supabase!');
+  } catch (networkError: any) {
+    console.error('🌐 Nätverksfel vid sparning av användarinställningar:', networkError);
+    
+    if (networkError.message?.includes('user_settings') || networkError.message?.includes('Databasfel')) {
+      // Re-throw specifika felmeddelanden
+      throw networkError;
+    } else {
+      throw new Error(`Anslutningsfel till molnet: ${networkError.message}`);
+    }
   }
 };
 

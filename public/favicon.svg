@@ -7,20 +7,9 @@
   </defs>
   
   <!-- Bakgrund -->
-  <circle cx="16" cy="16" r="16" fill="url(#gradient)" />
+  <circle cx="16" cy="16" r="15" fill="url(#gradient)" />
   <circle cx="16" cy="16" r="13" fill="#000000" />
   
-  <!-- Hantel ikon (baserad på Lucide Dumbbell) -->
-  <g fill="white" stroke="white" stroke-width="1.5">
-    <!-- Vänster vikt -->
-    <rect x="5" y="11" width="3" height="10" rx="1.5" />
-    <!-- Höger vikt -->
-    <rect x="24" y="11" width="3" height="10" rx="1.5" />
-    <!-- Mittstång -->
-    <rect x="8" y="15" width="16" height="2" rx="1" />
-    <!-- Vänster grepp -->
-    <rect x="10" y="13" width="2" height="6" rx="1" />
-    <!-- Höger grepp -->
-    <rect x="20" y="13" width="2" height="6" rx="1" />
-  </g>
+  <!-- GJ Text -->
+  <text x="16" y="21" font-family="Arial, sans-serif" font-weight="900" font-size="14" fill="white" text-anchor="middle">GJ</text>
 </svg> 
