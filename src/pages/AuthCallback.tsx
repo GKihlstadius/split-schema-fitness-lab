@@ -17,28 +17,62 @@ const AuthCallback = () => {
         const hasHashTokens = hashParams.has('access_token');
         const isPasswordReset = hashParams.get('type') === 'recovery';
         const isEmailConfirmation = hashParams.get('type') === 'signup' || window.location.href.includes('type=signup');
+        const accessToken = hashParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token');
         
         if (hasHashTokens) {
-          // Vänta lite för att Supabase ska hantera tokens
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
           if (isPasswordReset) {
             // Lösenordsåterställning - gå till reset password
             navigate('/auth/reset-password' + window.location.hash, { replace: true });
             return;
           }
           
-          if (isEmailConfirmation) {
-            setMessage('E-post bekräftad! Klar...');
+          if (isEmailConfirmation && accessToken) {
+            setMessage('E-post bekräftad! Slutför inloggning...');
+            
+            try {
+              // Använd verifyOtp för email confirmation
+              const { data, error } = await supabase.auth.verifyOtp({
+                token_hash: window.location.hash.substring(1),
+                type: 'signup'
+              });
+
+              if (error) {
+                console.error('❌ Email verification error:', error);
+                // Fallback: Försök med setSession
+                const { error: sessionError } = await supabase.auth.setSession({
+                  access_token: accessToken,
+                  refresh_token: refreshToken || ''
+                });
+                
+                if (sessionError) {
+                  console.error('❌ Session error:', sessionError);
+                  setMessage('Något gick fel. Försök logga in manuellt.');
+                  setTimeout(() => navigate('/login'), 3000);
+                  return;
+                }
+              }
+              
+              console.log('✅ Email bekräftelse lyckades');
+              setMessage('Klar! Omdirigerar...');
+              
+            } catch (verificationError) {
+              console.error('❌ Verification process error:', verificationError);
+              setMessage('Något gick fel. Försök logga in manuellt.');
+              setTimeout(() => navigate('/login'), 3000);
+              return;
+            }
           } else {
+            // Normal token hantering
             setMessage('Klar! Omdirigerar...');
+            await new Promise(resolve => setTimeout(resolve, 1000));
           }
           
-          // Kontrollera session
-          const { data } = await supabase.auth.getSession();
+          // Kontrollera slutlig session
+          const { data: sessionData } = await supabase.auth.getSession();
           
-          if (data.session) {
-            console.log('✅ Inloggning lyckades');
+          if (sessionData.session) {
+            console.log('✅ Session bekräftad, användare inloggad');
             
             // Rensa URL och gå till huvudsidan
             window.history.replaceState({}, document.title, window.location.pathname);
