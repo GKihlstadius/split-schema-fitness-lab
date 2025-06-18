@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import AuthCallback from "./pages/AuthCallback";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import DirectAuth from "./pages/DirectAuth";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Toaster } from "./components/ui/toaster";
 
@@ -62,6 +63,7 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
+            <Route path="*" element={<DirectAuth />} />
           </Routes>
         </BrowserRouter>
         <Toaster />

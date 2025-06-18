@@ -1,23 +1,48 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 const DirectAuth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    // Om vi kommer hit med tokens i hashen, omdirigera till AuthCallback
-    if (window.location.hash.includes('access_token')) {
-      console.log('🔄 DirectAuth: Omdirigerar till AuthCallback med tokens');
+    console.log('🔍 DirectAuth: Hanterar URL:', window.location.href);
+    
+    // Kontrollera om vi är på en auth-relaterad sida med tokens
+    const isAuthCallback = location.pathname.includes('/auth/callback');
+    const isResetPassword = location.pathname.includes('/reset-password');
+    const hasTokens = window.location.hash.includes('access_token');
+    
+    if (hasTokens) {
+      // Om vi har tokens, skicka till auth callback
+      console.log('🔑 DirectAuth: Hittade tokens, omdirigerar till AuthCallback');
       navigate('/auth/callback' + window.location.hash, { replace: true });
+    } else if (isAuthCallback || isResetPassword) {
+      // Om vi är på en auth-relaterad sida utan tokens, försök igen med tokens från URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token') || urlParams.get('access_token');
+      
+      if (token) {
+        console.log('🔑 DirectAuth: Hittade token i URL params');
+        // Konvertera till hash format och skicka till auth callback
+        navigate('/auth/callback#access_token=' + token, { replace: true });
+      } else {
+        // Ingen token, gå till login
+        console.log('❌ DirectAuth: Inga tokens hittades, går till login');
+        navigate('/login', { replace: true });
+      }
     } else {
-      // Ingen tokens, gå till login
+      // Ingen auth-relaterad sida, gå till login
+      console.log('🔄 DirectAuth: Ingen auth-sida, går till login');
       navigate('/login', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center">
+      <div className="text-center space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
         <p className="text-muted-foreground">Omdirigerar...</p>
       </div>
     </div>
