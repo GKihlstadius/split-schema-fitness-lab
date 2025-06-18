@@ -149,28 +149,37 @@ const Profile = () => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
+        console.log('🔍 Profile: Laddar användardata...');
         const result = await getCurrentUser();
+        console.log('📊 Profile: getCurrentUser result:', result);
+        
         if (!result.success || !result.user) {
+          console.log('❌ Profile: Ingen användare inloggad, omdirigerar till login');
           navigate('/login');
           return;
         }
 
+        console.log('✅ Profile: Användardata laddad:', result.user.email);
         setCurrentUser(result.user);
         
         let settings: any = {};
         
         try {
           // Försök ladda från Supabase först
+          console.log('🔄 Profile: Laddar användarinställningar från Supabase...');
           settings = await getUserSettings(result.user.id);
+          console.log('📊 Profile: Inställningar laddade:', Object.keys(settings));
         } catch (supabaseError) {
           console.warn('Supabase laddning misslyckades, försöker localStorage backup:', supabaseError);
           // Backup: Försök ladda från localStorage
           const localData = localStorage.getItem(`profile_${result.user.id}`);
           if (localData) {
             settings = JSON.parse(localData);
+            console.log('📦 Profile: Använde localStorage backup');
           }
         }
         
+        console.log('📝 Profile: Sätter formulärdata...');
         setPersonalInfo(settings.personalInfo || {});
         setFitnessGoals(settings.fitnessGoals || {});
         setNutritionGoals(settings.nutritionGoals || {});
@@ -180,10 +189,12 @@ const Profile = () => {
           progressTracking: true,
           publicProfile: false
         });
+        console.log('✅ Profile: Allt data laddat och klart!');
       } catch (error) {
-        console.error('Error loading user data:', error);
+        console.error('💥 Profile: Error loading user data:', error);
         setError('Kunde inte ladda användardata');
       } finally {
+        console.log('🔄 Profile: Avslutar laddning...');
         setLoading(false);
       }
     };
@@ -355,7 +366,11 @@ const Profile = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="flex items-center justify-center h-64">
-          <p>Laddar...</p>
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground">Laddar profil...</p>
+            <p className="text-xs text-muted-foreground">Kontrollera konsolen för debug-info</p>
+          </div>
         </div>
       </div>
     );
