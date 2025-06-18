@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 const EmailConfirmation = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Verifierar din e-postadress...');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,10 +24,17 @@ const EmailConfirmation = () => {
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
         const type = hashParams.get('type') || queryParams.get('type');
         
+        // Försök hämta email från URL
+        const emailFromUrl = hashParams.get('email') || queryParams.get('email');
+        if (emailFromUrl) {
+          setEmail(emailFromUrl);
+        }
+        
         console.log('🔑 Token info:', { 
           hasAccessToken: !!accessToken, 
           hasRefreshToken: !!refreshToken, 
-          type 
+          type,
+          hasEmail: !!emailFromUrl
         });
         
         if (!accessToken) {
@@ -54,7 +62,7 @@ const EmailConfirmation = () => {
           return;
         }
         
-        // Enkel metod: Försök sätta session med tokens
+        // Försök sätta session med tokens
         const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken || ''
@@ -76,7 +84,12 @@ const EmailConfirmation = () => {
           }
           
           setStatus('error');
-          setMessage('Kunde inte verifiera din e-post. Länken kan ha gått ut.');
+          setMessage('Kunde inte verifiera din e-post. Vänligen klicka på "Skicka nytt bekräftelsemail" på inloggningssidan.');
+          
+          // Omdirigera till inloggningssidan efter 5 sekunder
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 5000);
           return;
         }
         
@@ -93,11 +106,21 @@ const EmailConfirmation = () => {
           console.log('⚠️ Ingen session efter setSession');
           setStatus('error');
           setMessage('Något gick fel vid verifiering. Vänligen försök logga in manuellt.');
+          
+          // Omdirigera till inloggningssidan efter 3 sekunder
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 3000);
         }
       } catch (error) {
         console.error('💥 Email confirmation error:', error);
         setStatus('error');
         setMessage('Ett oväntat fel uppstod. Vänligen försök logga in manuellt.');
+        
+        // Omdirigera till inloggningssidan efter 3 sekunder
+        setTimeout(() => {
+          navigate('/login', { replace: true });
+        }, 3000);
       }
     };
 

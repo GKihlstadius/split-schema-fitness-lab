@@ -25,26 +25,19 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      // Kontrollera om vi redan är inloggade
-      try {
-        const token = localStorage.getItem('supabase.auth.token');
-        if (token) {
-          navigate('/');
-        }
-      } catch (error) {
-        console.error('Error checking auth:', error);
-      }
-    };
-
-    checkAuth();
-    
     // Kontrollera om vi kom från ProtectedRoute med needsEmailConfirmation
     if (location.state?.needsEmailConfirmation) {
       setNeedsEmailConfirmation(true);
       setError('Din e-postadress är inte bekräftad. Vänligen kontrollera din e-post eller skicka ett nytt bekräftelsemail.');
     }
-  }, [navigate, location]);
+    
+    // Kontrollera om vi har email i URL:en (från EmailConfirmation)
+    const queryParams = new URLSearchParams(location.search);
+    const emailFromQuery = queryParams.get('email');
+    if (emailFromQuery) {
+      setFormData(prev => ({ ...prev, email: emailFromQuery }));
+    }
+  }, [location]);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,16 +67,25 @@ const Login = () => {
         
         if (result.success) {
           setSuccess('Konto skapat! Kontrollera din e-post för att verifiera ditt konto innan du kan logga in.');
-          // Rensa formuläret
-          setFormData({ email: '', password: '', confirmPassword: '' });
-          // Växla till inloggning efter 5 sekunder
-          setTimeout(() => {
-            setIsRegistering(false);
-            setSuccess('');
-          }, 5000);
+          setNeedsEmailConfirmation(true);
+          // Rensa lösenordsfälten
+          setFormData(prev => ({ 
+            ...prev, 
+            password: '', 
+            confirmPassword: '' 
+          }));
+          // Växla till inloggning
+          setIsRegistering(false);
         } else {
           console.error('❌ Registreringsfel:', result.error);
-          setError(result.error || 'Ett fel uppstod vid registrering');
+          
+          // Kontrollera om felet är att användaren redan finns
+          if (result.error.includes('already registered')) {
+            setError('Det finns redan ett konto med denna e-postadress. Försök logga in istället.');
+            setNeedsEmailConfirmation(true);
+          } else {
+            setError(result.error || 'Ett fel uppstod vid registrering');
+          }
         }
       } else {
         const result = await signInWithEmail(formData.email, formData.password);
@@ -95,9 +97,9 @@ const Login = () => {
           console.error('❌ Inloggningsfel:', result.error);
           
           // Kontrollera om emailen behöver bekräftas
-          if (result.needsEmailConfirmation) {
+          if (result.needsEmailConfirmation || result.error.includes('not confirmed')) {
             setNeedsEmailConfirmation(true);
-            setError(result.error);
+            setError('E-postadressen är inte bekräftad. Vänligen kontrollera din e-post för bekräftelselänk eller skicka ett nytt bekräftelsemail.');
           } else {
             setError(result.error || 'Felaktigt e-post eller lösenord');
           }
@@ -105,11 +107,6 @@ const Login = () => {
       }
     } catch (error) {
       console.error('💥 E-post autentisering misslyckades:', error);
-      console.error('💥 Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
       setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
     } finally {
       setIsLoading(false);
@@ -131,7 +128,6 @@ const Login = () => {
       
       if (result.success) {
         setSuccess('Ett nytt bekräftelsemail har skickats till din e-postadress. Kontrollera din inkorg (och skräppost).');
-        setNeedsEmailConfirmation(false);
       } else {
         setError(result.error || 'Kunde inte skicka bekräftelsemail. Försök igen senare.');
       }
@@ -151,7 +147,6 @@ const Login = () => {
     // Rensa meddelanden när användaren börjar skriva
     if (error) setError('');
     if (success) setSuccess('');
-    if (needsEmailConfirmation) setNeedsEmailConfirmation(false);
   };
 
   const toggleAuthMode = () => {

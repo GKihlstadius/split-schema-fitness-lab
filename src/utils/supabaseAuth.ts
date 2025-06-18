@@ -33,11 +33,15 @@ export const signUpWithEmail = async (email: string, password: string) => {
   console.log('🔄 Supabase signup - börjar registrering för:', email);
   
   try {
+    // Skapa en redirect URL som inkluderar email för att förenkla inloggning efter bekräftelse
+    const redirectUrl = getRedirectUrl(`/auth/callback?email=${encodeURIComponent(email)}`);
+    console.log('🔗 Redirect URL för registrering:', redirectUrl);
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: getRedirectUrl('/auth/callback')
+        emailRedirectTo: redirectUrl
       }
     });
 
@@ -127,11 +131,15 @@ export const resendConfirmationEmail = async (email: string) => {
   console.log('🔄 Supabase resend - skickar nytt bekräftelsemail till:', email);
   
   try {
+    // Skapa en redirect URL som inkluderar email för att förenkla inloggning efter bekräftelse
+    const redirectUrl = getRedirectUrl(`/auth/callback?email=${encodeURIComponent(email)}`);
+    console.log('🔗 Redirect URL för bekräftelsemail:', redirectUrl);
+    
     const { data, error } = await supabase.auth.resend({
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: getRedirectUrl('/auth/callback')
+        emailRedirectTo: redirectUrl
       }
     });
     
