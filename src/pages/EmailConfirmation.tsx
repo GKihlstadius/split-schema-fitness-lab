@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 const EmailConfirmation = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Verifierar din e-postadress...');
-  const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,63 +15,68 @@ const EmailConfirmation = () => {
       try {
         console.log('🔍 EmailConfirmation: Hanterar URL:', window.location.href);
         
-        // Hämta token från URL
+        // Hämta parametrar från URL
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const queryParams = new URLSearchParams(location.search);
         
         const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+        const tokenHash = hashParams.get('token_hash') || queryParams.get('token_hash');
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
         const type = hashParams.get('type') || queryParams.get('type');
         
-        // Försök hämta email från URL
-        const emailFromUrl = hashParams.get('email') || queryParams.get('email');
-        if (emailFromUrl) {
-          setEmail(emailFromUrl);
-        }
-        
         console.log('🔑 Token info:', { 
           hasAccessToken: !!accessToken, 
+          hasTokenHash: !!tokenHash,
           hasRefreshToken: !!refreshToken, 
-          type,
-          hasEmail: !!emailFromUrl
+          type
         });
         
-        if (!accessToken) {
-          console.error('❌ Ingen access token hittad i URL');
-          setStatus('error');
-          setMessage('Ingen verifieringslänk hittad. Vänligen kontrollera din URL.');
-          return;
+        // Om vi har token_hash, använd verifyOtp
+        if (tokenHash && type) {
+          console.log('🔐 Använder verifyOtp med token_hash');
+          
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: tokenHash,
+            type: type as any
+          });
+          
+          if (error) {
+            console.error('❌ VerifyOtp fel:', error);
+            setStatus('error');
+            setMessage('Kunde inte verifiera din e-post. Länken kan ha gått ut.');
+            
+            // Omdirigera till inloggningssidan efter 5 sekunder
+            setTimeout(() => {
+              navigate('/login', { replace: true });
+            }, 5000);
+            return;
+          }
+          
+          if (data.session) {
+            console.log('✅ Email verifierad via verifyOtp!');
+            setStatus('success');
+            setMessage('Din e-post har verifierats! Du kommer att omdirigeras till huvudsidan.');
+            
+            // Omdirigera till huvudsidan efter 3 sekunder
+            setTimeout(() => {
+              navigate('/', { replace: true });
+            }, 3000);
+            return;
+          }
         }
         
-        // Kontrollera om token bara är ett ID-nummer (inte en JWT)
-        const isTokenOnlyId = !accessToken.includes('.') && !isNaN(Number(accessToken));
-        
-        if (isTokenOnlyId) {
-          console.log('⚠️ Token är bara ett ID-nummer, inte en JWT');
+        // Fallback: Om vi inte har token_hash men har access_token
+        if (accessToken) {
+          console.log('🔄 Fallback: Försöker med access_token');
           
-          // För detta fall, vi kan inte använda setSession
-          // Istället visar vi ett framgångsmeddelande och instruerar användaren att logga in
-          setStatus('success');
-          setMessage('Din e-post har verifierats! Du kan nu logga in på ditt konto.');
+          // Kontrollera om token bara är ett ID-nummer (inte en JWT)
+          const isTokenOnlyId = !accessToken.includes('.') && !isNaN(Number(accessToken));
           
-          // Omdirigera till inloggningssidan efter 3 sekunder
-          setTimeout(() => {
-            navigate('/login', { replace: true });
-          }, 3000);
-          return;
-        }
-        
-        // Försök sätta session med tokens
-        const { data, error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken || ''
-        });
-        
-        if (error) {
-          console.error('❌ Fel vid sätta session:', error);
-          
-          // Om vi får fel, men typ är signup, anta att verifieringen lyckades
-          if (type === 'signup') {
+          if (isTokenOnlyId) {
+            console.log('⚠️ Token är bara ett ID-nummer, inte en JWT');
+            
+            // För detta fall, vi kan inte använda setSession
+            // Istället visar vi ett framgångsmeddelande och instruerar användaren att logga in
             setStatus('success');
             setMessage('Din e-post har verifierats! Du kan nu logga in på ditt konto.');
             
@@ -83,35 +87,60 @@ const EmailConfirmation = () => {
             return;
           }
           
-          setStatus('error');
-          setMessage('Kunde inte verifiera din e-post. Vänligen klicka på "Skicka nytt bekräftelsemail" på inloggningssidan.');
+          // Försök sätta session med tokens
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken || ''
+          });
           
-          // Omdirigera till inloggningssidan efter 5 sekunder
-          setTimeout(() => {
-            navigate('/login', { replace: true });
-          }, 5000);
-          return;
+          if (error) {
+            console.error('❌ Fel vid sätta session:', error);
+            
+            // Om vi får fel, men typ är signup, anta att verifieringen lyckades
+            if (type === 'signup') {
+              setStatus('success');
+              setMessage('Din e-post har verifierats! Du kan nu logga in på ditt konto.');
+              
+              // Omdirigera till inloggningssidan efter 3 sekunder
+              setTimeout(() => {
+                navigate('/login', { replace: true });
+              }, 3000);
+              return;
+            }
+            
+            setStatus('error');
+            setMessage('Kunde inte verifiera din e-post. Vänligen klicka på "Skicka nytt bekräftelsemail" på inloggningssidan.');
+            
+            // Omdirigera till inloggningssidan efter 5 sekunder
+            setTimeout(() => {
+              navigate('/login', { replace: true });
+            }, 5000);
+            return;
+          }
+          
+          if (data.session) {
+            console.log('✅ Session skapad, email verifierad!');
+            setStatus('success');
+            setMessage('Din e-post har verifierats! Du kommer att omdirigeras till huvudsidan.');
+            
+            // Omdirigera till huvudsidan efter 3 sekunder
+            setTimeout(() => {
+              navigate('/', { replace: true });
+            }, 3000);
+            return;
+          }
         }
         
-        if (data.session) {
-          console.log('✅ Session skapad, email verifierad!');
-          setStatus('success');
-          setMessage('Din e-post har verifierats! Du kommer att omdirigeras till huvudsidan.');
-          
-          // Omdirigera till huvudsidan efter 3 sekunder
-          setTimeout(() => {
-            navigate('/', { replace: true });
-          }, 3000);
-        } else {
-          console.log('⚠️ Ingen session efter setSession');
-          setStatus('error');
-          setMessage('Något gick fel vid verifiering. Vänligen försök logga in manuellt.');
-          
-          // Omdirigera till inloggningssidan efter 3 sekunder
-          setTimeout(() => {
-            navigate('/login', { replace: true });
-          }, 3000);
-        }
+        // Om inget fungerade
+        console.error('❌ Inga giltiga tokens hittades');
+        setStatus('error');
+        setMessage('Ingen giltig verifieringslänk hittad. Vänligen kontrollera din URL.');
+        
+        // Omdirigera till inloggningssidan efter 5 sekunder
+        setTimeout(() => {
+          navigate('/login', { replace: true });
+        }, 5000);
+        
       } catch (error) {
         console.error('💥 Email confirmation error:', error);
         setStatus('error');
