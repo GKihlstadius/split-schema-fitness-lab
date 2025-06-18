@@ -31,17 +31,12 @@ export const signInWithGoogle = async () => {
 // Registrera med e-post
 export const signUpWithEmail = async (email: string, password: string) => {
   try {
-    console.log('🔑 Försöker registrera användare med email:', email);
-    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    console.log('📧 Registreringsresultat:', { data, error });
-
     if (error) {
-      console.error('❌ Registreringsfel:', error.message);
       return { 
         success: false, 
         error: error.message 
@@ -50,7 +45,6 @@ export const signUpWithEmail = async (email: string, password: string) => {
 
     // Om registrering lyckades
     if (data.user) {
-      console.log('✅ Registrering lyckades för användare:', data.user.id);
       return { 
         success: true, 
         user: data.user,
@@ -59,7 +53,7 @@ export const signUpWithEmail = async (email: string, password: string) => {
 
     return { success: false, error: 'Okänt fel vid registrering' };
   } catch (error) {
-    console.error('💥 Unexpected error i signUpWithEmail:', error);
+    console.error('Unexpected error i signUpWithEmail:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -70,17 +64,12 @@ export const signUpWithEmail = async (email: string, password: string) => {
 // Logga in med e-post
 export const signInWithEmail = async (email: string, password: string) => {
   try {
-    console.log('🔑 Försöker logga in användare med email:', email);
-    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    console.log('🔐 Inloggningsresultat:', { data, error });
-
     if (error) {
-      console.error('❌ Inloggningsfel:', error.message);
       return { 
         success: false, 
         error: error.message 
@@ -88,7 +77,6 @@ export const signInWithEmail = async (email: string, password: string) => {
     }
 
     if (data.user && data.session) {
-      console.log('✅ Inloggning lyckades för användare:', data.user.id);
       return { 
         success: true, 
         user: data.user, 
@@ -98,7 +86,7 @@ export const signInWithEmail = async (email: string, password: string) => {
 
     return { success: false, error: 'Okänt fel vid inloggning' };
   } catch (error) {
-    console.error('💥 Unexpected error i signInWithEmail:', error);
+    console.error('Unexpected error i signInWithEmail:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -157,19 +145,16 @@ export const updatePassword = async (newPassword: string) => {
 // Logga ut
 export const signOut = async () => {
   try {
-    console.log('🚪 Loggar ut användare');
-    
     const { error } = await supabase.auth.signOut();
     
     if (error) {
-      console.error('❌ Utloggningsfel:', error.message);
+      console.error('Utloggningsfel:', error.message);
       return { success: false, error: error.message };
     }
 
-    console.log('✅ Utloggning lyckades');
     return { success: true };
   } catch (error) {
-    console.error('💥 Unexpected error i signOut:', error);
+    console.error('Unexpected error i signOut:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -226,8 +211,6 @@ export const getUserSettings = async (userId: string): Promise<Record<string, an
 
 // Spara användarinställningar till Supabase
 export const saveUserSettings = async (userId: string, settings: Record<string, any>) => {
-  console.log('🔄 Försöker spara användarinställningar till Supabase för user:', userId);
-  
   try {
     // Först försök upsert (create or update)
     let { error } = await supabase
@@ -240,8 +223,6 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
 
     // Om det är duplicate key constraint fel, försök bara uppdatera istället
     if (error && error.code === '23505') {
-      console.log('🔄 Duplicate key constraint, försöker bara uppdatera befintlig rad...');
-      
       const updateResult = await supabase
         .from('user_settings')
         .update({
@@ -254,13 +235,7 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
     }
 
     if (error) {
-      console.error('❌ Supabase fel vid sparning av användarinställningar:', error);
-      console.error('📊 Error details:', {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-        hint: error.hint
-      });
+      console.error('Supabase fel vid sparning av användarinställningar:', error);
       
       // Specifika felmeddelanden baserat på felkod
       if (error.code === '42P01') {
@@ -275,10 +250,8 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
         throw new Error(`Databasfel: ${error.message}`);
       }
     }
-    
-    console.log('✅ Användarinställningar sparade till Supabase!');
   } catch (networkError: any) {
-    console.error('🌐 Nätverksfel vid sparning av användarinställningar:', networkError);
+    console.error('Nätverksfel vid sparning av användarinställningar:', networkError);
     
     if (networkError.message?.includes('user_settings') || networkError.message?.includes('Databasfel')) {
       // Re-throw specifika felmeddelanden

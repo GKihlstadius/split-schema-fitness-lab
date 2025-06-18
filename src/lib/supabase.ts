@@ -8,26 +8,12 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error('Supabase URL och API-nyckel måste vara definierade i .env-filen');
 }
 
-// Debug: Kontrollera att miljövariablerna laddas
-console.log('🔧 Supabase config:', {
-  url: supabaseUrl,
-  keyPrefix: supabaseKey.substring(0, 20) + '...',
-  hasUrl: !!import.meta.env.VITE_SUPABASE_URL,
-  hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-  currentOrigin: window.location.origin
-});
+
 
 // Hjälpfunktion för att få rätt redirect URL baserat på miljö
 export const getRedirectUrl = (path: string): string => {
   // Hämta base URL från window.location
   const baseUrl = window.location.origin;
-  
-  // Logga för felsökning
-  console.log('🔗 Genererar redirect URL:', { 
-    baseUrl, 
-    path, 
-    fullUrl: `${baseUrl}${path}` 
-  });
   
   // Returnera fullständig URL
   return `${baseUrl}${path}`;

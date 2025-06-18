@@ -50,11 +50,8 @@ const Login = () => {
     setSuccess('');
 
     try {
-      console.log('🔍 Försöker autentisera:', { isRegistering, email: formData.email });
-      
       if (isRegistering) {
         const result = await signUpWithEmail(formData.email, formData.password);
-        console.log('📧 Registreringsresultat:', result);
         
         if (result.success) {
           setSuccess('Konto skapat! Du kan nu logga in med dina uppgifter.');
@@ -67,8 +64,6 @@ const Login = () => {
           // Växla till inloggning
           setIsRegistering(false);
         } else {
-          console.error('❌ Registreringsfel:', result.error);
-          
           // Kontrollera om felet är att användaren redan finns
           if (result.error.includes('already registered')) {
             setError('Det finns redan ett konto med denna e-postadress. Försök logga in istället.');
@@ -78,17 +73,15 @@ const Login = () => {
         }
       } else {
         const result = await signInWithEmail(formData.email, formData.password);
-        console.log('🔑 Inloggningsresultat:', result);
         
         if (result.success) {
           navigate('/');
         } else {
-          console.error('❌ Inloggningsfel:', result.error);
           setError(result.error || 'Felaktigt e-post eller lösenord');
         }
       }
     } catch (error) {
-      console.error('💥 E-post autentisering misslyckades:', error);
+      console.error('E-post autentisering misslyckades:', error);
       setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
     } finally {
       setIsLoading(false);
