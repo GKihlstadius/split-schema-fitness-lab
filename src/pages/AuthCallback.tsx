@@ -1,79 +1,126 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 const AuthCallback = () => {
   const [message, setMessage] = useState('Loggar in...');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
         console.log('🔄 AuthCallback: Hanterar inloggning');
+        console.log('📍 URL:', window.location.href);
         
-        // Kontrollera om vi har tokens
+        // Kontrollera om vi har tokens i olika format
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const hasHashTokens = hashParams.has('access_token');
-        const isPasswordReset = hashParams.get('type') === 'recovery';
+        const queryParams = new URLSearchParams(location.search);
         
-        if (hasHashTokens) {
+        // Hämta tokens från olika källor
+        const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+        const type = hashParams.get('type') || queryParams.get('type');
+        
+        console.log('🔑 Tokens hittade:', { 
+          hasAccessToken: !!accessToken, 
+          hasRefreshToken: !!refreshToken, 
+          type 
+        });
+        
+        // Om vi har access token, försök att sätta den manuellt
+        if (accessToken) {
+          console.log('🔒 Försöker sätta session manuellt med token');
+          
+          try {
+            // För email bekräftelse, försök sätta session direkt
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || ''
+            });
+            
+            if (sessionError) {
+              console.error('❌ Fel vid sätta session:', sessionError);
+            } else if (sessionData.session) {
+              console.log('✅ Session satt manuellt!');
+            }
+          } catch (tokenError) {
+            console.error('❌ Token error:', tokenError);
+          }
+          
           // Vänta lite för att Supabase ska hantera tokens
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise(resolve => setTimeout(resolve, 1500));
+        }
         
-          if (isPasswordReset) {
-            // Lösenordsåterställning - gå till reset password
-            navigate('/auth/reset-password' + window.location.hash, { replace: true });
+        // Kontrollera om det är lösenordsåterställning
+        const isPasswordReset = type === 'recovery';
+        if (isPasswordReset && accessToken) {
+          // Lösenordsåterställning - gå till reset password
+          console.log('🔑 Detta är en lösenordsåterställning');
+          navigate('/auth/reset-password#access_token=' + accessToken + 
+                  (refreshToken ? '&refresh_token=' + refreshToken : '') + 
+                  '&type=recovery', 
+                  { replace: true });
+          return;
+        }
+        
+        // Kontrollera session
+        const { data } = await supabase.auth.getSession();
+        
+        if (data.session) {
+          console.log('✅ Session hittad:', data.session.user.email);
+          setMessage('Inloggad! Omdirigerar...');
+          
+          // Rensa URL och gå till huvudsidan
+          window.history.replaceState({}, document.title, '/');
+          setTimeout(() => {
+            navigate('/', { replace: true });
+          }, 800);
+          return;
+        } else {
+          console.log('⚠️ Ingen session efter första försök, väntar...');
+          
+          // Vänta lite till och försök igen
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          const { data: retryData } = await supabase.auth.getSession();
+          if (retryData.session) {
+            console.log('✅ Session hittad efter väntan!');
+            setMessage('Inloggad! Omdirigerar...');
+            window.history.replaceState({}, document.title, '/');
+            setTimeout(() => {
+              navigate('/', { replace: true });
+            }, 500);
             return;
           }
           
-          // Kontrollera session
-          const { data } = await supabase.auth.getSession();
+          console.log('❌ Fortfarande ingen session, försöker med getUser');
+          const { data: userData } = await supabase.auth.getUser();
           
-          if (data.session) {
-            console.log('✅ Inloggning lyckades');
-            setMessage('Klar! Omdirigerar...');
-          
-            // Rensa URL och gå till huvudsidan
-            window.history.replaceState({}, document.title, window.location.pathname);
-          setTimeout(() => {
+          if (userData.user) {
+            console.log('✅ Användare hittad via getUser!');
+            setMessage('Konto verifierat! Omdirigerar...');
+            window.history.replaceState({}, document.title, '/');
+            setTimeout(() => {
               navigate('/', { replace: true });
             }, 500);
-          return;
+            return;
           }
-        }
-
-        // Fallback: kolla befintlig session
-        const { data } = await supabase.auth.getSession();
-
-        if (data.session) {
-          console.log('✅ Session hittad');
-          setTimeout(() => {
-            navigate('/', { replace: true });
-          }, 500);
-        } else {
-          console.log('⚠️ Ingen session, retry om 2 sekunder');
-          // En till försök efter kort delay
-          setTimeout(async () => {
-            const { data: retryData } = await supabase.auth.getSession();
-            if (retryData.session) {
-              navigate('/', { replace: true });
-            } else {
-              // Om ingen session efter retry, gå bara till huvudsidan ändå
-              // (ProtectedRoute kommer hantera omdirigering till login)
-              navigate('/', { replace: true });
-            }
-          }, 2000);
+          
+          // Sista försök - gå till huvudsidan och låt ProtectedRoute hantera det
+          console.log('⚠️ Inga fler försök, går till huvudsidan');
+          navigate('/', { replace: true });
         }
       } catch (error) {
-        console.error('Auth callback error:', error);
+        console.error('💥 Auth callback error:', error);
         // Vid fel, gå bara till huvudsidan (ProtectedRoute hanterar resten)
         navigate('/', { replace: true });
       }
     };
 
     handleAuthCallback();
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">

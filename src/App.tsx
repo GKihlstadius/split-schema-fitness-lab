@@ -10,6 +10,7 @@ import AuthCallback from "./pages/AuthCallback";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import DirectAuth from "./pages/DirectAuth";
+import EmailConfirmation from "./pages/EmailConfirmation";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Toaster } from "./components/ui/toaster";
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
+            <Route path="/email-confirmation" element={<EmailConfirmation />} />
             <Route path="/" element={
               <ProtectedRoute>
                 <Index />

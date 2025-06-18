@@ -12,12 +12,42 @@ const DirectAuth = () => {
     // Kontrollera om vi är på en auth-relaterad sida med tokens
     const isAuthCallback = location.pathname.includes('/auth/callback');
     const isResetPassword = location.pathname.includes('/reset-password');
-    const hasTokens = window.location.hash.includes('access_token');
     
-    if (hasTokens) {
+    // Kontrollera tokens i olika format
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const queryParams = new URLSearchParams(location.search);
+    
+    // Hämta tokens från olika källor
+    const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+    const type = hashParams.get('type') || queryParams.get('type');
+    
+    // Supabase email template format
+    const hasEmailToken = location.pathname.includes('/auth/callback#access_token=') || 
+                         location.search.includes('access_token=');
+    
+    console.log('🔑 Token info:', { 
+      hasAccessToken: !!accessToken, 
+      hasRefreshToken: !!refreshToken, 
+      type,
+      hasEmailToken,
+      pathname: location.pathname
+    });
+    
+    if (accessToken) {
       // Om vi har tokens, skicka till auth callback
       console.log('🔑 DirectAuth: Hittade tokens, omdirigerar till AuthCallback');
-      navigate('/auth/callback' + window.location.hash, { replace: true });
+      
+      // Bygg callback URL med tokens
+      const callbackUrl = '/auth/callback#access_token=' + accessToken +
+                         (refreshToken ? '&refresh_token=' + refreshToken : '') +
+                         (type ? '&type=' + type : '');
+                         
+      navigate(callbackUrl, { replace: true });
+    } else if (hasEmailToken) {
+      // Om vi har email token format, skicka till auth callback
+      console.log('🔑 DirectAuth: Hittade email token format, omdirigerar');
+      navigate('/auth/callback' + location.hash + location.search, { replace: true });
     } else if (isAuthCallback || isResetPassword) {
       // Om vi är på en auth-relaterad sida utan tokens, försök igen med tokens från URL
       const urlParams = new URLSearchParams(window.location.search);
