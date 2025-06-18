@@ -4,9 +4,9 @@ import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 const AuthCallback = () => {
-  const [message, setMessage] = useState('Loggar in...');
   const navigate = useNavigate();
   const location = useLocation();
+  const [message, setMessage] = useState('Bearbetar autentisering...');
 
   useEffect(() => {
     const handleAuthCallback = async () => {
@@ -14,108 +14,92 @@ const AuthCallback = () => {
         console.log('🔄 AuthCallback: Hanterar inloggning');
         console.log('📍 URL:', window.location.href);
         
-        // Kontrollera om vi har tokens i olika format
+        // Extrahera tokens från både hash och query parameters
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const queryParams = new URLSearchParams(location.search);
-        
-        // Hämta tokens från olika källor
+
+        // Kontrollera om detta är en email bekräftelse
+        const isEmailConfirmation = location.hash.includes('type=signup') || 
+                                   location.search.includes('type=signup');
+
+        console.log('📊 Auth params:', { 
+          hash: Object.fromEntries(hashParams.entries()),
+          query: Object.fromEntries(queryParams.entries()),
+          isEmailConfirmation
+        });
+
+        // Hämta tokens från antingen hash eller query
         const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
         const type = hashParams.get('type') || queryParams.get('type');
         
-        console.log('🔑 Tokens hittade:', { 
-          hasAccessToken: !!accessToken, 
-          hasRefreshToken: !!refreshToken, 
-          type 
-        });
-        
-        // Om vi har access token, försök att sätta den manuellt
-        if (accessToken) {
-          console.log('🔒 Försöker sätta session manuellt med token');
+        // Om detta är en email bekräftelse, skicka till EmailConfirmation
+        if (isEmailConfirmation) {
+          console.log('📧 Detta är en email bekräftelse, omdirigerar till EmailConfirmation');
           
-          try {
-            // För email bekräftelse, försök sätta session direkt
-            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken || ''
-            });
-            
-            if (sessionError) {
-              console.error('❌ Fel vid sätta session:', sessionError);
-            } else if (sessionData.session) {
-              console.log('✅ Session satt manuellt!');
-            }
-          } catch (tokenError) {
-            console.error('❌ Token error:', tokenError);
-          }
-          
-          // Vänta lite för att Supabase ska hantera tokens
-          await new Promise(resolve => setTimeout(resolve, 1500));
+          // Skapa en URL med tokens för EmailConfirmation
+          const redirectUrl = `/email-confirmation${location.search}${location.hash}`;
+          navigate(redirectUrl, { replace: true });
+          return;
         }
-        
-        // Kontrollera om det är lösenordsåterställning
-        const isPasswordReset = type === 'recovery';
-        if (isPasswordReset && accessToken) {
-          // Lösenordsåterställning - gå till reset password
+
+        // Om detta är en lösenordsåterställning, skicka till ResetPassword
+        if (type === 'recovery') {
           console.log('🔑 Detta är en lösenordsåterställning');
-          navigate('/auth/reset-password#access_token=' + accessToken + 
-                  (refreshToken ? '&refresh_token=' + refreshToken : '') + 
-                  '&type=recovery', 
-                  { replace: true });
+          navigate('/auth/reset-password', { 
+            replace: true,
+            state: { accessToken, refreshToken }
+          });
+          return;
+        }
+
+        // För alla andra fall, försök sätta session
+        if (accessToken) {
+          console.log('🔑 Tokens hittade, försöker sätta session');
+          
+          // Försök sätta session med tokens
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken || ''
+          });
+
+          if (error) {
+            console.error('❌ Fel vid sätta session:', error);
+            setMessage('Autentisering misslyckades. Omdirigerar...');
+            setTimeout(() => {
+              navigate('/login', { replace: true });
+            }, 2000);
+            return;
+          }
+
+          if (data.session) {
+            console.log('✅ Session skapad, omdirigerar till startsidan');
+            navigate('/', { replace: true });
+            return;
+          }
+        }
+
+        // Om vi inte har tokens eller session, försök hämta session
+        console.log('⚠️ Inga tokens eller ingen session, försöker getSession');
+        
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('❌ Fel vid hämtning av session:', error);
+          navigate('/login', { replace: true });
           return;
         }
         
-        // Kontrollera session
-        const { data } = await supabase.auth.getSession();
-        
-        if (data.session) {
-          console.log('✅ Session hittad:', data.session.user.email);
-          setMessage('Inloggad! Omdirigerar...');
-          
-          // Rensa URL och gå till huvudsidan
-          window.history.replaceState({}, document.title, '/');
-          setTimeout(() => {
-            navigate('/', { replace: true });
-          }, 800);
-          return;
-        } else {
-          console.log('⚠️ Ingen session efter första försök, väntar...');
-          
-          // Vänta lite till och försök igen
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          
-          const { data: retryData } = await supabase.auth.getSession();
-          if (retryData.session) {
-            console.log('✅ Session hittad efter väntan!');
-            setMessage('Inloggad! Omdirigerar...');
-            window.history.replaceState({}, document.title, '/');
-            setTimeout(() => {
-              navigate('/', { replace: true });
-            }, 500);
-            return;
-          }
-          
-          console.log('❌ Fortfarande ingen session, försöker med getUser');
-          const { data: userData } = await supabase.auth.getUser();
-          
-          if (userData.user) {
-            console.log('✅ Användare hittad via getUser!');
-            setMessage('Konto verifierat! Omdirigerar...');
-            window.history.replaceState({}, document.title, '/');
-            setTimeout(() => {
-              navigate('/', { replace: true });
-            }, 500);
-            return;
-          }
-          
-          // Sista försök - gå till huvudsidan och låt ProtectedRoute hantera det
-          console.log('⚠️ Inga fler försök, går till huvudsidan');
+        if (data?.session) {
+          console.log('✅ Session hittad, omdirigerar till startsidan');
           navigate('/', { replace: true });
+        } else {
+          console.log('⚠️ Ingen session hittad, omdirigerar till login');
+          navigate('/login', { replace: true });
         }
       } catch (error) {
-        console.error('💥 Auth callback error:', error);
-        // Vid fel, gå bara till huvudsidan (ProtectedRoute hanterar resten)
-        navigate('/', { replace: true });
+        console.error('💥 Oväntat fel i AuthCallback:', error);
+        navigate('/login', { replace: true });
       }
     };
 
@@ -125,10 +109,7 @@ const AuthCallback = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-        <h1 className="text-xl font-medium">Gym Janne</h1>
+        <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-muted-foreground">{message}</p>
       </div>
     </div>

@@ -1,30 +1,45 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Dessa värden kommer från din Supabase-projektinställningar
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Supabase URL och API-nyckel måste vara definierade i .env-filen');
+}
 
 // Debug: Kontrollera att miljövariablerna laddas
 console.log('🔧 Supabase config:', {
   url: supabaseUrl,
-  keyPrefix: supabaseAnonKey.substring(0, 20) + '...',
+  keyPrefix: supabaseKey.substring(0, 20) + '...',
   hasUrl: !!import.meta.env.VITE_SUPABASE_URL,
   hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
   currentOrigin: window.location.origin
 });
 
 // Hjälpfunktion för att få rätt redirect URL baserat på miljö
-export const getRedirectUrl = (path: string = '/auth/callback') => {
-  // I utveckling: använd localhost
-  // I production: använd deployed URL
+export const getRedirectUrl = (path: string): string => {
+  // Hämta base URL från window.location
   const baseUrl = window.location.origin;
-  const redirectUrl = `${baseUrl}${path}`;
   
-  console.log('🔗 Redirect URL för auth:', redirectUrl);
-  return redirectUrl;
+  // Logga för felsökning
+  console.log('🔗 Genererar redirect URL:', { 
+    baseUrl, 
+    path, 
+    fullUrl: `${baseUrl}${path}` 
+  });
+  
+  // Returnera fullständig URL
+  return `${baseUrl}${path}`;
 };
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+});
 
 // Database types
 export interface UserProfile {

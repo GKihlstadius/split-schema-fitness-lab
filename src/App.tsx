@@ -13,6 +13,7 @@ import DirectAuth from "./pages/DirectAuth";
 import EmailConfirmation from "./pages/EmailConfirmation";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Toaster } from "./components/ui/toaster";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -40,11 +41,14 @@ function App() {
         <BrowserRouter>
           <AuthHashHandler />
           <Routes>
+            {/* Publika routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/email-confirmation" element={<EmailConfirmation />} />
+            
+            {/* Skyddade routes */}
             <Route path="/" element={
               <ProtectedRoute>
                 <Index />
@@ -65,7 +69,12 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
-            <Route path="*" element={<DirectAuth />} />
+            
+            {/* Catch-all route för auth */}
+            <Route path="/auth/*" element={<DirectAuth />} />
+            
+            {/* 404 sida */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
         <Toaster />

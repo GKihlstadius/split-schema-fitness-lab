@@ -70,6 +70,16 @@ export const signInWithEmail = async (email: string, password: string) => {
 
     if (error) {
       console.error('❌ Supabase signin error:', error);
+      
+      // Enkel hantering för obekräftad email
+      if (error.message.includes('Email not confirmed')) {
+        return { 
+          success: false, 
+          error: 'E-postadressen är inte bekräftad. Kontrollera din e-post för bekräftelselänk.',
+          needsEmailConfirmation: true
+        };
+      }
+      
       return { success: false, error: error.message };
     }
 
@@ -77,6 +87,65 @@ export const signInWithEmail = async (email: string, password: string) => {
     return { success: true, data };
   } catch (networkError) {
     console.error('🌐 Network error under signin:', networkError);
+    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+  }
+};
+
+// Manuellt bekräfta email med token
+export const confirmEmail = async (token: string, refreshToken?: string) => {
+  console.log('🔄 Supabase confirm email - bekräftar email med token');
+  
+  try {
+    // Försök att sätta session med token
+    const { data, error } = await supabase.auth.setSession({
+      access_token: token,
+      refresh_token: refreshToken || ''
+    });
+    
+    console.log('📊 Supabase confirm email response:', { data, error });
+    
+    if (error) {
+      console.error('❌ Supabase confirm email error:', error);
+      return { success: false, error: error.message };
+    }
+    
+    if (data.session) {
+      console.log('✅ Email bekräftad, session skapad');
+      return { success: true, data };
+    } else {
+      console.log('⚠️ Ingen session skapad efter bekräftelse');
+      return { success: false, error: 'Kunde inte skapa session efter bekräftelse' };
+    }
+  } catch (networkError) {
+    console.error('🌐 Network error under email confirmation:', networkError);
+    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+  }
+};
+
+// Skicka nytt bekräftelsemail
+export const resendConfirmationEmail = async (email: string) => {
+  console.log('🔄 Supabase resend - skickar nytt bekräftelsemail till:', email);
+  
+  try {
+    const { data, error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: {
+        emailRedirectTo: getRedirectUrl('/auth/callback')
+      }
+    });
+    
+    console.log('📊 Supabase resend response:', { data, error });
+    
+    if (error) {
+      console.error('❌ Supabase resend error:', error);
+      return { success: false, error: error.message };
+    }
+    
+    console.log('✅ Nytt bekräftelsemail skickat');
+    return { success: true, data };
+  } catch (networkError) {
+    console.error('🌐 Network error under resend:', networkError);
     return { success: false, error: `Nätverksfel: ${networkError.message}` };
   }
 };

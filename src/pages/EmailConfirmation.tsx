@@ -11,7 +11,7 @@ const EmailConfirmation = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const confirmEmail = async () => {
+    const handleConfirmation = async () => {
       try {
         console.log('🔍 EmailConfirmation: Hanterar URL:', window.location.href);
         
@@ -21,6 +21,13 @@ const EmailConfirmation = () => {
         
         const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
+        const type = hashParams.get('type') || queryParams.get('type');
+        
+        console.log('🔑 Token info:', { 
+          hasAccessToken: !!accessToken, 
+          hasRefreshToken: !!refreshToken, 
+          type 
+        });
         
         if (!accessToken) {
           console.error('❌ Ingen access token hittad i URL');
@@ -29,32 +36,30 @@ const EmailConfirmation = () => {
           return;
         }
         
-        console.log('🔑 Hittade tokens, försöker verifiera');
-        
-        // Försök sätta session med tokens
-        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+        // Enkel metod: Försök sätta session med tokens
+        const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken || ''
         });
         
-        if (sessionError) {
-          console.error('❌ Fel vid sätta session:', sessionError);
+        if (error) {
+          console.error('❌ Fel vid sätta session:', error);
           setStatus('error');
           setMessage('Kunde inte verifiera din e-post. Länken kan ha gått ut.');
           return;
         }
         
-        if (sessionData.session) {
-          console.log('✅ E-post verifierad!');
+        if (data.session) {
+          console.log('✅ Session skapad, email verifierad!');
           setStatus('success');
-          setMessage('Din e-post har verifierats! Du kommer att omdirigeras till inloggningssidan.');
+          setMessage('Din e-post har verifierats! Du kommer att omdirigeras till huvudsidan.');
           
           // Omdirigera till huvudsidan efter 3 sekunder
           setTimeout(() => {
             navigate('/', { replace: true });
           }, 3000);
         } else {
-          console.log('⚠️ Ingen session efter verifiering');
+          console.log('⚠️ Ingen session efter setSession');
           setStatus('error');
           setMessage('Något gick fel vid verifiering. Vänligen försök logga in manuellt.');
         }
@@ -65,7 +70,7 @@ const EmailConfirmation = () => {
       }
     };
 
-    confirmEmail();
+    handleConfirmation();
   }, [navigate, location]);
 
   return (

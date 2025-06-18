@@ -1,68 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dumbbell, Mail, Eye, EyeOff, CheckCircle } from 'lucide-react';
-import { signUpWithEmail, signInWithEmail, isLoggedIn } from '@/utils/supabaseAuth';
+import { Dumbbell, Mail, Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
+import { signInWithEmail, signUpWithEmail, resendConfirmationEmail } from '@/utils/supabaseAuth';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [needsEmailConfirmation, setNeedsEmailConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: ''
   });
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Omdirigera om användaren redan är inloggad
   useEffect(() => {
     const checkAuth = async () => {
-      const loggedIn = await isLoggedIn();
-      if (loggedIn) {
-        navigate('/', { replace: true });
+      // Kontrollera om vi redan är inloggade
+      try {
+        const token = localStorage.getItem('supabase.auth.token');
+        if (token) {
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Error checking auth:', error);
       }
     };
+
     checkAuth();
-  }, [navigate]);
+    
+    // Kontrollera om vi kom från ProtectedRoute med needsEmailConfirmation
+    if (location.state?.needsEmailConfirmation) {
+      setNeedsEmailConfirmation(true);
+      setError('Din e-postadress är inte bekräftad. Vänligen kontrollera din e-post eller skicka ett nytt bekräftelsemail.');
+    }
+  }, [navigate, location]);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setSuccess('');
-
-    // Validering
-    if (!formData.email || !formData.password) {
+    
+    // Validera formuläret
+    if (!formData.email.trim() || !formData.password.trim()) {
       setError('Vänligen fyll i alla fält');
-      setIsLoading(false);
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError('Lösenordet måste vara minst 6 tecken långt');
-      setIsLoading(false);
       return;
     }
 
     if (isRegistering && formData.password !== formData.confirmPassword) {
       setError('Lösenorden matchar inte');
-      setIsLoading(false);
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError('Vänligen ange en giltig e-postadress');
-      setIsLoading(false);
-      return;
-    }
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
+    setNeedsEmailConfirmation(false);
 
     try {
       console.log('🔍 Försöker autentisera:', { isRegistering, email: formData.email });
@@ -92,7 +93,14 @@ const Login = () => {
           navigate('/');
         } else {
           console.error('❌ Inloggningsfel:', result.error);
-          setError(result.error || 'Felaktigt e-post eller lösenord');
+          
+          // Kontrollera om emailen behöver bekräftas
+          if (result.needsEmailConfirmation) {
+            setNeedsEmailConfirmation(true);
+            setError(result.error);
+          } else {
+            setError(result.error || 'Felaktigt e-post eller lösenord');
+          }
         }
       }
     } catch (error) {
@@ -108,6 +116,33 @@ const Login = () => {
     }
   };
 
+  const handleResendConfirmation = async () => {
+    if (!formData.email) {
+      setError('Vänligen ange din e-postadress först');
+      return;
+    }
+    
+    setIsResending(true);
+    setError('');
+    setSuccess('');
+    
+    try {
+      const result = await resendConfirmationEmail(formData.email);
+      
+      if (result.success) {
+        setSuccess('Ett nytt bekräftelsemail har skickats till din e-postadress. Kontrollera din inkorg (och skräppost).');
+        setNeedsEmailConfirmation(false);
+      } else {
+        setError(result.error || 'Kunde inte skicka bekräftelsemail. Försök igen senare.');
+      }
+    } catch (error) {
+      console.error('💥 Resend confirmation error:', error);
+      setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -116,12 +151,14 @@ const Login = () => {
     // Rensa meddelanden när användaren börjar skriva
     if (error) setError('');
     if (success) setSuccess('');
+    if (needsEmailConfirmation) setNeedsEmailConfirmation(false);
   };
 
   const toggleAuthMode = () => {
     setIsRegistering(!isRegistering);
     setError('');
     setSuccess('');
+    setNeedsEmailConfirmation(false);
     setFormData({ email: '', password: '', confirmPassword: '' });
   };
 
@@ -147,7 +184,8 @@ const Login = () => {
           <CardContent className="space-y-4">
             {error && (
               <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="ml-2">{error}</AlertDescription>
               </Alert>
             )}
 
@@ -230,6 +268,20 @@ const Login = () => {
                 {isLoading ? 'Bearbetar...' : (isRegistering ? 'Skapa konto' : 'Logga in')}
               </Button>
             </form>
+
+            {/* Skicka nytt bekräftelsemail knapp */}
+            {needsEmailConfirmation && (
+              <div className="mt-4">
+                <Button 
+                  onClick={handleResendConfirmation}
+                  variant="outline"
+                  className="w-full"
+                  disabled={isResending}
+                >
+                  {isResending ? 'Skickar...' : 'Skicka nytt bekräftelsemail'}
+                </Button>
+              </div>
+            )}
 
             {/* Glömt lösenord länk - visas bara för inloggning */}
             {!isRegistering && (
