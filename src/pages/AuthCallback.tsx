@@ -35,75 +35,32 @@ const AuthCallback = () => {
             return;
           }
           
-          if (isEmailConfirmation && accessToken) {
-            setMessage('E-post bekräftad! Slutför inloggning...');
+          // ENKEL LÖSNING: Använd bara setSession för alla tokens
+          setMessage('Bekräftar inloggning...');
+          
+          try {
+            console.log('🔄 Setting session with tokens');
             
-            try {
-              // För email confirmation, använd hela hash-strängen
-              const tokenHash = window.location.hash.substring(1);
-              console.log('🔍 Attempting email verification with token hash');
-              
-              const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
-                token_hash: tokenHash,
-                type: 'signup'
-              });
-
-              if (verifyError) {
-                console.error('❌ Email verification error:', verifyError);
-                console.log('🔄 Trying fallback with setSession');
-                
-                // Fallback: Försök med setSession direkt
-                const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-                  access_token: accessToken,
-                  refresh_token: refreshToken || ''
-                });
-                
-                if (sessionError) {
-                  console.error('❌ Session error:', sessionError);
-                  setMessage('Email confirmation misslyckades. Försök logga in manuellt.');
-                  setTimeout(() => navigate('/login'), 3000);
-                  return;
-                }
-                
-                console.log('✅ Fallback session lyckades:', sessionData.session?.user?.email_confirmed_at);
-              } else {
-                console.log('✅ Email verification lyckades via verifyOtp:', verifyData.session?.user?.email_confirmed_at);
-                
-                // Sätt sessionen explicity efter lyckad verifiering
-                if (verifyData.session) {
-                  const { error: setSessionError } = await supabase.auth.setSession(verifyData.session);
-                  if (setSessionError) {
-                    console.error('❌ Error setting verified session:', setSessionError);
-                  } else {
-                    console.log('✅ Verified session set successfully');
-                  }
-                }
-              }
-              
-              // Vänta lite och kontrollera användaren igen
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              
-              const { data: finalUser, error: userError } = await supabase.auth.getUser();
-              if (finalUser.user) {
-                console.log('✅ Final user status:', {
-                  email: finalUser.user.email,
-                  email_confirmed_at: finalUser.user.email_confirmed_at,
-                  confirmed: !!finalUser.user.email_confirmed_at
-                });
-              }
-              
-              setMessage('Email bekräftad! Omdirigerar...');
-              
-            } catch (verificationError) {
-              console.error('❌ Verification process error:', verificationError);
-              setMessage('Email confirmation misslyckades. Försök logga in manuellt.');
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || ''
+            });
+            
+            if (error) {
+              console.error('❌ Session error:', error);
+              setMessage('Inloggning misslyckades. Försök igen.');
               setTimeout(() => navigate('/login'), 3000);
               return;
             }
-          } else {
-            // Normal token hantering
+            
+            console.log('✅ Session satt framgångsrikt:', data.session?.user?.email);
             setMessage('Klar! Omdirigerar...');
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+          } catch (sessionError) {
+            console.error('❌ Session error:', sessionError);
+            setMessage('Inloggning misslyckades. Försök igen.');
+            setTimeout(() => navigate('/login'), 3000);
+            return;
           }
           
           // Kontrollera slutlig session
