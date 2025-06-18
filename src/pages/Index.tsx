@@ -20,13 +20,13 @@ const Index = () => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        const currentUser = await getCurrentUser();
-        if (!currentUser) return;
+        const result = await getCurrentUser();
+        if (!result.success || !result.user) return;
         
-        setUser(currentUser);
+        setUser(result.user);
 
         // Ladda sparat träningsprogram
-        const savedProgramId = await getUserSetting(currentUser.id, 'selectedWorkoutProgram');
+        const savedProgramId = await getUserSetting(result.user.id, 'selectedWorkoutProgram');
         if (savedProgramId) {
           const savedProgram = workoutPrograms.find(program => program.id === savedProgramId);
           if (savedProgram) {

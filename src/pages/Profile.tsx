@@ -149,23 +149,23 @@ const Profile = () => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        const user = await getCurrentUser();
-        if (!user) {
+        const result = await getCurrentUser();
+        if (!result.success || !result.user) {
           navigate('/login');
           return;
         }
 
-        setCurrentUser(user);
+        setCurrentUser(result.user);
         
         let settings: any = {};
         
         try {
           // Försök ladda från Supabase först
-          settings = await getUserSettings(user.id);
+          settings = await getUserSettings(result.user.id);
         } catch (supabaseError) {
           console.warn('Supabase laddning misslyckades, försöker localStorage backup:', supabaseError);
           // Backup: Försök ladda från localStorage
-          const localData = localStorage.getItem(`profile_${user.id}`);
+          const localData = localStorage.getItem(`profile_${result.user.id}`);
           if (localData) {
             settings = JSON.parse(localData);
           }
@@ -308,10 +308,16 @@ const Profile = () => {
     // För Supabase måste kontoborttagning hanteras på backend
     // Här loggar vi bara ut användaren
     try {
-      await signOut();
-      navigate('/login');
+      const result = await signOut();
+      if (result.success) {
+        navigate('/login');
+      } else {
+        console.error('Error signing out:', result.error);
+        setError('Kunde inte logga ut. Försök igen.');
+      }
     } catch (error) {
       console.error('Error signing out:', error);
+      setError('Kunde inte logga ut. Försök igen.');
     }
   };
 

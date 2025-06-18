@@ -22,8 +22,8 @@ export const Navbar = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const user = await getCurrentUser();
-        setCurrentUser(user);
+        const result = await getCurrentUser();
+        setCurrentUser(result.success ? result.user : null);
       } catch (error) {
         console.error('Error loading user:', error);
       } finally {
@@ -49,9 +49,13 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await signOut();
-      setCurrentUser(null);
-      navigate('/login');
+      const result = await signOut();
+      if (result.success) {
+        setCurrentUser(null);
+        navigate('/login');
+      } else {
+        console.error('Error signing out:', result.error);
+      }
     } catch (error) {
       console.error('Error signing out:', error);
     }
