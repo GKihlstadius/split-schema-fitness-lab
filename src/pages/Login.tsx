@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -230,6 +230,22 @@ const Login = () => {
                 {isLoading ? 'Bearbetar...' : (isRegistering ? 'Skapa konto' : 'Logga in')}
               </Button>
             </form>
+
+            {/* Glömt lösenord länk - visas bara för inloggning */}
+            {!isRegistering && (
+              <div className="text-center">
+                <Button
+                  asChild
+                  variant="link"
+                  className="text-sm text-muted-foreground"
+                  disabled={isLoading}
+                >
+                  <Link to="/forgot-password">
+                    Glömt lösenord?
+                  </Link>
+                </Button>
+              </div>
+            )}
 
             {/* Information för nya användare */}
             {isRegistering && (

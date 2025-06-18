@@ -78,6 +78,54 @@ export const signInWithEmail = async (email: string, password: string) => {
   }
 };
 
+// Återställ lösenord
+export const resetPassword = async (email: string) => {
+  console.log('🔄 Supabase password reset - skickar mail till:', email);
+  
+  try {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`
+    });
+
+    console.log('📊 Supabase reset password response:', { data, error });
+
+    if (error) {
+      console.error('❌ Supabase reset password error:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('✅ Supabase reset password mail skickat');
+    return { success: true, data };
+  } catch (networkError) {
+    console.error('🌐 Network error under password reset:', networkError);
+    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+  }
+};
+
+// Uppdatera lösenord (använd efter reset)
+export const updatePassword = async (newPassword: string) => {
+  console.log('🔄 Supabase update password');
+  
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    console.log('📊 Supabase update password response:', { data, error });
+
+    if (error) {
+      console.error('❌ Supabase update password error:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('✅ Supabase lösenord uppdaterat');
+    return { success: true, data };
+  } catch (networkError) {
+    console.error('🌐 Network error under password update:', networkError);
+    return { success: false, error: `Nätverksfel: ${networkError.message}` };
+  }
+};
+
 // Logga ut
 export const signOut = async () => {
   const { error } = await supabase.auth.signOut();
@@ -174,7 +222,7 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
     
     console.log('✅ Användarinställningar sparade till Supabase!');
   } catch (networkError: any) {
-    console.error('🌐 Nätverksfel vid sparning av användarinställningar:', networkError);
+    console.error('�� Nätverksfel vid sparning av användarinställningar:', networkError);
     
     if (networkError.message?.includes('user_settings') || networkError.message?.includes('Databasfel')) {
       // Re-throw specifika felmeddelanden

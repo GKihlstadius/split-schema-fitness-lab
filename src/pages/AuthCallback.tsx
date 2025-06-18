@@ -17,6 +17,7 @@ const AuthCallback = () => {
         // Kontrollera om vi har hash-baserade tokens (typiskt för email auth)
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasHashTokens = hashParams.has('access_token');
+        const isPasswordReset = hashParams.get('type') === 'recovery';
         
         if (hasHashTokens) {
           console.log('🔑 Hittade tokens i URL hash, hanterar...');
@@ -36,14 +37,26 @@ const AuthCallback = () => {
 
           if (data.session) {
             console.log('✅ Session skapad från hash tokens');
-            setStatus('success');
-            setMessage('Registrering lyckades! Omdirigerar...');
             
-            // Rensa URL hash och omdirigera
-            window.history.replaceState({}, document.title, window.location.pathname);
-            setTimeout(() => {
-              navigate('/', { replace: true });
-            }, 1500);
+            if (isPasswordReset) {
+              console.log('🔑 Detta är en lösenordsåterställning, omdirigerar till reset password');
+              setStatus('success');
+              setMessage('Omdirigerar till lösenordsåterställning...');
+              
+              // Behåll hash för reset password sidan
+              setTimeout(() => {
+                navigate('/auth/reset-password' + window.location.hash, { replace: true });
+              }, 1000);
+            } else {
+              setStatus('success');
+              setMessage('Registrering lyckades! Omdirigerar...');
+              
+              // Rensa URL hash och omdirigera
+              window.history.replaceState({}, document.title, window.location.pathname);
+              setTimeout(() => {
+                navigate('/', { replace: true });
+              }, 1500);
+            }
             return;
           }
         }
