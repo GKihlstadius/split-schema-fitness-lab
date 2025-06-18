@@ -13,81 +13,80 @@ export const workoutPrograms: WorkoutProgram[] = [
     weeklyPlan: [
       {
         day: 'Måndag',
-        muscleGroups: ['Chest', 'Triceps', 'Calves', 'Shoulders', 'Biceps'],
-        focus: 'Upper Body Push',
+        muscleGroups: ['Chest', 'Triceps', 'Shoulders', 'Biceps', 'Calves'],
+        focus: 'Bröst, Triceps, Axlar, Biceps, Vader',
         exercises: [
-          { name: 'Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
-          { name: 'Incline Dumbbell Press', sets: '3', reps: '8-12', tags: ['Chest'] },
-          { name: 'Close-Grip Bench Press', sets: '4', reps: '10-15', tags: ['Triceps'] },
-          { name: 'Standing Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
-          { name: 'Overhead Press', sets: '4', reps: '8-12', tags: ['Shoulders'] },
-          { name: 'Barbell Curls', sets: '3', reps: '10-15', tags: ['Biceps'] }
+          { name: 'Chest Exercise 1', sets: '3-4', reps: '8-12', rest: '60-90 sek', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '3-4', reps: '8-12', rest: '60-90 sek', tags: ['Chest'] },
+          { name: 'Triceps Exercise', sets: '3-4', reps: '10-15', rest: '45-60 sek', tags: ['Triceps'] },
+          { name: 'Calves Exercise', sets: '3-4', reps: '15-20', rest: '30-45 sek', tags: ['Calves'] },
+          { name: 'Shoulders Exercise', sets: '3-4', reps: '8-12', rest: '60-90 sek', tags: ['Shoulders'] },
+          { name: 'Biceps Exercise', sets: '3-4', reps: '10-15', rest: '45-60 sek', tags: ['Biceps'] }
         ]
       },
       {
         day: 'Tisdag',
         muscleGroups: ['Hamstrings', 'Quads'],
-        focus: 'Lower Body',
+        focus: 'Ben (bak & fram)',
         exercises: [
-          { name: 'Romanian Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Squats', sets: '3', reps: '8-12', tags: ['Quads'] },
-          { name: 'Walking Lunges', sets: '2', reps: '12-15', tags: ['Quads'] }
+          { name: 'Hamstrings Exercise', sets: '3-4', reps: '8-12', tags: ['Hamstrings'] },
+          { name: 'Quads Exercise', sets: '3-4', reps: '8-12', tags: ['Quads'] }
         ]
       },
       {
         day: 'Onsdag',
         muscleGroups: ['Back', 'Biceps', 'Forearms'],
-        focus: 'Upper Body Pull',
+        focus: 'Rygg, Biceps, Underarmar',
         exercises: [
-          { name: 'Pull-ups', sets: '3', reps: '8-12', tags: ['Back'] },
-          { name: 'Barbell Rows', sets: '3', reps: '8-12', tags: ['Back'] },
-          { name: 'Cable Rows', sets: '2', reps: '8-12', tags: ['Back'] },
-          { name: 'Hammer Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
-          { name: 'Farmers Walk', sets: '3', reps: '30s', tags: ['Forearms'] }
+          { name: 'Back Exercise 1', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 3', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Biceps Exercise', sets: '3-4', reps: '10-15', tags: ['Biceps'] },
+          { name: 'Forearms Exercise', sets: '3-4', reps: '15-20', tags: ['Forearms'] }
         ]
       },
       {
         day: 'Torsdag',
         muscleGroups: ['Triceps', 'Chest', 'Calves', 'Shoulders', 'Biceps'],
-        focus: 'Upper Body Push 2',
+        focus: 'Tryckmuskler + lite armar',
         exercises: [
-          { name: 'Dips', sets: '4', reps: '10-15', tags: ['Triceps'] },
-          { name: 'Overhead Tricep Extension', sets: '4', reps: '10-15', tags: ['Triceps'] },
-          { name: 'Dumbbell Bench Press', sets: '4', reps: '8-12', tags: ['Chest'] },
-          { name: 'Dumbbell Flyes', sets: '2', reps: '12-15', tags: ['Chest'] },
-          { name: 'Seated Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
-          { name: 'Lateral Raises', sets: '4', reps: '12-15', tags: ['Shoulders'] },
-          { name: 'Cable Curls', sets: '3', reps: '10-15', tags: ['Biceps'] }
+          { name: 'Triceps Exercise 1', sets: '3-4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Triceps Exercise 2', sets: '3-4', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Chest Exercise 1', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Chest Exercise 2', sets: '3-4', reps: '8-12', tags: ['Chest'] },
+          { name: 'Calves Exercise', sets: '3-4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Shoulders Exercise', sets: '3-4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Biceps Exercise', sets: '3-4', reps: '10-15', tags: ['Biceps'] }
         ]
       },
       {
         day: 'Fredag',
         muscleGroups: ['Hamstrings', 'Quads', 'Glutes'],
-        focus: 'Lower Body 2',
+        focus: 'Ben & säte',
         exercises: [
-          { name: 'Stiff Leg Deadlifts', sets: '4', reps: '8-12', tags: ['Hamstrings'] },
-          { name: 'Leg Press', sets: '3', reps: '12-15', tags: ['Quads'] },
-          { name: 'Hip Thrusts', sets: '4', reps: '12-15', tags: ['Glutes'] }
+          { name: 'Hamstrings Exercise', sets: '3-4', reps: '8-12', tags: ['Hamstrings'] },
+          { name: 'Quads Exercise', sets: '3-4', reps: '8-12', tags: ['Quads'] },
+          { name: 'Glutes Exercise', sets: '3-4', reps: '12-15', tags: ['Glutes'] }
         ]
       },
       {
         day: 'Lördag',
         muscleGroups: ['Back', 'Shoulders', 'Biceps', 'Forearms'],
-        focus: 'Upper Body Pull 2',
+        focus: 'Rygg, Axlar, Armar, Underarmar',
         exercises: [
-          { name: 'T-Bar Rows', sets: '2', reps: '8-12', tags: ['Back'] },
-          { name: 'Lat Pulldowns', sets: '2', reps: '8-12', tags: ['Back'] },
-          { name: 'Rear Delt Flyes', sets: '4', reps: '12-15', tags: ['Shoulders'] },
-          { name: 'Preacher Curls', sets: '3', reps: '10-15', tags: ['Biceps'] },
-          { name: 'Wrist Curls', sets: '3', reps: '15-20', tags: ['Forearms'] }
+          { name: 'Back Exercise 1', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Back Exercise 2', sets: '3-4', reps: '8-12', tags: ['Back'] },
+          { name: 'Shoulders Exercise', sets: '3-4', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Biceps Exercise', sets: '3-4', reps: '10-15', tags: ['Biceps'] },
+          { name: 'Forearms Exercise', sets: '3-4', reps: '15-20', tags: ['Forearms'] }
         ]
       },
       {
         day: 'Söndag',
         muscleGroups: ['Rest'],
-        focus: 'Vila / Återhämtning',
+        focus: 'Vila / Aktiv återhämtning',
         exercises: [
-          { name: 'Vila / Återhämtning', sets: '-', reps: '-', tags: ['Rest'] }
+          { name: 'Vila / Aktiv återhämtning', sets: '-', reps: '-', tags: ['Rest'] }
         ]
       }
     ],

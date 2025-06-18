@@ -2,6 +2,7 @@ export interface Exercise {
   name: string;
   sets: string;
   reps: string;
+  rest?: string;
   notes?: string;
   tags?: string[];
   alternatives?: string[];
@@ -25,4 +26,5 @@ export interface WorkoutProgram {
   description: string;
   weeklyPlan: DayPlan[];
   benefits: string[];
+  isCustom?: boolean;
 }

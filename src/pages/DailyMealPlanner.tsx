@@ -184,13 +184,13 @@ const DailyMealPlannerPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="container py-10">
+      <div className="flex flex-col items-center px-6 py-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Daglig måltidsplanering</h1>
-        <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">
+        <p className="text-center text-muted-foreground mb-8 max-w-lg">
           Planera dina måltider för dagen och se hur de bidrar till dina dagliga mål enligt Hormozi-modellen.
         </p>
         
-        <div className="grid grid-cols-1 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 gap-8 max-w-6xl">
           <Card className="mb-6">
             <CardContent className="pt-6">
               <Tabs defaultValue="manual" onValueChange={setActiveTab}>
@@ -531,7 +531,7 @@ const DailyMealPlannerPage = () => {
             targetFat={targetFat}
           />
         </div>
-      </main>
+      </div>
     </div>
   );
 };

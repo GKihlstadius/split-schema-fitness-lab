@@ -3,40 +3,99 @@ import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
 import { workoutPrograms } from '@/data/workoutPrograms';
 import { Navbar } from '@/components/Navbar';
-import { saveSelectedWorkoutProgram, loadSelectedWorkoutProgram } from '@/utils/localStorage';
+import { 
+  getCurrentUser, 
+  getUserSetting, 
+  saveUserSetting,
+  saveWorkoutProgram
+} from '@/utils/supabaseAuth';
+import { Loader2, Dumbbell } from 'lucide-react';
 
 const Index = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
-  // Ladda sparat träningsprogram vid start
+  // Ladda användardata och sparat träningsprogram
   useEffect(() => {
-    const savedProgramId = loadSelectedWorkoutProgram();
-    if (savedProgramId) {
-      const savedProgram = workoutPrograms.find(program => program.id === savedProgramId);
-      if (savedProgram) {
-        setSelectedProgram(savedProgram);
+    const loadUserData = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        if (!currentUser) return;
+        
+        setUser(currentUser);
+
+        // Ladda sparat träningsprogram
+        const savedProgramId = await getUserSetting(currentUser.id, 'selectedWorkoutProgram');
+        if (savedProgramId) {
+          const savedProgram = workoutPrograms.find(program => program.id === savedProgramId);
+          if (savedProgram) {
+            setSelectedProgram(savedProgram);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    loadUserData();
   }, []);
 
   // Hantera programval och spara automatiskt
-  const handleProgramSelect = (program: typeof workoutPrograms[0]) => {
+  const handleProgramSelect = async (program: typeof workoutPrograms[0]) => {
     setSelectedProgram(program);
-    saveSelectedWorkoutProgram(program.id);
+    
+    if (user) {
+      try {
+        // Spara inställning
+        await saveUserSetting(user.id, 'selectedWorkoutProgram', program.id);
+        
+        // Spara även som aktivt träningsprogram
+        await saveWorkoutProgram(user.id, program.id, program.name);
+      } catch (error) {
+        console.error('Error saving workout program:', error);
+      }
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+            <p className="text-muted-foreground">Laddar träningsprogram...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex justify-end mb-6">
+      <div className="flex flex-col items-center px-6 py-8">
+        {/* Centrerad logo ovanför allt */}
+        <div className="text-center mb-12">
+          <Dumbbell className="h-16 w-16 text-primary mx-auto" />
+        </div>
+        
+        {/* Centrerad programväljare */}
+        <div className="mb-8">
           <ProgramSelector 
             programs={workoutPrograms}
             selectedProgram={selectedProgram}
             onSelectProgram={handleProgramSelect}
           />
         </div>
-        <ProgramDetail program={selectedProgram} />
+        
+        {/* Centrerat träningsprogram */}
+        <div className="flex justify-center w-full">
+          <ProgramDetail program={selectedProgram} />
+        </div>
       </div>
     </div>
   );
