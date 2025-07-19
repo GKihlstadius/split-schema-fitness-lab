@@ -10,6 +10,10 @@
   <circle cx="16" cy="16" r="15" fill="url(#gradient)" />
   <circle cx="16" cy="16" r="13" fill="#000000" />
   
-  <!-- GJ Text -->
-  <text x="16" y="21" font-family="Arial, sans-serif" font-weight="900" font-size="14" fill="white" text-anchor="middle">GJ</text>
+  <!-- Dumbbell Icon -->
+  <path d="M8 12H10V20H8V12Z" fill="white" />
+  <path d="M22 12H24V20H22V12Z" fill="white" />
+  <path d="M11 14H21V18H11V14Z" fill="white" />
+  <path d="M7 14H5V18H7V14Z" fill="white" />
+  <path d="M27 14H25V18H27V14Z" fill="white" />
 </svg> 
