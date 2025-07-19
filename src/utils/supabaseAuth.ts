@@ -30,13 +30,18 @@ export const signInWithGoogle = async () => {
 
 // Registrera med e-post
 export const signUpWithEmail = async (email: string, password: string) => {
+  console.log('Försöker registrera användare med e-post:', email);
   try {
+    console.log('Anropar supabase.auth.signUp...');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
+    console.log('Svar från supabase.auth.signUp:', { data, error });
+
     if (error) {
+      console.error('Registreringsfel:', error.message);
       return { 
         success: false, 
         error: error.message 
@@ -45,15 +50,17 @@ export const signUpWithEmail = async (email: string, password: string) => {
 
     // Om registrering lyckades
     if (data.user) {
+      console.log('Registrering lyckades! Användar-ID:', data.user.id);
       return { 
         success: true, 
         user: data.user,
       };
     }
 
+    console.warn('Okänt fel: Ingen användare returnerades men inget fel heller');
     return { success: false, error: 'Okänt fel vid registrering' };
   } catch (error) {
-    console.error('Unexpected error i signUpWithEmail:', error);
+    console.error('Oväntat fel i signUpWithEmail:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 

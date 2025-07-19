@@ -7,8 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dumbbell, Mail, Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
 import { signInWithEmail, signUpWithEmail } from '@/utils/supabaseAuth';
+import { supabase } from '@/lib/supabase';
 
 const Login = () => {
+  // Logga Supabase-konfiguration för felsökning
+  console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+  console.log('Supabase Key exists:', !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
