@@ -6,6 +6,8 @@ declare global {
   interface Window {
     __swRegistration?: ServiceWorkerRegistration;
   }
+  const __APP_VERSION__: string;
+  const __BUILD_TIME__: string;
 }
 
 const registerServiceWorker = () => {
@@ -19,6 +21,8 @@ const registerServiceWorker = () => {
     import.meta.env.VITE_APP_VERSION ||
     import.meta.env.VITE_COMMIT ||
     import.meta.env.VITE_BUILD_TIME ||
+    (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : undefined) ||
+    (typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : undefined) ||
     'v1';
   const swUrl = `/sw.js?v=${swVersion}`;
 
@@ -26,12 +30,15 @@ const registerServiceWorker = () => {
     let isReloading = false;
 
     navigator.serviceWorker
-      .register(swUrl)
+      .register(swUrl, { updateViaCache: 'none' })
       .then((registration) => {
         window.__swRegistration = registration;
 
         // Be SW kolla uppdateringar direkt vid start
         registration.update().catch(() => {});
+
+        // Upprepa uppdateringskoll var 6:e timme
+        setInterval(() => registration.update().catch(() => {}), 6 * 60 * 60 * 1000);
 
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;

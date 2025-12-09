@@ -208,7 +208,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
       {/* Träningsdagar */}
       <div className="mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 w-full">
-          <h3 className="text-xl font-light text-primary">Träningsdagar</h3>
+          <div className="h-6" aria-hidden="true" />
           <Button 
             variant="outline" 
             className="border-border w-full sm:w-auto"
