@@ -143,32 +143,34 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Top row: dropdown + info/export ikoner (info utan dropdown) */}
-        <div className="mb-4 flex items-center justify-center gap-2 max-w-md mx-auto w-full">
-          <div className="flex-1">
-            <ProgramSelector 
-              programs={workoutPrograms}
-              selectedProgram={selectedProgram}
-              onSelectProgram={handleProgramSelect}
-            />
+        {/* Top row: centrerad dropdown + info/export ikoner */}
+        <div className="mb-4 w-full flex justify-center">
+          <div className="max-w-md w-full flex items-center gap-2">
+            <div className="flex-1">
+              <ProgramSelector 
+                programs={workoutPrograms}
+                selectedProgram={selectedProgram}
+                onSelectProgram={handleProgramSelect}
+              />
+            </div>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-10 w-10 rounded-full border-border"
+              aria-label="Visa information om programmet"
+            >
+              <Info className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-10 w-10 rounded-full border-border"
+              aria-label="Exportera schema"
+              onClick={copyProgramPlan}
+            >
+              <Share className="h-4 w-4" />
+            </Button>
           </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-10 w-10 rounded-full border-border"
-            aria-label="Visa information om programmet"
-          >
-            <Info className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-10 w-10 rounded-full border-border"
-            aria-label="Exportera schema"
-            onClick={copyProgramPlan}
-          >
-            <Share className="h-4 w-4" />
-          </Button>
         </div>
         
         {/* Centrerat träningsprogram */}
