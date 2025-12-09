@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram, DayPlan } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
-import { Info, X } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProgramDetailProps {
@@ -13,7 +13,7 @@ interface ProgramDetailProps {
 
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
-  const [showSetInfo, setShowSetInfo] = useState<boolean>(false);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
   const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { toast } = useToast();
@@ -202,141 +202,110 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
 
   const muscleSetCounts = calculateMuscleGroupSets();
 
+  const ProgramDayCard = ({ day }: { day: DayPlan }) => (
+    <Card 
+      key={day.day} 
+      ref={(el) => { dayCardRefs.current[day.day] = el; }}
+      className={`w-full border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer ${selectedDay === day.day ? 'ring-2 ring-primary' : ''}`}
+      onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}
+    >
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1 space-y-1">
+            <CardTitle className="text-lg font-semibold text-foreground leading-tight">
+              {day.day} — {day.focus}
+            </CardTitle>
+            <div className="flex flex-wrap gap-1">
+              {day.muscleGroups.map((muscle, idx) => (
+                <Badge
+                  key={idx}
+                  variant="secondary"
+                  className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
+                >
+                  {muscle}
+                </Badge>
+              ))}
+            </div>
+          </div>
+          <ChevronDown
+            className={`h-4 w-4 text-muted-foreground transition-transform ${selectedDay === day.day ? 'rotate-180' : ''}`}
+          />
+        </div>
+      </CardHeader>
+      
+      <CardContent className="pt-0">
+        <div className="text-left">
+          <div className="text-sm text-foreground font-medium">
+            {day.exercises.length} övningar
+          </div>
+          <div className="text-xs text-muted-foreground font-light">
+            Tryck för att {selectedDay === day.day ? 'dölja' : 'visa'} detaljer
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const formatFrequency = (freq: string) => {
+    if (!freq) return '';
+    return freq.replace('/WEEK', ' dagar/vecka').toLowerCase();
+  };
+
   return (
     <div className="w-full max-w-screen-sm mx-auto px-0 sm:px-2">
 
       {/* Programinfo */}
-      <div className="mb-6 text-left space-y-2">
+      <div className="mb-6 text-left space-y-3">
         <h1 className="text-2xl font-semibold text-foreground">{program.name}</h1>
-        <p className="text-sm text-muted-foreground">
-          {program.goal} • {program.frequency.toLowerCase ? program.frequency.toLowerCase() : program.frequency} • {program.difficulty}
-        </p>
-        <p className="text-sm text-muted-foreground">{program.focus}</p>
-        {program.description && (
-          <p className="text-sm text-muted-foreground">{program.description}</p>
-        )}
-        <div className="flex flex-wrap gap-2 mt-2">
+
+        <div className="border border-border rounded-xl px-3 py-2 bg-muted/40">
+          <button
+            className="w-full flex items-center justify-between text-sm font-medium text-foreground"
+            onClick={() => setShowInfo(!showInfo)}
+          >
+            <span>Information</span>
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${showInfo ? 'rotate-180' : ''}`}
+            />
+          </button>
+          {showInfo && (
+            <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+              <p>{program.goal} • {formatFrequency(program.frequency)} • {program.difficulty}</p>
+              {program.focus && <p className="text-foreground">{program.focus}</p>}
+              {program.description && <p>{program.description}</p>}
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-start">
           <Button 
             variant="outline" 
-            className="border-border w-full sm:w-auto"
+            size="sm"
+            className="border-border text-sm px-3 py-2"
             onClick={copyProgramPlan}
           >
             Exportera schema
           </Button>
-          {!showSetInfo && (
-            <Button
-              variant="ghost"
-              className="text-muted-foreground hover:text-foreground"
-              onClick={() => setShowSetInfo(true)}
-            >
-              Information
-            </Button>
-          )}
         </div>
       </div>
 
       {/* Träningsdagar */}
       <div className="mb-10 space-y-3">
         {program.weeklyPlan.map((day) => (
-          <Card 
-            key={day.day} 
-            ref={(el) => { dayCardRefs.current[day.day] = el; }}
-            className={`w-full border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer ${selectedDay === day.day ? 'ring-2 ring-primary' : ''}`}
-            onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 space-y-1">
-                  <CardTitle className="text-lg font-semibold text-foreground leading-tight">
-                    {day.day} — {day.focus}
-                  </CardTitle>
-                  <div className="flex flex-wrap gap-1">
-                    {day.muscleGroups.map((muscle, idx) => (
-                      <Badge
-                        key={idx}
-                        variant="secondary"
-                        className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
-                      >
-                        {muscle}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            
-            <CardContent className="pt-0">
-              <div className="text-left">
-                <div className="text-sm text-foreground font-medium">
-                  {day.exercises.length} övningar
-                </div>
-                <div className="text-xs text-muted-foreground font-light">
-                  Tryck för att {selectedDay === day.day ? 'dölja' : 'visa'} detaljer
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ProgramDayCard key={day.day} day={day} />
         ))}
       </div>
-
-      {/* Information Button - Centrerad under träningskorten */}
-      {/* Info Modal - Fixed position overlay */}
-      {showSetInfo && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="max-w-4xl w-full max-h-[80vh] overflow-y-auto border-border shadow-lg">
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xl font-light text-primary">Programinformation</CardTitle>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setShowSetInfo(false)}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium mb-3 text-foreground">Setfördelning per muskelgrupp (vecka)</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Object.entries(muscleSetCounts)
-                    .sort((a, b) => b[1] - a[1])
-                    .map(([muscle, sets]) => (
-                    <div key={muscle} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
-                      <span className="font-medium text-sm text-foreground">{muscle}</span>
-                      <Badge 
-                        variant="secondary" 
-                        className={`font-medium ${getMuscleGroupClass(muscle)} border-0`}
-                      >
-                        {sets} set
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="bg-muted/30 p-3 rounded-lg mt-4">
-                  <p className="text-xs text-muted-foreground">
-                    <strong>Vetenskaplig grund:</strong> Set-antalen är baserade på meta-analyser och Dr. Mike Israetels forskning 
-                    om Maximum Adaptive Volume (MAV) för optimal hypertrofi utan överträning.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
 
       {/* Selected Day Workout View */}
       {selectedDayPlan && (
         <div className="mb-12" ref={dayWorkoutRef}>
-          <div className="flex items-center justify-between gap-3 mb-6">
-            <h3 className="text-xl font-light text-primary">Övningar för {selectedDayPlan.day}</h3>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <h3 className="text-lg font-semibold text-primary">Övningar för {selectedDayPlan.day}</h3>
             <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
-                className="border-border"
+                size="sm"
+                className="border-border text-sm px-3 py-2"
                 onClick={copyDayPlan}
               >
                 Exportera dag
@@ -351,7 +320,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
             </div>
           </div>
           <Card className="border-border shadow-none">
-            <CardContent className="pt-6">
+            <CardContent className="pt-4">
               <DayWorkoutView dayPlan={selectedDayPlan} programName={program.name} />
             </CardContent>
           </Card>
