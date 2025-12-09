@@ -109,7 +109,7 @@ export const workoutPrograms: WorkoutProgram[] = [
     description: 'An advanced hypertrophy program focused on maximum muscle mass development with high volume training.',
     weeklyPlan: [
       {
-        day: 'Monday',
+        day: 'Måndag',
         muscleGroups: ['Chest', 'Shoulders'],
         focus: 'Upper Body Push Volume',
         exercises: [
@@ -120,7 +120,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Tuesday',
+        day: 'Tisdag',
         muscleGroups: ['Back', 'Biceps'],
         focus: 'Pull Volume Training',
         exercises: [
@@ -131,7 +131,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Wednesday',
+        day: 'Onsdag',
         muscleGroups: ['Quads', 'Hamstrings', 'Glutes'],
         focus: 'Leg Development',
         exercises: [
@@ -142,7 +142,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Thursday',
+        day: 'Torsdag',
         muscleGroups: ['Triceps', 'Biceps'],
         focus: 'Arm Specialization',
         exercises: [
@@ -153,7 +153,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Friday',
+        day: 'Fredag',
         muscleGroups: ['Chest', 'Back'],
         focus: 'Upper Body Density',
         exercises: [
@@ -164,7 +164,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Saturday',
+        day: 'Lördag',
         muscleGroups: ['Shoulders', 'Calves', 'Quads'],
         focus: 'Weak Point Training',
         exercises: [
@@ -193,7 +193,7 @@ export const workoutPrograms: WorkoutProgram[] = [
     description: 'A powerful upper body focused program inspired by Norse mythology, designed to build impressive strength and size.',
     weeklyPlan: [
       {
-        day: 'Monday',
+        day: 'Måndag',
         muscleGroups: ['Chest', 'Triceps'],
         focus: 'Power Upper Push',
         exercises: [
@@ -203,7 +203,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Tuesday',
+        day: 'Tisdag',
         muscleGroups: ['Back', 'Biceps'],
         focus: 'Power Upper Pull',
         exercises: [
@@ -213,7 +213,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Wednesday',
+        day: 'Onsdag',
         muscleGroups: ['Shoulders'],
         focus: 'Shoulder Power',
         exercises: [
@@ -223,7 +223,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Thursday',
+        day: 'Torsdag',
         muscleGroups: ['Triceps', 'Biceps'],
         focus: 'Arm Strength',
         exercises: [
@@ -233,7 +233,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         ]
       },
       {
-        day: 'Friday',
+        day: 'Fredag',
         muscleGroups: ['Chest', 'Back'],
         focus: 'Upper Body Volume',
         exercises: [
