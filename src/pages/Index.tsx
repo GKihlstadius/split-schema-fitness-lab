@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
 import { workoutPrograms } from '@/data/workoutPrograms';
