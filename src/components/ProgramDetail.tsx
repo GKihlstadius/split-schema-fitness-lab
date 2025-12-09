@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram, DayPlan } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
-import { ChevronDown, Info, Share } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProgramDetailProps {
@@ -252,19 +252,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
 
   return (
     <div className="w-full max-w-screen-sm mx-auto px-0 sm:px-2">
-
-      {/* Top row: only export icon (info removed) */}
-      <div className="mb-4 flex items-center justify-center gap-2 max-w-md mx-auto">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-9 w-9 rounded-full border-border"
-          aria-label="Exportera schema"
-          onClick={copyProgramPlan}
-        >
-          <Share className="h-4 w-4" />
-        </Button>
-      </div>
 
       {/* Träningsdagar */}
       <div className="mb-10 space-y-3">
