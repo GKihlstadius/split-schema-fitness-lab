@@ -17,6 +17,61 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
 
+  const formatProgramPlan = useMemo(() => {
+    return (program: typeof workoutPrograms[0]) => {
+      const lines: string[] = [
+        `Program: ${program.name}`,
+        `Mål: ${program.goal}`,
+        `Frekvens: ${program.frequency}`,
+        `Svårighetsgrad: ${program.difficulty}`,
+        `Fokus: ${program.focus}`,
+        `Längd: ${program.duration}`,
+        '',
+        'Veckoplanering:'
+      ];
+
+      program.weeklyPlan.forEach((dayPlan) => {
+        lines.push(
+          `${dayPlan.day} — ${dayPlan.focus}`,
+          `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
+          'Övningar:'
+        );
+
+        dayPlan.exercises.forEach((exercise, idx) => {
+          const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
+          const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
+          const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
+          lines.push(
+            `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
+          );
+        });
+
+        lines.push('');
+      });
+
+      return lines.join('\n');
+    };
+  }, []);
+
+  const copyProgramPlan = async () => {
+    const text = formatProgramPlan(selectedProgram);
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+    } catch (error) {
+      console.error('Kunde inte kopiera träningsschema:', error);
+    }
+  };
+
   // Ladda användardata och sparat träningsprogram
   useEffect(() => {
     const loadUserData = async () => {
@@ -74,61 +129,6 @@ const Index = () => {
       </div>
     );
   }
-
-  const formatProgramPlan = useMemo(() => {
-    return (program: typeof workoutPrograms[0]) => {
-      const lines: string[] = [
-        `Program: ${program.name}`,
-        `Mål: ${program.goal}`,
-        `Frekvens: ${program.frequency}`,
-        `Svårighetsgrad: ${program.difficulty}`,
-        `Fokus: ${program.focus}`,
-        `Längd: ${program.duration}`,
-        '',
-        'Veckoplanering:'
-      ];
-
-      program.weeklyPlan.forEach((dayPlan) => {
-        lines.push(
-          `${dayPlan.day} — ${dayPlan.focus}`,
-          `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
-          'Övningar:'
-        );
-
-        dayPlan.exercises.forEach((exercise, idx) => {
-          const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
-          const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
-          const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
-          lines.push(
-            `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
-          );
-        });
-
-        lines.push('');
-      });
-
-      return lines.join('\n');
-    };
-  }, []);
-
-  const copyProgramPlan = async () => {
-    const text = formatProgramPlan(selectedProgram);
-
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-      }
-    } catch (error) {
-      console.error('Kunde inte kopiera träningsschema:', error);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
