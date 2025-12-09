@@ -8,6 +8,11 @@ interface Exercise {
 
 export const exerciseDatabase: Record<string, Exercise[]> = {
   "Chest": [
+    { name: "Bench Press", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Skivstång" },
+    { name: "Incline Dumbbell Press", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Hantlar" },
+    { name: "Dumbbell Bench Press", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Hantlar" },
+    { name: "Cable Fly", muscleGroup: "Chest", difficulty: "beginner", equipment: "Kabel" },
+    { name: "Pec Deck", muscleGroup: "Chest", difficulty: "beginner", equipment: "Maskin" },
     { name: "Bänkpress", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Hantelpress", muscleGroup: "Chest", difficulty: "beginner", equipment: "Hantlar" },
     { name: "Lutande bänkpress", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Skivstång" },
@@ -30,6 +35,11 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Single arm hantelpress", muscleGroup: "Chest", difficulty: "intermediate", equipment: "Hantlar" }
   ],
   "Back": [
+    { name: "Weighted Pull-ups", muscleGroup: "Back", difficulty: "intermediate", equipment: "Stång + vikt" },
+    { name: "Barbell Row", muscleGroup: "Back", difficulty: "intermediate", equipment: "Skivstång" },
+    { name: "Chest Supported Row", muscleGroup: "Back", difficulty: "beginner", equipment: "Maskin" },
+    { name: "Cable Row", muscleGroup: "Back", difficulty: "beginner", equipment: "Kabel" },
+    { name: "Straight-Arm Pulldown", muscleGroup: "Back", difficulty: "beginner", equipment: "Kabel" },
     { name: "Marklyft", muscleGroup: "Back", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Pull-ups", muscleGroup: "Back", difficulty: "intermediate", equipment: "Stång" },
     { name: "Barbell rows", muscleGroup: "Back", difficulty: "intermediate", equipment: "Skivstång" },
@@ -57,6 +67,8 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Meadows rows", muscleGroup: "Back", difficulty: "advanced", equipment: "Skivstång" }
   ],
   "Shoulders": [
+    { name: "Shoulder Press", muscleGroup: "Shoulders", difficulty: "intermediate", equipment: "Skivstång" },
+    { name: "Rear Delt Fly", muscleGroup: "Shoulders", difficulty: "beginner", equipment: "Hantlar/Maskin" },
     { name: "Axelpress", muscleGroup: "Shoulders", difficulty: "intermediate", equipment: "Hantlar" },
     { name: "Lateral raises", muscleGroup: "Shoulders", difficulty: "beginner", equipment: "Hantlar" },
     { name: "Front raises", muscleGroup: "Shoulders", difficulty: "beginner", equipment: "Hantlar" },
@@ -83,6 +95,8 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Cable upright rows", muscleGroup: "Shoulders", difficulty: "intermediate", equipment: "Kabel" }
   ],
   "Triceps": [
+    { name: "Rope pushdowns", muscleGroup: "Triceps", difficulty: "beginner", equipment: "Kabel" },
+    { name: "Overhead cable tricep extensions", muscleGroup: "Triceps", difficulty: "beginner", equipment: "Kabel" },
     { name: "Dips", muscleGroup: "Triceps", difficulty: "intermediate", equipment: "Kroppsweight" },
     { name: "Skull crushers", muscleGroup: "Triceps", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Triceps pushdowns", muscleGroup: "Triceps", difficulty: "beginner", equipment: "Kabel" },
@@ -105,6 +119,8 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Wall push-ups triceps", muscleGroup: "Triceps", difficulty: "beginner", equipment: "Kroppsweight" }
   ],
   "Biceps": [
+    { name: "Preacher Curls", muscleGroup: "Biceps", difficulty: "intermediate", equipment: "Skivstång" },
+    { name: "Hammer Curls", muscleGroup: "Biceps", difficulty: "beginner", equipment: "Hantlar" },
     { name: "Biceps curls", muscleGroup: "Biceps", difficulty: "beginner", equipment: "Hantlar" },
     { name: "Hammer curls", muscleGroup: "Biceps", difficulty: "beginner", equipment: "Hantlar" },
     { name: "Preacher curls", muscleGroup: "Biceps", difficulty: "intermediate", equipment: "Skivstång" },
@@ -144,6 +160,8 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Single arm hangs", muscleGroup: "Forearms", difficulty: "advanced", equipment: "Stång" }
   ],
   "Quads": [
+    { name: "Back Squat", muscleGroup: "Quads", difficulty: "intermediate", equipment: "Skivstång" },
+    { name: "Front Squat", muscleGroup: "Quads", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Squats", muscleGroup: "Quads", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Leg press", muscleGroup: "Quads", difficulty: "beginner", equipment: "Maskin" },
     { name: "Leg extensions", muscleGroup: "Quads", difficulty: "beginner", equipment: "Maskin" },
@@ -166,6 +184,7 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Walking lunges", muscleGroup: "Quads", difficulty: "intermediate", equipment: "Hantlar" }
   ],
   "Hamstrings": [
+    { name: "Romanian Deadlift", muscleGroup: "Hamstrings", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Romanian deadlift", muscleGroup: "Hamstrings", difficulty: "intermediate", equipment: "Skivstång" },
     { name: "Leg curls", muscleGroup: "Hamstrings", difficulty: "beginner", equipment: "Maskin" },
     { name: "Good mornings", muscleGroup: "Hamstrings", difficulty: "intermediate", equipment: "Skivstång" },
@@ -203,6 +222,8 @@ export const exerciseDatabase: Record<string, Exercise[]> = {
     { name: "Explosive calf raises", muscleGroup: "Calves", difficulty: "intermediate", equipment: "Kroppsweight" }
   ],
   "Glutes": [
+    { name: "Hip Abduction Machine", muscleGroup: "Glutes", difficulty: "beginner", equipment: "Maskin" },
+    { name: "Cable Abductions", muscleGroup: "Glutes", difficulty: "beginner", equipment: "Kabel" },
     { name: "Hip thrusts", muscleGroup: "Glutes", difficulty: "beginner", equipment: "Skivstång" },
     { name: "Glute bridges", muscleGroup: "Glutes", difficulty: "beginner", equipment: "Kroppsweight" },
     { name: "Bulgarian split squats", muscleGroup: "Glutes", difficulty: "intermediate", equipment: "Hantlar" },
