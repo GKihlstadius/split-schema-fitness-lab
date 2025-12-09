@@ -346,5 +346,94 @@ export const workoutPrograms: WorkoutProgram[] = [
       'Optimal återhämtning genom att rotera muskelgrupper',
       'Perfekt för att bygga både styrka och muskelmassa'
     ]
+  },
+  {
+    id: '5',
+    name: 'Gabbelito',
+    goal: 'Hypertrophy',
+    frequency: '6/WEEK',
+    difficulty: 'Advanced',
+    duration: '16 WEEKS',
+    focus: 'Whole Body Mass Building',
+    description: 'Ett avancerat 6-dagars hypertrofiprogram med massfokus för hela kroppen.',
+    weeklyPlan: [
+      {
+        day: 'Måndag',
+        muscleGroups: ['Chest', 'Shoulders'],
+        focus: 'Upper Body Push',
+        exercises: [
+          { name: 'Bench Press', sets: '4', reps: '5-7', tags: ['Chest'] },
+          { name: 'Incline Dumbbell Press', sets: '3', reps: '8-10', tags: ['Chest'] },
+          { name: 'Shoulder Press', sets: '3', reps: '8-10', tags: ['Shoulders'] },
+          { name: 'Lateral Raises', sets: '4', reps: '12-15', tags: ['Shoulders'] },
+          { name: 'Cable Fly', sets: '1-2', reps: '12-15', tags: ['Chest'] },
+        ],
+      },
+      {
+        day: 'Tisdag',
+        muscleGroups: ['Back', 'Biceps', 'Rear Delts'],
+        focus: 'Pull Volume',
+        exercises: [
+          { name: 'Weighted Pull-ups', sets: '3', reps: '6-8', tags: ['Back'] },
+          { name: 'Barbell Rows', sets: '3', reps: '8-10', tags: ['Back'] },
+          { name: 'Face Pulls', sets: '3', reps: '15-20', tags: ['Rear Delts', 'Upper Back'] },
+          { name: 'Cable Curls', sets: '3', reps: '10-12', tags: ['Biceps'] },
+          { name: 'Preacher Curls', sets: '3', reps: '12-15', tags: ['Biceps'] },
+        ],
+      },
+      {
+        day: 'Onsdag',
+        muscleGroups: ['Quads', 'Hamstrings', 'Glutes'],
+        focus: 'Leg Development',
+        exercises: [
+          { name: 'Back Squats', sets: '3', reps: '6-8', tags: ['Quads', 'Glutes'] },
+          { name: 'Romanian Deadlifts', sets: '4', reps: '8-10', tags: ['Hamstrings', 'Glutes'] },
+          { name: 'Leg Press', sets: '2', reps: '12-15', tags: ['Quads'] },
+          { name: 'Leg Curls', sets: '4', reps: '12-15', tags: ['Hamstrings'] },
+          { name: 'Cable or Machine Abductions', sets: '2', reps: '15-20', tags: ['Glute Medius'] },
+        ],
+      },
+      {
+        day: 'Torsdag',
+        muscleGroups: ['Triceps', 'Biceps'],
+        focus: 'Arm Specialization',
+        exercises: [
+          { name: 'Close-Grip Bench Press', sets: '3', reps: '8-10', tags: ['Triceps', 'Chest'] },
+          { name: 'Overhead Cable Extensions', sets: '3', reps: '12-15', tags: ['Triceps'] },
+          { name: 'Barbell Curls', sets: '3', reps: '8-10', tags: ['Biceps'] },
+          { name: 'Hammer Curls', sets: '3', reps: '10-12', tags: ['Brachialis', 'Brachioradialis'] },
+          { name: 'Tricep Dips (tillval)', sets: '2', reps: '12', tags: ['Triceps'] },
+        ],
+      },
+      {
+        day: 'Fredag',
+        muscleGroups: ['Chest', 'Back'],
+        focus: 'Upper Body Density',
+        exercises: [
+          { name: 'Dumbbell Bench Press', sets: '4', reps: '10-12', tags: ['Chest'] },
+          { name: 'Cable Rows', sets: '3', reps: '10-12', tags: ['Back'] },
+          { name: 'Chest Supported Row', sets: '2', reps: '10-12', tags: ['Back'] },
+          { name: 'Pec Deck', sets: '3', reps: '12-15', tags: ['Chest'] },
+          { name: 'Straight-Arm Pulldowns', sets: '2', reps: '12-15', tags: ['Lats'] },
+        ],
+      },
+      {
+        day: 'Lördag',
+        muscleGroups: ['Quads', 'Shoulders', 'Calves'],
+        focus: 'Weak Point Training',
+        exercises: [
+          { name: 'Front Squats', sets: '3', reps: '8-10', tags: ['Quads'] },
+          { name: 'Arnold Press', sets: '2', reps: '10-12', tags: ['Shoulders'] },
+          { name: 'Lateral Raises', sets: '2', reps: '15-20', tags: ['Shoulders'] },
+          { name: 'Standing Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
+          { name: 'Seated Calf Raises', sets: '4', reps: '20-25', tags: ['Calves'] },
+        ],
+      },
+    ],
+    benefits: [
+      'Avancerat massbyggande 6-dagars upplägg',
+      'Tydlig push/pull/ben-rotation med armspecialisering',
+      'Extra fokus på svaga punkter och volym för axlar och vader',
+    ],
   }
 ];
