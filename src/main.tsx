@@ -14,11 +14,21 @@ const registerServiceWorker = () => {
   // Bara i production-builden
   if (import.meta.env.DEV) return;
 
+  const swVersion =
+    import.meta.env.VITE_APP_VERSION ||
+    import.meta.env.VITE_COMMIT ||
+    import.meta.env.VITE_BUILD_TIME ||
+    'v1';
+  const swUrl = `/sw.js?v=${swVersion}`;
+
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('/sw.js')
+      .register(swUrl)
       .then((registration) => {
         window.__swRegistration = registration;
+
+        // Be SW kolla uppdateringar direkt vid start
+        registration.update().catch(() => {});
 
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
