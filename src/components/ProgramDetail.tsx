@@ -263,16 +263,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
             </Card>
           ))}
         </div>
-        {/* Extra mobilknapp nära korten så den alltid syns på små skärmar */}
-        <div className="sm:hidden mt-6">
-          <Button 
-            variant="outline" 
-            className="border-border w-full"
-            onClick={copyProgramPlan}
-          >
-            Exportera schema
-          </Button>
-        </div>
       </div>
 
       {/* Information Button - Centrerad under träningskorten */}
