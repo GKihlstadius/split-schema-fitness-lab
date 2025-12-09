@@ -26,6 +26,13 @@ const registerServiceWorker = () => {
     'v1';
   const swUrl = `/sw.js?v=${swVersion}`;
 
+  const forceActivate = (registration: ServiceWorkerRegistration) => {
+    const waiting = registration.waiting;
+    if (waiting) {
+      waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+  };
+
   window.addEventListener('load', () => {
     let isReloading = false;
 
@@ -49,6 +56,8 @@ const registerServiceWorker = () => {
               newWorker.state === 'installed' &&
               navigator.serviceWorker.controller
             ) {
+              // Aggressiv auto-aktivering av ny SW
+              forceActivate(registration);
               window.dispatchEvent(
                 new CustomEvent('swUpdated', { detail: registration })
               );
