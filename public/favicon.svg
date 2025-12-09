@@ -1,19 +1,7 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF6B6B" />
-      <stop offset="100%" stop-color="#4A4AFF" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Bakgrund -->
-  <circle cx="16" cy="16" r="15" fill="url(#gradient)" />
-  <circle cx="16" cy="16" r="13" fill="#000000" />
-  
-  <!-- Dumbbell Icon -->
-  <path d="M8 12H10V20H8V12Z" fill="white" />
-  <path d="M22 12H24V20H22V12Z" fill="white" />
-  <path d="M11 14H21V18H11V14Z" fill="white" />
-  <path d="M7 14H5V18H7V14Z" fill="white" />
-  <path d="M27 14H25V18H27V14Z" fill="white" />
-</svg> 
+  <circle cx="16" cy="16" r="15" fill="#0B0B0B" />
+  <path
+    d="M7.2 11h2.4v10H7.2V11Zm4.8 3.2h8v3.6h-8v-3.6Zm9.6-3.2h2.4v10h-2.4V11Zm-12 3.2H7v3.6h1.6v-3.6Zm14.8 0H25v3.6h-1.6v-3.6Z"
+    fill="white"
+  />
+</svg>

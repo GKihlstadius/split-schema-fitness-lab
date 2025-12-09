@@ -1,22 +1,8 @@
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF6B6B" />
-      <stop offset="100%" stop-color="#4A4AFF" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Bakgrund -->
-  <circle cx="100" cy="100" r="95" fill="url(#gradient)" />
-  <circle cx="100" cy="100" r="85" fill="#000000" />
-  
-  <!-- Dumbbell Icon -->
-  <path d="M50 75H62.5V125H50V75Z" fill="white" />
-  <path d="M137.5 75H150V125H137.5V75Z" fill="white" />
-  <path d="M68.75 87.5H131.25V112.5H68.75V87.5Z" fill="white" />
-  <path d="M43.75 87.5H31.25V112.5H43.75V87.5Z" fill="white" />
-  <path d="M168.75 87.5H156.25V112.5H168.75V87.5Z" fill="white" />
-  
-  <!-- Text -->
-  <text x="100" y="160" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="white" text-anchor="middle">GYM JANNE</text>
-</svg> 
+  <!-- Enkel ikon: svart bakgrund med vit hantel (liknar appens ikon) -->
+  <circle cx="100" cy="100" r="95" fill="#0B0B0B" />
+  <path
+    d="M48 72h12v56H48V72Zm24 16h56v24H72V88Zm68-16h12v56h-12V72ZM40 88h-8v24h8V88Zm128 0h-8v24h8V88Z"
+    fill="white"
+  />
+</svg>
