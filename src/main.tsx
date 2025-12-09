@@ -33,8 +33,9 @@ const registerServiceWorker = () => {
     }
   };
 
+  let isReloading = false;
+
   window.addEventListener('load', () => {
-    let isReloading = false;
 
     navigator.serviceWorker
       .getRegistrations()
@@ -87,6 +88,14 @@ const registerServiceWorker = () => {
       if (isReloading) return;
       isReloading = true;
       window.location.reload();
+    });
+
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'RELOAD_PAGE') {
+        if (isReloading) return;
+        isReloading = true;
+        window.location.reload();
+      }
     });
   });
 };
