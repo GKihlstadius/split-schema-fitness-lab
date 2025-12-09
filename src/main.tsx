@@ -14,14 +14,17 @@ const registerServiceWorker = () => {
   // Bara i production-builden
   if (import.meta.env.DEV) return;
 
+  // Viktigt: versionen måste vara stabil per build för att undvika evig reload-loop.
   const swVersion =
     import.meta.env.VITE_APP_VERSION ||
     import.meta.env.VITE_COMMIT ||
     import.meta.env.VITE_BUILD_TIME ||
-    Date.now().toString();
+    'v1';
   const swUrl = `/sw.js?v=${swVersion}`;
 
   window.addEventListener('load', () => {
+    let isReloading = false;
+
     navigator.serviceWorker
       .register(swUrl)
       .then((registration) => {
@@ -51,7 +54,9 @@ const registerServiceWorker = () => {
       });
 
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      // Ny SW tog över – ladda om för att hämta färska filer
+      // Ny SW tog över – ladda om för att hämta färska filer, men undvik loop
+      if (isReloading) return;
+      isReloading = true;
       window.location.reload();
     });
   });
