@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram, DayPlan } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
 import { Info, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProgramDetailProps {
   program: WorkoutProgram;
@@ -15,6 +16,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [showSetInfo, setShowSetInfo] = useState<boolean>(false);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
   const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { toast } = useToast();
   
   useEffect(() => {
     if (selectedDay && dayWorkoutRef.current) {
@@ -60,6 +62,121 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   // Find the selected day plan
   const selectedDayPlan = program.weeklyPlan.find(day => day.day === selectedDay);
 
+  const formatProgramPlan = () => {
+    const lines: string[] = [
+      `Program: ${program.name}`,
+      `Mål: ${program.goal}`,
+      `Frekvens: ${program.frequency}`,
+      `Svårighetsgrad: ${program.difficulty}`,
+      `Fokus: ${program.focus}`,
+      `Längd: ${program.duration}`,
+      '',
+      'Veckoplanering:'
+    ];
+
+    program.weeklyPlan.forEach((dayPlan) => {
+      lines.push(
+        `${dayPlan.day} — ${dayPlan.focus}`,
+        `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
+        'Övningar:'
+      );
+
+      dayPlan.exercises.forEach((exercise, idx) => {
+        const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
+        const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
+        const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
+        lines.push(
+          `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
+        );
+      });
+
+      lines.push(''); // tom rad mellan dagar
+    });
+
+    return lines.join('\n');
+  };
+
+  const formatDayPlan = (dayPlan: DayPlan) => {
+    const lines: string[] = [
+      `Program: ${program.name}`,
+      `Dag: ${dayPlan.day}`,
+      `Fokus: ${dayPlan.focus}`,
+      `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
+      'Övningar:'
+    ];
+
+    dayPlan.exercises.forEach((exercise, idx) => {
+      const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
+      const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
+      const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
+      lines.push(
+        `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
+      );
+    });
+
+    return lines.join('\n');
+  };
+
+  const copyDayPlan = async () => {
+    if (!selectedDayPlan) return;
+
+    const text = formatDayPlan(selectedDayPlan);
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      toast({
+        title: 'Kopierat!',
+        description: `${selectedDayPlan.day} har kopierats till urklipp.`,
+      });
+    } catch (error) {
+      console.error('Kunde inte kopiera träningsschema:', error);
+      toast({
+        title: 'Kunde inte kopiera',
+        description: 'Försök igen eller kopiera manuellt.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const copyProgramPlan = async () => {
+    const text = formatProgramPlan();
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      toast({
+        title: 'Kopierat!',
+        description: `${program.name} (hela veckan) har kopierats till urklipp.`,
+      });
+    } catch (error) {
+      console.error('Kunde inte kopiera programschema:', error);
+      toast({
+        title: 'Kunde inte kopiera',
+        description: 'Försök igen eller kopiera manuellt.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   // Räkna set per muskelgrupp för info-displayen
   const calculateMuscleGroupSets = () => {
     const stats: { [key: string]: number } = {};
@@ -90,6 +207,16 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
 
       {/* Träningsdagar */}
       <div className="mb-12">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h3 className="text-xl font-light text-primary">Träningsdagar</h3>
+          <Button 
+            variant="outline" 
+            className="border-border"
+            onClick={copyProgramPlan}
+          >
+            Exportera schema
+          </Button>
+        </div>
         <div className="flex flex-wrap justify-center gap-4">
           {program.weeklyPlan.map((day, dayIndex) => (
             <Card 
@@ -203,15 +330,24 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
       {/* Selected Day Workout View */}
       {selectedDayPlan && (
         <div className="mb-12" ref={dayWorkoutRef}>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between gap-3 mb-6">
             <h3 className="text-xl font-light text-primary">Övningar för {selectedDayPlan.day}</h3>
-            <Button 
-              variant="ghost" 
-              className="text-muted-foreground hover:text-foreground"
-              onClick={handleCloseDay}
-            >
-              Stäng
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                className="border-border"
+                onClick={copyDayPlan}
+              >
+                Exportera dag
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="text-muted-foreground hover:text-foreground"
+                onClick={handleCloseDay}
+              >
+                Stäng
+              </Button>
+            </div>
           </div>
           <Card className="border-border shadow-none">
             <CardContent className="pt-6">
