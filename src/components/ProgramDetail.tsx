@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkoutProgram, DayPlan } from '@/types/workout';
 import { DayWorkoutView } from '@/components/DayWorkoutView';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Info, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProgramDetailProps {
@@ -254,10 +254,31 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   return (
     <div className="w-full max-w-screen-sm mx-auto px-0 sm:px-2">
 
-      {/* Programinfo */}
-      <div className="mb-6 text-left space-y-3">
-        <h1 className="text-2xl font-semibold text-foreground">{program.name}</h1>
+      {/* Top row: info + export icons */}
+      <div className="mb-4 flex items-center justify-center gap-2 max-w-md mx-auto">
+        <div className="flex-1" />
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 rounded-full border-border"
+          aria-label="Visa information om programmet"
+          onClick={() => setShowInfo(!showInfo)}
+        >
+          <Info className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 rounded-full border-border"
+          aria-label="Exportera schema"
+          onClick={copyProgramPlan}
+        >
+          <Share className="h-4 w-4" />
+        </Button>
+      </div>
 
+      {/* Programinfo accordion */}
+      <div className="mb-6 text-left space-y-3">
         <div className="border border-border rounded-xl px-3 py-2 bg-muted/40">
           <button
             className="w-full flex items-center justify-between text-sm font-medium text-foreground"
@@ -275,17 +296,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
               {program.description && <p>{program.description}</p>}
             </div>
           )}
-        </div>
-
-        <div className="flex justify-start">
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="border-border text-sm px-3 py-2"
-            onClick={copyProgramPlan}
-          >
-            Exportera schema
-          </Button>
         </div>
       </div>
 
