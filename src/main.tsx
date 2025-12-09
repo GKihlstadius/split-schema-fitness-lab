@@ -24,7 +24,7 @@ const registerServiceWorker = () => {
     (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : undefined) ||
     (typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : undefined) ||
     'v1';
-  const swUrl = `/sw-v3.js?v=${swVersion}`;
+  const swUrl = `/sw-v4.js?v=${swVersion}`;
 
   const forceActivate = (registration: ServiceWorkerRegistration) => {
     const waiting = registration.waiting;
@@ -43,7 +43,7 @@ const registerServiceWorker = () => {
         // Avregistrera äldre SW för att undvika fastnade versioner
         registrations.forEach((reg) => {
           if (!reg.active) return;
-          if (!reg.active.scriptURL.endsWith('sw-v3.js')) {
+          if (!reg.active.scriptURL.endsWith('sw-v4.js')) {
             reg.unregister().catch(() => {});
           }
         });
