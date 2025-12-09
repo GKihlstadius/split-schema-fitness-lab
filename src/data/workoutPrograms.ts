@@ -376,7 +376,7 @@ export const workoutPrograms: WorkoutProgram[] = [
         exercises: [
           { name: 'Weighted Pull-ups', sets: '3', reps: '6-8', tags: ['Back'] },
           { name: 'Barbell Rows', sets: '3', reps: '8-10', tags: ['Back'] },
-          { name: 'Face Pulls', sets: '3', reps: '15-20', tags: ['Rear Delts', 'Upper Back'] },
+          { name: 'Face Pulls', sets: '3', reps: '15-20', tags: ['Shoulders'] },
           { name: 'Cable Curls', sets: '3', reps: '10-12', tags: ['Biceps'] },
           { name: 'Preacher Curls', sets: '3', reps: '12-15', tags: ['Biceps'] },
         ],
@@ -390,7 +390,7 @@ export const workoutPrograms: WorkoutProgram[] = [
           { name: 'Romanian Deadlifts', sets: '4', reps: '8-10', tags: ['Hamstrings', 'Glutes'] },
           { name: 'Leg Press', sets: '2', reps: '12-15', tags: ['Quads'] },
           { name: 'Leg Curls', sets: '4', reps: '12-15', tags: ['Hamstrings'] },
-          { name: 'Cable or Machine Abductions', sets: '2', reps: '15-20', tags: ['Glute Medius'] },
+          { name: 'Cable or Machine Abductions', sets: '2', reps: '15-20', tags: ['Glutes'] },
         ],
       },
       {
@@ -401,7 +401,7 @@ export const workoutPrograms: WorkoutProgram[] = [
           { name: 'Close-Grip Bench Press', sets: '3', reps: '8-10', tags: ['Triceps', 'Chest'] },
           { name: 'Overhead Cable Extensions', sets: '3', reps: '12-15', tags: ['Triceps'] },
           { name: 'Barbell Curls', sets: '3', reps: '8-10', tags: ['Biceps'] },
-          { name: 'Hammer Curls', sets: '3', reps: '10-12', tags: ['Brachialis', 'Brachioradialis'] },
+          { name: 'Hammer Curls', sets: '3', reps: '10-12', tags: ['Biceps', 'Forearms'] },
           { name: 'Tricep Dips (tillval)', sets: '2', reps: '12', tags: ['Triceps'] },
         ],
       },
@@ -414,7 +414,7 @@ export const workoutPrograms: WorkoutProgram[] = [
           { name: 'Cable Rows', sets: '3', reps: '10-12', tags: ['Back'] },
           { name: 'Chest Supported Row', sets: '2', reps: '10-12', tags: ['Back'] },
           { name: 'Pec Deck', sets: '3', reps: '12-15', tags: ['Chest'] },
-          { name: 'Straight-Arm Pulldowns', sets: '2', reps: '12-15', tags: ['Lats'] },
+          { name: 'Straight-Arm Pulldowns', sets: '2', reps: '12-15', tags: ['Back'] },
         ],
       },
       {
