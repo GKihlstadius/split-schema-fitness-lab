@@ -9,7 +9,7 @@ import {
   saveUserSetting,
   saveWorkoutProgram
 } from '@/utils/supabaseAuth';
-import { Loader2, Dumbbell } from 'lucide-react';
+import { Loader2, Dumbbell, TreePine } from 'lucide-react';
 
 const Index = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
@@ -80,7 +80,10 @@ const Index = () => {
       <div className="flex flex-col items-center px-6 py-8">
         {/* Centrerad logo ovanför allt */}
         <div className="text-center mb-12">
-          <Dumbbell className="h-16 w-16 text-primary mx-auto" />
+          <div className="flex items-center justify-center gap-4">
+            <Dumbbell className="h-16 w-16 text-primary" />
+            <TreePine className="h-16 w-16 text-green-600" aria-label="Julgran" />
+          </div>
         </div>
         
         {/* Centrerad programväljare */}
