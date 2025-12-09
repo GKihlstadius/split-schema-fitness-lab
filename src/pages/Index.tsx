@@ -12,13 +12,11 @@ import {
 } from '@/utils/supabaseAuth';
 import { Loader2, Dumbbell, TreePine, Info, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 
 const Index = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
-  const [showInfo, setShowInfo] = useState(false);
 
   // Ladda användardata och sparat träningsprogram
   useEffect(() => {
@@ -145,8 +143,8 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Top row: dropdown + info/export ikoner */}
-        <div className="mb-4 flex items-center gap-2 max-w-md mx-auto w-full">
+        {/* Top row: dropdown + info/export ikoner (info utan dropdown) */}
+        <div className="mb-4 flex items-center justify-center gap-2 max-w-md mx-auto w-full">
           <div className="flex-1">
             <ProgramSelector 
               programs={workoutPrograms}
@@ -159,7 +157,6 @@ const Index = () => {
             size="icon"
             className="h-10 w-10 rounded-full border-border"
             aria-label="Visa information om programmet"
-            onClick={() => setShowInfo(!showInfo)}
           >
             <Info className="h-4 w-4" />
           </Button>
@@ -173,17 +170,6 @@ const Index = () => {
             <Share className="h-4 w-4" />
           </Button>
         </div>
-
-        {/* Info content (om öppet) */}
-        {showInfo && (
-          <Card className="mb-6 border-border shadow-none">
-            <CardContent className="pt-4 space-y-1 text-sm text-muted-foreground">
-              <p>{selectedProgram.goal} • {selectedProgram.frequency} • {selectedProgram.difficulty}</p>
-              {selectedProgram.focus && <p className="text-foreground">{selectedProgram.focus}</p>}
-              {selectedProgram.description && <p>{selectedProgram.description}</p>}
-            </CardContent>
-          </Card>
-        )}
         
         {/* Centrerat träningsprogram */}
         <div className="w-full">
