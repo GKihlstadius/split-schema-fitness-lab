@@ -24,7 +24,7 @@ const registerServiceWorker = () => {
     (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : undefined) ||
     (typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : undefined) ||
     'v1';
-  const swUrl = `/sw-v2.js?v=${swVersion}`;
+  const swUrl = `/sw-v3.js?v=${swVersion}`;
 
   const forceActivate = (registration: ServiceWorkerRegistration) => {
     const waiting = registration.waiting;
@@ -40,10 +40,10 @@ const registerServiceWorker = () => {
     navigator.serviceWorker
       .getRegistrations()
       .then((registrations) => {
-        // Avregistrera äldre SW (t.ex. sw.js) för att undvika fastnade versioner
+        // Avregistrera äldre SW för att undvika fastnade versioner
         registrations.forEach((reg) => {
           if (!reg.active) return;
-          if (!reg.active.scriptURL.endsWith('sw-v2.js')) {
+          if (!reg.active.scriptURL.endsWith('sw-v3.js')) {
             reg.unregister().catch(() => {});
           }
         });
@@ -60,6 +60,20 @@ const registerServiceWorker = () => {
 
         // Upprepa uppdateringskoll var 6:e timme
         setInterval(() => registration.update().catch(() => {}), 6 * 60 * 60 * 1000);
+
+        // Om det redan finns en waiting, aktivera direkt
+        if (registration.waiting) {
+          forceActivate(registration);
+        }
+
+        // Om installation pågår, be den hoppa över väntan när den är klar
+        if (registration.installing) {
+          registration.installing.addEventListener('statechange', () => {
+            if (registration.installing?.state === 'installed') {
+              forceActivate(registration);
+            }
+          });
+        }
 
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
@@ -97,6 +111,14 @@ const registerServiceWorker = () => {
         window.location.reload();
       }
     });
+
+    // Fallback: om ingen controller efter 5 sek, försök uppdatera och aktivera
+    setTimeout(() => {
+      if (!navigator.serviceWorker.controller && window.__swRegistration) {
+        window.__swRegistration.update().catch(() => {});
+        forceActivate(window.__swRegistration);
+      }
+    }, 5000);
   });
 };
 
