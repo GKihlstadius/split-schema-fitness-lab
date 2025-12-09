@@ -13,7 +13,6 @@ interface ProgramDetailProps {
 
 export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
-  const [showInfo, setShowInfo] = useState<boolean>(false);
   const dayWorkoutRef = useRef<HTMLDivElement>(null);
   const dayCardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { toast } = useToast();
@@ -254,18 +253,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   return (
     <div className="w-full max-w-screen-sm mx-auto px-0 sm:px-2">
 
-      {/* Top row: info + export icons */}
+      {/* Top row: only export icon (info removed) */}
       <div className="mb-4 flex items-center justify-center gap-2 max-w-md mx-auto">
-        <div className="flex-1" />
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-9 w-9 rounded-full border-border"
-          aria-label="Visa information om programmet"
-          onClick={() => setShowInfo(!showInfo)}
-        >
-          <Info className="h-4 w-4" />
-        </Button>
         <Button
           variant="outline"
           size="icon"
@@ -275,28 +264,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
         >
           <Share className="h-4 w-4" />
         </Button>
-      </div>
-
-      {/* Programinfo accordion */}
-      <div className="mb-6 text-left space-y-3">
-        <div className="border border-border rounded-xl px-3 py-2 bg-muted/40">
-          <button
-            className="w-full flex items-center justify-between text-sm font-medium text-foreground"
-            onClick={() => setShowInfo(!showInfo)}
-          >
-            <span>Information</span>
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${showInfo ? 'rotate-180' : ''}`}
-            />
-          </button>
-          {showInfo && (
-            <div className="mt-3 space-y-1 text-sm text-muted-foreground">
-              <p>{program.goal} • {formatFrequency(program.frequency)} • {program.difficulty}</p>
-              {program.focus && <p className="text-foreground">{program.focus}</p>}
-              {program.description && <p>{program.description}</p>}
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Träningsdagar */}
