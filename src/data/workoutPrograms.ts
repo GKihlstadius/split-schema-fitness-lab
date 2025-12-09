@@ -418,7 +418,6 @@ export const workoutPrograms: WorkoutProgram[] = [
           { name: 'Overhead cable tricep extensions', sets: '3', reps: '12-15', tags: ['Triceps'] },
           { name: 'Hammer Curls', sets: '3', reps: '10-12', tags: ['Biceps', 'Forearms'] },
           { name: 'Standing calf raises', sets: '3', reps: '15-20', tags: ['Calves'] },
-          { name: 'Seated calf raises', sets: '3', reps: '20-25', tags: ['Calves'] },
         ],
       },
     ],
