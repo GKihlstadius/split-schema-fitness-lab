@@ -203,12 +203,19 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
   const muscleSetCounts = calculateMuscleGroupSets();
 
   return (
-    <div className="max-w-5xl">
+    <div className="w-full max-w-screen-sm mx-auto px-0 sm:px-2">
 
-      {/* Träningsdagar */}
-      <div className="mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 w-full">
-          <div className="h-6" aria-hidden="true" />
+      {/* Programinfo */}
+      <div className="mb-6 text-left space-y-2">
+        <h1 className="text-2xl font-semibold text-foreground">{program.name}</h1>
+        <p className="text-sm text-muted-foreground">
+          {program.goal} • {program.frequency.toLowerCase ? program.frequency.toLowerCase() : program.frequency} • {program.difficulty}
+        </p>
+        <p className="text-sm text-muted-foreground">{program.focus}</p>
+        {program.description && (
+          <p className="text-sm text-muted-foreground">{program.description}</p>
+        )}
+        <div className="flex flex-wrap gap-2 mt-2">
           <Button 
             variant="outline" 
             className="border-border w-full sm:w-auto"
@@ -216,69 +223,63 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
           >
             Exportera schema
           </Button>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4">
-          {program.weeklyPlan.map((day, dayIndex) => (
-            <Card 
-              key={day.day} 
-              ref={(el) => { dayCardRefs.current[day.day] = el; }}
-              className={`w-80 border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer ${selectedDay === day.day ? 'ring-2 ring-primary' : ''}`}
-              onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}
+          {!showSetInfo && (
+            <Button
+              variant="ghost"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => setShowSetInfo(true)}
             >
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg font-light text-foreground">
-                      {day.day}
-                    </CardTitle>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {day.muscleGroups.map((muscle, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="secondary"
-                          className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
-                        >
-                          {muscle}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground font-light mb-4">{day.focus}</p>
-                  
-                  <div className="text-left">
-                    <div className="text-sm text-foreground font-light">
-                      {day.exercises.length} övningar
-                    </div>
-                    <div className="text-xs text-muted-foreground font-light">
-                      Klicka för att {selectedDay === day.day ? 'dölja' : 'visa'} detaljer
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              Information
+            </Button>
+          )}
         </div>
+      </div>
+
+      {/* Träningsdagar */}
+      <div className="mb-10 space-y-3">
+        {program.weeklyPlan.map((day) => (
+          <Card 
+            key={day.day} 
+            ref={(el) => { dayCardRefs.current[day.day] = el; }}
+            className={`w-full border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer ${selectedDay === day.day ? 'ring-2 ring-primary' : ''}`}
+            onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 space-y-1">
+                  <CardTitle className="text-lg font-semibold text-foreground leading-tight">
+                    {day.day} — {day.focus}
+                  </CardTitle>
+                  <div className="flex flex-wrap gap-1">
+                    {day.muscleGroups.map((muscle, idx) => (
+                      <Badge
+                        key={idx}
+                        variant="secondary"
+                        className={`text-xs font-light border-0 ${getMuscleGroupClass(muscle)}`}
+                      >
+                        {muscle}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            
+            <CardContent className="pt-0">
+              <div className="text-left">
+                <div className="text-sm text-foreground font-medium">
+                  {day.exercises.length} övningar
+                </div>
+                <div className="text-xs text-muted-foreground font-light">
+                  Tryck för att {selectedDay === day.day ? 'dölja' : 'visa'} detaljer
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Information Button - Centrerad under träningskorten */}
-      <div className="mb-12 flex justify-center">
-        {!showSetInfo && (
-          <Button
-            variant="outline"
-            onClick={() => setShowSetInfo(true)}
-            className="flex items-center gap-2 border-border hover:bg-muted/50"
-          >
-            <Info className="h-4 w-4 text-blue-500" />
-            <span>Information</span>
-          </Button>
-        )}
-      </div>
-
       {/* Info Modal - Fixed position overlay */}
       {showSetInfo && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">

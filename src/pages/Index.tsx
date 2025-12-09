@@ -77,17 +77,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="flex flex-col items-center px-6 py-8">
+      <div className="w-full max-w-screen-sm mx-auto px-4 py-8 sm:px-6">
         {/* Centrerad logo ovanför allt */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4">
-            <Dumbbell className="h-16 w-16 text-primary" />
-            <TreePine className="h-16 w-16 text-green-600" aria-label="Julgran" />
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3">
+            <Dumbbell className="h-14 w-14 text-primary" />
+            <TreePine className="h-14 w-14 text-green-600" aria-label="Julgran" />
           </div>
         </div>
         
         {/* Centrerad programväljare */}
-        <div className="mb-8">
+        <div className="mb-6">
           <ProgramSelector 
             programs={workoutPrograms}
             selectedProgram={selectedProgram}
@@ -96,7 +96,7 @@ const Index = () => {
         </div>
         
         {/* Centrerat träningsprogram */}
-        <div className="flex justify-center w-full">
+        <div className="w-full">
           <ProgramDetail program={selectedProgram} />
         </div>
       </div>
