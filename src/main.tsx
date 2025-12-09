@@ -18,7 +18,7 @@ const registerServiceWorker = () => {
     import.meta.env.VITE_APP_VERSION ||
     import.meta.env.VITE_COMMIT ||
     import.meta.env.VITE_BUILD_TIME ||
-    'v1';
+    Date.now().toString();
   const swUrl = `/sw.js?v=${swVersion}`;
 
   window.addEventListener('load', () => {
