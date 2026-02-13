@@ -433,5 +433,93 @@ export const workoutPrograms: WorkoutProgram[] = [
       'Balanserat 20+ set/vecka biceps/triceps. Side delts 17 set för "capped" look.',
       'Progression: Når du övre rep-range → öka vikt 2,5–5 kg. Torsdag: pump & spänning före maxvikt.',
     ],
+  },
+  {
+    id: '6',
+    name: '5-dagars split med vila',
+    goal: 'Hypertrophy',
+    frequency: '5/WEEK',
+    difficulty: 'Intermediate',
+    duration: '12 WEEKS',
+    focus: 'Rygg, Bröst, Ben, Överkropp, Armar & Axlar',
+    description: '5 träningsdagar med vila tisdag och söndag. Måndag rygg & biceps, onsdag bröst/axlar/triceps, torsdag ben, fredag överkropp (volym), lördag armar & axlar.',
+    weeklyPlan: [
+      {
+        day: 'Måndag',
+        muscleGroups: ['Back', 'Biceps'],
+        focus: 'Rygg & Biceps',
+        exercises: [
+          { name: 'Pull-ups', sets: '4', reps: '6-10', tags: ['Back'] },
+          { name: 'Lat Pulldown', sets: '3', reps: '8-12', tags: ['Back'] },
+          { name: 'T-bar Rows', sets: '3', reps: '8-10', tags: ['Back'] },
+          { name: 'Barbell Curls', sets: '3', reps: '8-12', tags: ['Biceps'] },
+          { name: 'Hammer Curls', sets: '3', reps: '10-12', tags: ['Biceps'] },
+        ],
+      },
+      {
+        day: 'Tisdag',
+        muscleGroups: [],
+        focus: 'Vila',
+        exercises: [],
+      },
+      {
+        day: 'Onsdag',
+        muscleGroups: ['Chest', 'Shoulders', 'Triceps'],
+        focus: 'Bröst, Axlar & Triceps',
+        exercises: [
+          { name: 'Bench Press', sets: '4', reps: '6-10', tags: ['Chest'] },
+          { name: 'Incline Press', sets: '3', reps: '8-12', tags: ['Chest'] },
+          { name: 'Lateral Raises', sets: '3', reps: '12-15', tags: ['Shoulders'] },
+          { name: 'Tricep Pushdowns', sets: '3', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Skull Crushers', sets: '3', reps: '10-12', tags: ['Triceps'] },
+        ],
+      },
+      {
+        day: 'Torsdag',
+        muscleGroups: ['Quads', 'Hamstrings', 'Calves'],
+        focus: 'Ben',
+        exercises: [
+          { name: 'Squats', sets: '4', reps: '6-10', tags: ['Quads'] },
+          { name: 'Hack Squat', sets: '3', reps: '8-12', tags: ['Quads'] },
+          { name: 'Leg Curls', sets: '3', reps: '10-12', tags: ['Hamstrings'] },
+          { name: 'Leg Extensions', sets: '3', reps: '10-15', tags: ['Quads'] },
+          { name: 'Calf Raises', sets: '4', reps: '15-20', tags: ['Calves'] },
+        ],
+      },
+      {
+        day: 'Fredag',
+        muscleGroups: ['Chest', 'Shoulders', 'Back', 'Biceps'],
+        focus: 'Överkropp (fokus på volym)',
+        exercises: [
+          { name: 'Incline Bench', sets: '3', reps: '8-12', tags: ['Chest'] },
+          { name: 'Shoulder Press', sets: '3', reps: '8-12', tags: ['Shoulders'] },
+          { name: 'Rows', sets: '3', reps: '8-12', tags: ['Back'] },
+          { name: 'Curls', sets: '3', reps: '10-12', tags: ['Biceps'] },
+          { name: 'Face Pulls', sets: '3', reps: '15-20', tags: ['Shoulders'] },
+        ],
+      },
+      {
+        day: 'Lördag',
+        muscleGroups: ['Biceps', 'Triceps', 'Shoulders'],
+        focus: 'Arms & Axlar',
+        exercises: [
+          { name: 'Bicep Curls', sets: '3', reps: '8-12', tags: ['Biceps'] },
+          { name: 'Tricep Extensions', sets: '3', reps: '10-15', tags: ['Triceps'] },
+          { name: 'Lateral Raises', sets: '3', reps: '12-15', tags: ['Shoulders'] },
+          { name: 'Upright Rows', sets: '3', reps: '8-12', tags: ['Shoulders'] },
+        ],
+      },
+      {
+        day: 'Söndag',
+        muscleGroups: [],
+        focus: 'Vila',
+        exercises: [],
+      },
+    ],
+    benefits: [
+      'Tydlig 5-dagars split med två vilodagar (tisdag, söndag).',
+      'Varje muskelgrupp tränas 1–2 gånger per vecka med bra återhämtning.',
+      'Fredag fokus på överkroppsvolym; lördag isolerat armar & axlar.',
+    ],
   }
 ];
