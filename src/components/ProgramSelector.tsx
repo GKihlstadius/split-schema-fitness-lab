@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Check } from 'lucide-react';
 import { WorkoutProgram } from '@/types/workout';
 
 interface ProgramSelectorProps {
@@ -18,7 +18,7 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [filterGoal, setFilterGoal] = useState<string>('');
 
-  const filteredPrograms = programs.filter(program => 
+  const filteredPrograms = programs.filter(program =>
     !filterGoal || program.goal.toLowerCase().includes(filterGoal.toLowerCase())
   );
 
@@ -30,34 +30,35 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
       <Button
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 px-4 py-3 h-auto min-w-[280px] border-gray-200 hover:bg-gray-50 text-gray-900 font-light"
+        className="flex items-center justify-between gap-2 px-4 py-3 h-auto min-w-[280px] border-white/10 bg-white/5 hover:bg-white/10 text-foreground font-light backdrop-blur-sm"
       >
         <div className="text-left flex-1">
           <div className="font-medium">{selectedProgram.name}</div>
-          <div className="text-xs text-gray-500 mt-0.5">Välj träningsprogram</div>
+          <div className="text-xs text-muted-foreground mt-0.5">Välj träningsprogram</div>
         </div>
-        <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
       {/* Dropdown */}
       {isOpen && (
         <>
-          {/* Overlay */}
           <div
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
-          
-          {/* Dropdown Content */}
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 md:left-auto md:right-0 md:transform-none mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-100 rounded-lg shadow-sm z-50 overflow-hidden">
-            {/* Header */}
-            <div className="px-4 py-3 border-b border-gray-50">
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 md:left-auto md:right-0 md:transform-none mt-2 w-80 max-w-[calc(100vw-2rem)] bg-[#1A1A2E]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
+            {/* Filter chips */}
+            <div className="px-4 py-3 border-b border-white/10">
               <div className="flex gap-2 flex-wrap">
                 <Button
                   variant={!filterGoal ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setFilterGoal('')}
-                  className="text-xs font-light px-3 py-1 h-auto bg-gray-900 hover:bg-gray-800 text-white"
+                  className={`text-xs font-light px-3 py-1 h-auto rounded-full ${
+                    !filterGoal
+                      ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-white/10'
+                  }`}
                 >
                   Alla
                 </Button>
@@ -67,7 +68,11 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
                     variant={filterGoal === goal ? "default" : "ghost"}
                     size="sm"
                     onClick={() => setFilterGoal(filterGoal === goal ? '' : goal)}
-                    className="text-xs font-light px-3 py-1 h-auto"
+                    className={`text-xs font-light px-3 py-1 h-auto rounded-full ${
+                      filterGoal === goal
+                        ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-white/10'
+                    }`}
                   >
                     {goal}
                   </Button>
@@ -77,11 +82,11 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
 
             {/* Programs List */}
             <div className="max-h-80 overflow-y-auto">
-              {filteredPrograms.map((program, index) => (
+              {filteredPrograms.map((program) => (
                 <div
                   key={program.id}
-                  className={`p-4 cursor-pointer transition-colors hover:bg-gray-25 ${
-                    selectedProgram.id === program.id ? 'bg-gray-25' : ''
+                  className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/5 ${
+                    selectedProgram.id === program.id ? 'bg-blue-500/10 border-l-2 border-l-blue-500' : 'border-l-2 border-l-transparent'
                   }`}
                   onClick={() => {
                     onSelectProgram(program);
@@ -89,22 +94,20 @@ export const ProgramSelector: React.FC<ProgramSelectorProps> = ({
                   }}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-light text-gray-900">{program.name}</h4>
+                    <h4 className="font-medium text-foreground text-sm">{program.name}</h4>
                     {selectedProgram.id === program.id && (
-                      <div className="w-1.5 h-1.5 bg-gray-900 rounded-full mt-2"></div>
+                      <Check className="h-4 w-4 text-blue-400 flex-shrink-0" />
                     )}
                   </div>
-                  
-                  <div className="flex gap-2 mb-2">
-                    <Badge variant="secondary" className="text-xs font-light px-2 py-0.5 bg-gray-50 text-gray-600 border-0">
+                  <div className="flex gap-2 mb-1.5">
+                    <Badge variant="secondary" className="text-[10px] font-light px-2 py-0.5 bg-white/10 text-muted-foreground border-0 rounded-full">
                       {program.frequency}
                     </Badge>
-                    <Badge variant="secondary" className="text-xs font-light px-2 py-0.5 bg-gray-50 text-gray-600 border-0">
+                    <Badge variant="secondary" className="text-[10px] font-light px-2 py-0.5 bg-white/10 text-muted-foreground border-0 rounded-full">
                       {program.difficulty}
                     </Badge>
                   </div>
-                  
-                  <p className="text-sm text-gray-500 font-light">{program.focus}</p>
+                  <p className="text-xs text-muted-foreground font-light">{program.focus}</p>
                 </div>
               ))}
             </div>

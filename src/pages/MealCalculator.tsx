@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { MealCalculatorWithLivsmedelsDB } from '@/components/MealCalculatorWithLivsmedelsDB';
-import { Navbar } from '@/components/Navbar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
@@ -174,8 +173,7 @@ const MealCalculatorPage = () => {
   };
   
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Måltidsräknare</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-lg">

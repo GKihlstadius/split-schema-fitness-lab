@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import Index from "./pages/Index";
+import Home from "./pages/Home";
+import Workouts from "./pages/Workouts";
+import Progress from "./pages/Progress";
 import NutritionHub from "./pages/NutritionHub";
 import WorkoutDetails from "./pages/WorkoutDetails";
 import Login from "./pages/Login";
@@ -12,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import DirectAuth from "./pages/DirectAuth";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/toaster";
 import { ToastAction } from "./components/ui/toast";
 import { useToast } from "./hooks/use-toast";
@@ -25,10 +28,7 @@ const AuthHashHandler = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Kontrollera om vi har auth tokens i hash på hem-sidan
     if (location.pathname === '/' && location.hash.includes('access_token')) {
-      console.log('🔄 Hittade auth tokens på hem-sidan, omdirigerar till auth callback');
-      // Omdirigera till auth callback med hash
       navigate('/auth/callback' + location.hash, { replace: true });
     }
   }, [location, navigate]);
@@ -38,12 +38,10 @@ const AuthHashHandler = () => {
 
 function App() {
   const { toast } = useToast();
-  const [waitingRegistration, setWaitingRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
     const handler = (event: Event) => {
       const customEvent = event as CustomEvent<ServiceWorkerRegistration>;
-      setWaitingRegistration(customEvent.detail);
 
       toast({
         title: "Ny version finns",
@@ -80,12 +78,21 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
-    
-            
+
             {/* Skyddade routes */}
             <Route path="/" element={
               <ProtectedRoute>
-                <Index />
+                <Home />
+              </ProtectedRoute>
+            } />
+            <Route path="/workouts" element={
+              <ProtectedRoute>
+                <Workouts />
+              </ProtectedRoute>
+            } />
+            <Route path="/progress" element={
+              <ProtectedRoute>
+                <Progress />
               </ProtectedRoute>
             } />
             <Route path="/nutrition" element={
@@ -103,13 +110,14 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
-            
-            {/* Catch-all route för auth */}
+
+            {/* Auth catch-all */}
             <Route path="/auth/*" element={<DirectAuth />} />
-            
-            {/* 404 sida */}
+
+            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <BottomNav />
         </BrowserRouter>
         <Toaster />
       </div>

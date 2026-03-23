@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Navbar } from '@/components/Navbar';
 import { DailyMealPlanner } from '@/components/DailyMealPlanner';
 import { QuickMeals } from '@/components/QuickMeals';
 import { Input } from '@/components/ui/input';
@@ -182,8 +181,7 @@ const DailyMealPlannerPage = () => {
   };
   
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Daglig måltidsplanering</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-lg">

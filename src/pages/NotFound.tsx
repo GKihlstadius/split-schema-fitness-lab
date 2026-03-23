@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { Navbar } from '@/components/Navbar';
 
 const NotFound = () => {
   const location = useLocation();
@@ -11,8 +10,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <div className="flex items-center justify-center min-h-[80vh]">
           <div className="text-center">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '@/components/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,13 +15,13 @@ import {
   saveUserSettings,
   signOut
 } from '@/utils/supabaseAuth';
-import { 
-  User, 
-  Mail, 
-  Calendar, 
-  Users, 
-  Settings, 
-  Trash2, 
+import {
+  User,
+  Mail,
+  Calendar,
+  Users,
+  Settings,
+  Trash2,
   Target,
   Activity,
   Heart,
@@ -31,8 +30,13 @@ import {
   Utensils,
   Dumbbell,
   Award,
-  Calculator
+  Calculator,
+  MapPin,
+  Plus,
+  Loader2
 } from 'lucide-react';
+import { loadGymLocations, removeGymLocation, saveCurrentLocationAsGym } from '@/utils/geolocation';
+import type { GymLocation } from '@/types/gamification';
 import { useNavigate } from 'react-router-dom';
 import {
   AlertDialog,
@@ -81,6 +85,107 @@ interface Preferences {
   progressTracking?: boolean;
   publicProfile?: boolean;
 }
+
+// Gym Location Manager sub-component
+const GymLocationManager = () => {
+  const [gyms, setGyms] = useState<GymLocation[]>([]);
+  const [newGymName, setNewGymName] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setGyms(loadGymLocations());
+  }, []);
+
+  const handleAddCurrentLocation = async () => {
+    if (!newGymName.trim()) return;
+    setSaving(true);
+    try {
+      const gym = await saveCurrentLocationAsGym(newGymName.trim());
+      setGyms(prev => [...prev, gym]);
+      setNewGymName('');
+    } catch (err: any) {
+      console.error('Could not save gym location:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleRemoveGym = (id: string) => {
+    removeGymLocation(id);
+    setGyms(prev => prev.filter(g => g.id !== id));
+  };
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-blue-400" />
+            Mina Gym
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Spara ditt gyms position för att kunna checka in och tjäna XP när du är där.
+          </p>
+
+          {/* Add gym form */}
+          <div className="flex gap-2">
+            <Input
+              placeholder="Gymmets namn, t.ex. 'Nordic Wellness'"
+              value={newGymName}
+              onChange={(e) => setNewGymName(e.target.value)}
+              className="bg-white/5 border-white/10"
+            />
+            <Button
+              onClick={handleAddCurrentLocation}
+              disabled={saving || !newGymName.trim()}
+              className="bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4 mr-1" />}
+              {saving ? 'Sparar...' : 'Spara position'}
+            </Button>
+          </div>
+
+          {/* Saved gyms list */}
+          {gyms.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <p>Inga gym sparade ännu</p>
+              <p className="text-xs mt-1">Gå till ditt gym och spara positionen här</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {gyms.map(gym => (
+                <div key={gym.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <MapPin className="h-4 w-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">{gym.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Radie: {gym.radius}m
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveGym(gym.id)}
+                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -353,8 +458,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <div className="min-h-screen bg-background pb-24">
         <div className="flex items-center justify-center h-64">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
@@ -367,8 +471,7 @@ const Profile = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
+      <div className="min-h-screen bg-background pb-24">
         <div className="flex items-center justify-center h-64">
           <div className="text-center space-y-4">
             <p className="text-lg text-muted-foreground">Ingen användare inloggad</p>
@@ -385,8 +488,7 @@ const Profile = () => {
   const goalProgress = calculateGoalProgress();
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <div className="w-full max-w-6xl">
         <div className="mb-6">
@@ -415,6 +517,10 @@ const Profile = () => {
             <TabsTrigger value="stats">
               <TrendingUp className="w-4 h-4 mr-2" />
               Statistik
+            </TabsTrigger>
+            <TabsTrigger value="gym">
+              <MapPin className="w-4 h-4 mr-2" />
+              Gym
             </TabsTrigger>
           </TabsList>
 
@@ -957,6 +1063,11 @@ const Profile = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Gym-tab */}
+          <TabsContent value="gym" className="space-y-6">
+            <GymLocationManager />
           </TabsContent>
         </Tabs>
         </div>

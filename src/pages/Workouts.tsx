@@ -1,61 +1,54 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgramSelector } from '@/components/ProgramSelector';
 import { ProgramDetail } from '@/components/ProgramDetail';
 import { workoutPrograms } from '@/data/workoutPrograms';
-import { 
-  getCurrentUser, 
-  getUserSetting, 
+import {
+  getCurrentUser,
+  getUserSetting,
   saveUserSetting,
   saveWorkoutProgram
 } from '@/utils/supabaseAuth';
-import { Loader2, Dumbbell, TreePine, Info, Share } from 'lucide-react';
+import { Loader2, Dumbbell, Info, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const Index = () => {
+const Workouts = () => {
   const [selectedProgram, setSelectedProgram] = useState(workoutPrograms[0]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  const formatProgramPlan = useMemo(() => {
-    return (program: typeof workoutPrograms[0]) => {
-      const lines: string[] = [
-        `Program: ${program.name}`,
-        `Mål: ${program.goal}`,
-        `Frekvens: ${program.frequency}`,
-        `Svårighetsgrad: ${program.difficulty}`,
-        `Fokus: ${program.focus}`,
-        `Längd: ${program.duration}`,
-        '',
-        'Veckoplanering:'
-      ];
-
-      program.weeklyPlan.forEach((dayPlan) => {
+  const formatProgramPlan = (program: typeof workoutPrograms[0]) => {
+    const lines: string[] = [
+      `Program: ${program.name}`,
+      `Mål: ${program.goal}`,
+      `Frekvens: ${program.frequency}`,
+      `Svårighetsgrad: ${program.difficulty}`,
+      `Fokus: ${program.focus}`,
+      `Längd: ${program.duration}`,
+      '',
+      'Veckoplanering:'
+    ];
+    program.weeklyPlan.forEach((dayPlan) => {
+      lines.push(
+        `${dayPlan.day} — ${dayPlan.focus}`,
+        `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
+        'Övningar:'
+      );
+      dayPlan.exercises.forEach((exercise, idx) => {
+        const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
+        const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
+        const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
         lines.push(
-          `${dayPlan.day} — ${dayPlan.focus}`,
-          `Muskelgrupper: ${dayPlan.muscleGroups.join(', ')}`,
-          'Övningar:'
+          `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
         );
-
-        dayPlan.exercises.forEach((exercise, idx) => {
-          const tags = exercise.tags?.length ? ` [${exercise.tags.join(', ')}]` : '';
-          const rest = exercise.rest ? ` | Vila: ${exercise.rest}` : '';
-          const notes = exercise.notes ? ` | Anteckning: ${exercise.notes}` : '';
-          lines.push(
-            `${idx + 1}. ${exercise.name} — ${exercise.sets} set × ${exercise.reps}${rest}${tags}${notes}`
-          );
-        });
-
-        lines.push('');
       });
-
-      return lines.join('\n');
-    };
-  }, []);
+      lines.push('');
+    });
+    return lines.join('\n');
+  };
 
   const copyProgramPlan = async () => {
     const text = formatProgramPlan(selectedProgram);
-
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(text);
@@ -68,26 +61,20 @@ const Index = () => {
         document.body.removeChild(textarea);
       }
     } catch (error) {
-      console.error('Kunde inte kopiera träningsschema:', error);
+      console.error('Kunde inte kopiera:', error);
     }
   };
 
-  // Ladda användardata och sparat träningsprogram
   useEffect(() => {
     const loadUserData = async () => {
       try {
         const result = await getCurrentUser();
         if (!result.success || !result.user) return;
-        
         setUser(result.user);
-
-        // Ladda sparat träningsprogram
         const savedProgramId = await getUserSetting(result.user.id, 'selectedWorkoutProgram');
         if (savedProgramId) {
           const savedProgram = workoutPrograms.find(program => program.id === savedProgramId);
-          if (savedProgram) {
-            setSelectedProgram(savedProgram);
-          }
+          if (savedProgram) setSelectedProgram(savedProgram);
         }
       } catch (error) {
         console.error('Error loading user data:', error);
@@ -95,20 +82,14 @@ const Index = () => {
         setLoading(false);
       }
     };
-
     loadUserData();
   }, []);
 
-  // Hantera programval och spara automatiskt
   const handleProgramSelect = async (program: typeof workoutPrograms[0]) => {
     setSelectedProgram(program);
-    
     if (user) {
       try {
-        // Spara inställning
         await saveUserSetting(user.id, 'selectedWorkoutProgram', program.id);
-        
-        // Spara även som aktivt träningsprogram
         await saveWorkoutProgram(user.id, program.id, program.name);
       } catch (error) {
         console.error('Error saving workout program:', error);
@@ -118,12 +99,10 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background pb-24">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-            <p className="text-muted-foreground">Laddar träningsprogram...</p>
-          </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <p className="text-muted-foreground text-sm">Laddar program...</p>
         </div>
       </div>
     );
@@ -131,20 +110,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="w-full max-w-screen-sm mx-auto px-4 py-8 sm:px-6">
-        {/* Centrerad logo ovanför allt */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3">
-            <Dumbbell className="h-14 w-14 text-primary" />
-            <TreePine className="h-14 w-14 text-green-600" aria-label="Julgran" />
+      <div className="w-full max-w-screen-sm mx-auto px-4 pt-6">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+            <Dumbbell className="h-5 w-5 text-blue-400" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Träningsprogram</h1>
+            <p className="text-xs text-muted-foreground">Välj och utforska program</p>
           </div>
         </div>
-        
-        {/* Top row: centrerad dropdown + info/export ikoner */}
+
+        {/* Program Selector */}
         <div className="mb-4 w-full flex justify-center">
           <div className="max-w-md w-full flex items-center gap-2">
             <div className="flex-1">
-              <ProgramSelector 
+              <ProgramSelector
                 programs={workoutPrograms}
                 selectedProgram={selectedProgram}
                 onSelectProgram={handleProgramSelect}
@@ -153,17 +135,17 @@ const Index = () => {
             <Button
               variant="outline"
               size="icon"
-              className="h-10 w-10 rounded-full border-border"
-              aria-label="Visa information om programmet"
-              onClick={() => setShowInfo((prev) => !prev)}
+              className="h-10 w-10 rounded-full border-white/10 bg-white/5 hover:bg-white/10"
+              aria-label="Visa information"
+              onClick={() => setShowInfo(prev => !prev)}
             >
               <Info className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              className="h-10 w-10 rounded-full border-border"
-              aria-label="Exportera schema"
+              className="h-10 w-10 rounded-full border-white/10 bg-white/5 hover:bg-white/10"
+              aria-label="Exportera"
               onClick={copyProgramPlan}
             >
               <Share className="h-4 w-4" />
@@ -171,18 +153,18 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Info card under raden */}
+        {/* Info card */}
         {showInfo && (
           <div className="mb-4 max-w-md mx-auto w-full">
-            <div className="rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground space-y-1">
-              <p>{selectedProgram.goal} • {selectedProgram.frequency} • {selectedProgram.difficulty}</p>
+            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-3 text-sm text-muted-foreground space-y-1">
+              <p>{selectedProgram.goal} &middot; {selectedProgram.frequency} &middot; {selectedProgram.difficulty}</p>
               {selectedProgram.focus && <p className="text-foreground">{selectedProgram.focus}</p>}
               {selectedProgram.description && <p>{selectedProgram.description}</p>}
             </div>
           </div>
         )}
-        
-        {/* Centrerat träningsprogram */}
+
+        {/* Program Detail */}
         <div className="w-full">
           <ProgramDetail program={selectedProgram} />
         </div>
@@ -191,4 +173,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Workouts;
