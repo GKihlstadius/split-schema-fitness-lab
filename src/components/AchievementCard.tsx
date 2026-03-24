@@ -13,10 +13,10 @@ interface AchievementCardProps {
 }
 
 const categoryColors: Record<string, { bg: string; border: string; text: string }> = {
-  consistency: { bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400' },
+  consistency: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
   strength: { bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400' },
   volume: { bg: 'bg-purple-500/10', border: 'border-purple-500/20', text: 'text-purple-400' },
-  explorer: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', text: 'text-emerald-400' },
+  explorer: { bg: 'bg-emerald-500/10', border: 'border-emerald-200', text: 'text-emerald-600' },
 };
 
 const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
@@ -28,12 +28,12 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
       className={`rounded-2xl border p-3.5 transition-all ${
         isUnlocked
           ? `${colors.bg} ${colors.border}`
-          : 'border-white/10 bg-white/[0.03] opacity-50'
+          : 'border-gray-100 bg-gray-50 opacity-50'
       }`}
     >
       <div className="flex items-center gap-3">
         <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xl ${
-          isUnlocked ? 'bg-white/10' : 'bg-white/5'
+          isUnlocked ? 'bg-gray-100' : 'bg-gray-50'
         }`}>
           {isUnlocked ? (
             <span>{achievement.icon}</span>

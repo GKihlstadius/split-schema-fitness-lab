@@ -118,10 +118,10 @@ const GymLocationManager = () => {
 
   return (
     <div className="space-y-4">
-      <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+      <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-foreground">
-            <MapPin className="h-5 w-5 text-blue-400" />
+            <MapPin className="h-5 w-5 text-emerald-600" />
             Mina Gym
           </CardTitle>
         </CardHeader>
@@ -136,12 +136,12 @@ const GymLocationManager = () => {
               placeholder="Gymmets namn, t.ex. 'Nordic Wellness'"
               value={newGymName}
               onChange={(e) => setNewGymName(e.target.value)}
-              className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+              className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
             />
             <Button
               onClick={handleAddCurrentLocation}
               disabled={saving || !newGymName.trim()}
-              className="bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap rounded-xl"
+              className="bg-gray-900 hover:bg-gray-800 text-white whitespace-nowrap rounded-xl"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4 mr-1" />}
               {saving ? 'Sparar...' : 'Spara position'}
@@ -158,10 +158,10 @@ const GymLocationManager = () => {
           ) : (
             <div className="space-y-2">
               {gyms.map(gym => (
-                <div key={gym.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                <div key={gym.id} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                      <MapPin className="h-4 w-4 text-blue-400" />
+                    <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                      <MapPin className="h-4 w-4 text-emerald-600" />
                     </div>
                     <div>
                       <p className="font-medium text-sm text-foreground">{gym.name}</p>
@@ -174,7 +174,7 @@ const GymLocationManager = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveGym(gym.id)}
-                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                    className="text-red-600 hover:text-red-500 hover:bg-red-50"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -443,10 +443,10 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0F] pb-24">
+      <div className="min-h-screen bg-white pb-24">
         <div className="flex items-center justify-center h-64">
           <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
             <p className="text-muted-foreground">Laddar profil...</p>
           </div>
         </div>
@@ -456,7 +456,7 @@ const Profile = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-[#0A0A0F] pb-24">
+      <div className="min-h-screen bg-white pb-24">
         <div className="flex items-center justify-center h-64">
           <div className="text-center space-y-4">
             <p className="text-lg text-muted-foreground">Ingen användare inloggad</p>
@@ -476,13 +476,13 @@ const Profile = () => {
   const userInitial = currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] pb-24">
+    <div className="min-h-screen bg-white pb-24">
       <div className="flex flex-col items-center px-4 sm:px-6 py-8">
         <div className="w-full max-w-6xl space-y-6">
 
           {/* Profile Header */}
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-blue-500/20">
+            <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center text-white text-xl font-bold shadow-sm">
               {userInitial}
             </div>
             <div>
@@ -492,28 +492,28 @@ const Profile = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="bg-white/5 border border-white/10 rounded-2xl p-1 grid w-full grid-cols-3 sm:grid-cols-6 gap-1 h-auto">
-              <TabsTrigger value="account" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+            <TabsList className="bg-gray-50 border border-gray-100 rounded-2xl p-1 grid w-full grid-cols-3 sm:grid-cols-6 gap-1 h-auto">
+              <TabsTrigger value="account" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <User className="w-4 h-4 mr-1.5" />
                 Konto
               </TabsTrigger>
-              <TabsTrigger value="personal" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+              <TabsTrigger value="personal" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <Heart className="w-4 h-4 mr-1.5" />
                 Personligt
               </TabsTrigger>
-              <TabsTrigger value="fitness" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+              <TabsTrigger value="fitness" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <Dumbbell className="w-4 h-4 mr-1.5" />
                 Träning
               </TabsTrigger>
-              <TabsTrigger value="nutrition" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+              <TabsTrigger value="nutrition" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <Utensils className="w-4 h-4 mr-1.5" />
                 Kost
               </TabsTrigger>
-              <TabsTrigger value="stats" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+              <TabsTrigger value="stats" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <TrendingUp className="w-4 h-4 mr-1.5" />
                 Statistik
               </TabsTrigger>
-              <TabsTrigger value="gym" className="rounded-xl data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/20 text-muted-foreground text-xs sm:text-sm py-2">
+              <TabsTrigger value="gym" className="rounded-xl data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm text-muted-foreground text-xs sm:text-sm py-2">
                 <MapPin className="w-4 h-4 mr-1.5" />
                 Gym
               </TabsTrigger>
@@ -523,10 +523,10 @@ const Profile = () => {
             <TabsContent value="account" className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Grundlaggande kontoinformation */}
-                <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+                <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <User className="h-5 w-5 text-blue-400" />
+                      <User className="h-5 w-5 text-emerald-600" />
                       Kontoinformation
                     </CardTitle>
                   </CardHeader>
@@ -549,19 +549,19 @@ const Profile = () => {
 
                     <div className="space-y-2">
                       <Label className="text-muted-foreground text-xs uppercase tracking-wider">Användar-ID</Label>
-                      <div className="text-sm text-muted-foreground font-mono bg-white/5 px-3 py-1.5 rounded-lg inline-block">
+                      <div className="text-sm text-muted-foreground font-mono bg-gray-50 px-3 py-1.5 rounded-lg inline-block">
                         {currentUser.id.substring(0, 8)}...
                       </div>
                     </div>
 
                     {message && (
-                      <Alert className="border-green-500/20 bg-green-500/10 text-green-400 rounded-xl">
+                      <Alert className="border-emerald-200 bg-emerald-50 text-emerald-700 rounded-xl">
                         <AlertDescription>{message}</AlertDescription>
                       </Alert>
                     )}
 
                     {error && (
-                      <Alert className="border-red-500/20 bg-red-500/10 text-red-400 rounded-xl">
+                      <Alert className="border-red-200 bg-red-50 text-red-700 rounded-xl">
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
                     )}
@@ -569,10 +569,10 @@ const Profile = () => {
                 </Card>
 
                 {/* Kontostatus */}
-                <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+                <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Award className="h-5 w-5 text-blue-400" />
+                      <Award className="h-5 w-5 text-emerald-600" />
                       Kontostatus
                     </CardTitle>
                   </CardHeader>
@@ -580,7 +580,7 @@ const Profile = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Status</span>
-                        <Badge className="bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20">Aktiv</Badge>
+                        <Badge className="bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100">Aktiv</Badge>
                       </div>
 
                       <div className="flex justify-between items-center">
@@ -591,15 +591,15 @@ const Profile = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-white/10">
+                    <div className="pt-4 border-t border-gray-100">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-red-500/20 rounded-xl">
+                          <Button variant="ghost" size="sm" className="w-full text-red-600 hover:text-red-500 hover:bg-red-50 border border-red-200 rounded-xl">
                             <LogOut className="mr-2 h-4 w-4" />
                             Logga ut
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-[#0A0A0F] border-white/10 rounded-2xl">
+                        <AlertDialogContent className="bg-white border-gray-200 rounded-2xl">
                           <AlertDialogHeader>
                             <AlertDialogTitle className="text-foreground">Logga ut?</AlertDialogTitle>
                             <AlertDialogDescription className="text-muted-foreground">
@@ -607,7 +607,7 @@ const Profile = () => {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel className="bg-white/5 border-white/10 text-foreground hover:bg-white/10 rounded-xl">Avbryt</AlertDialogCancel>
+                            <AlertDialogCancel className="bg-gray-50 border-gray-200 text-foreground hover:bg-gray-100 rounded-xl">Avbryt</AlertDialogCancel>
                             <AlertDialogAction onClick={handleDeleteAccount} className="bg-red-500 hover:bg-red-600 text-white rounded-xl">
                               Logga ut
                             </AlertDialogAction>
@@ -622,10 +622,10 @@ const Profile = () => {
 
             {/* Personlig information tab */}
             <TabsContent value="personal" className="space-y-6">
-              <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+              <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-foreground">
-                    <Heart className="h-5 w-5 text-blue-400" />
+                    <Heart className="h-5 w-5 text-emerald-600" />
                     Personlig Information
                   </CardTitle>
                 </CardHeader>
@@ -639,7 +639,7 @@ const Profile = () => {
                         value={personalInfo.age || ''}
                         onChange={(e) => setPersonalInfo(prev => ({ ...prev, age: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 25"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -651,7 +651,7 @@ const Profile = () => {
                         value={personalInfo.height || ''}
                         onChange={(e) => setPersonalInfo(prev => ({ ...prev, height: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 175"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -663,7 +663,7 @@ const Profile = () => {
                         value={personalInfo.weight || ''}
                         onChange={(e) => setPersonalInfo(prev => ({ ...prev, weight: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 70"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -675,7 +675,7 @@ const Profile = () => {
                         value={personalInfo.bodyFat || ''}
                         onChange={(e) => setPersonalInfo(prev => ({ ...prev, bodyFat: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 15"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -685,12 +685,12 @@ const Profile = () => {
                         value={personalInfo.activityLevel || ''}
                         onValueChange={(value) => setPersonalInfo(prev => ({ ...prev, activityLevel: value }))}
                       >
-                        <SelectTrigger className="bg-white/5 border-white/10 rounded-xl text-foreground">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-foreground">
                           <SelectValue placeholder="Välj aktivitetsnivå" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#1A1A2F] border-white/10 rounded-xl">
+                        <SelectContent className="bg-white border-gray-200 rounded-xl shadow-sm">
                           {Object.entries(activityLevels).map(([key, label]) => (
-                            <SelectItem key={key} value={key} className="text-foreground hover:bg-white/10 focus:bg-white/10 focus:text-foreground">{label}</SelectItem>
+                            <SelectItem key={key} value={key} className="text-foreground hover:bg-gray-100 focus:bg-gray-100 focus:text-foreground">{label}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -702,12 +702,12 @@ const Profile = () => {
                         value={personalInfo.fitnessLevel || ''}
                         onValueChange={(value) => setPersonalInfo(prev => ({ ...prev, fitnessLevel: value }))}
                       >
-                        <SelectTrigger className="bg-white/5 border-white/10 rounded-xl text-foreground">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-foreground">
                           <SelectValue placeholder="Välj träningsnivå" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#1A1A2F] border-white/10 rounded-xl">
+                        <SelectContent className="bg-white border-gray-200 rounded-xl shadow-sm">
                           {Object.entries(fitnessLevels).map(([key, label]) => (
-                            <SelectItem key={key} value={key} className="text-foreground hover:bg-white/10 focus:bg-white/10 focus:text-foreground">{label}</SelectItem>
+                            <SelectItem key={key} value={key} className="text-foreground hover:bg-gray-100 focus:bg-gray-100 focus:text-foreground">{label}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -716,38 +716,38 @@ const Profile = () => {
 
                   {/* Hälsoindikatorer */}
                   {(bmi || bmr || hormoziCalories) && (
-                    <div className="pt-4 border-t border-white/10">
+                    <div className="pt-4 border-t border-gray-100">
                       <h4 className="font-medium mb-3 text-foreground">Hälsoindikatorer (Hormozi-modellen)</h4>
                       <div className="grid gap-3 md:grid-cols-4">
                         {bmi && (
-                          <div className="text-center p-3 bg-white/5 border border-white/10 rounded-xl">
-                            <div className="text-2xl font-bold text-blue-400">{bmi}</div>
+                          <div className="text-center p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                            <div className="text-2xl font-bold text-emerald-600">{bmi}</div>
                             <div className="text-sm text-muted-foreground">BMI</div>
                           </div>
                         )}
                         {bmr && (
-                          <div className="text-center p-3 bg-white/5 border border-white/10 rounded-xl">
-                            <div className="text-2xl font-bold text-blue-400">{bmr}</div>
+                          <div className="text-center p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                            <div className="text-2xl font-bold text-emerald-600">{bmr}</div>
                             <div className="text-sm text-muted-foreground">BMR (12x)</div>
                           </div>
                         )}
                         {hormoziCalories && (
-                          <div className="text-center p-3 bg-white/5 border border-white/10 rounded-xl">
-                            <div className="text-2xl font-bold text-blue-400">{hormoziCalories}</div>
+                          <div className="text-center p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                            <div className="text-2xl font-bold text-emerald-600">{hormoziCalories}</div>
                             <div className="text-sm text-muted-foreground">Rekommenderat</div>
                           </div>
                         )}
                         {personalInfo.weight && (
-                          <div className="text-center p-3 bg-white/5 border border-white/10 rounded-xl">
-                            <div className="text-2xl font-bold text-blue-400">{personalInfo.weight}</div>
+                          <div className="text-center p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                            <div className="text-2xl font-bold text-emerald-600">{personalInfo.weight}</div>
                             <div className="text-sm text-muted-foreground">Vikt (kg)</div>
                           </div>
                         )}
                       </div>
 
                       {personalInfo.weight && personalInfo.activityLevel && (
-                        <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                          <div className="text-sm text-blue-400">
+                        <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+                          <div className="text-sm text-emerald-600">
                             <strong>Hormozi-formel:</strong> {Math.round(personalInfo.weight * 2.20462)} lbs x {
                               personalInfo.activityLevel === 'sedentary' ? '12' :
                               personalInfo.activityLevel === 'light' ? '13' :
@@ -761,7 +761,7 @@ const Profile = () => {
                     </div>
                   )}
 
-                  <Button onClick={handleSave} className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl">
+                  <Button onClick={handleSave} className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl">
                     Spara personlig information
                   </Button>
                 </CardContent>
@@ -770,10 +770,10 @@ const Profile = () => {
 
             {/* Träningsmål tab */}
             <TabsContent value="fitness" className="space-y-6">
-              <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+              <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-foreground">
-                    <Target className="h-5 w-5 text-blue-400" />
+                    <Target className="h-5 w-5 text-emerald-600" />
                     Träningsmaal
                   </CardTitle>
                 </CardHeader>
@@ -785,12 +785,12 @@ const Profile = () => {
                         value={fitnessGoals.primaryGoal || ''}
                         onValueChange={(value) => setFitnessGoals(prev => ({ ...prev, primaryGoal: value }))}
                       >
-                        <SelectTrigger className="bg-white/5 border-white/10 rounded-xl text-foreground">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-foreground">
                           <SelectValue placeholder="Välj ditt primära mål" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#1A1A2F] border-white/10 rounded-xl">
+                        <SelectContent className="bg-white border-gray-200 rounded-xl shadow-sm">
                           {Object.entries(primaryGoals).map(([key, label]) => (
-                            <SelectItem key={key} value={key} className="text-foreground hover:bg-white/10 focus:bg-white/10 focus:text-foreground">{label}</SelectItem>
+                            <SelectItem key={key} value={key} className="text-foreground hover:bg-gray-100 focus:bg-gray-100 focus:text-foreground">{label}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -804,7 +804,7 @@ const Profile = () => {
                         value={fitnessGoals.targetWeight || ''}
                         onChange={(e) => setFitnessGoals(prev => ({ ...prev, targetWeight: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 75"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -816,7 +816,7 @@ const Profile = () => {
                         value={fitnessGoals.targetBodyFat || ''}
                         onChange={(e) => setFitnessGoals(prev => ({ ...prev, targetBodyFat: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 12"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -828,7 +828,7 @@ const Profile = () => {
                         value={fitnessGoals.weeklyWorkouts || ''}
                         onChange={(e) => setFitnessGoals(prev => ({ ...prev, weeklyWorkouts: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 4"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
                   </div>
@@ -856,7 +856,7 @@ const Profile = () => {
                                 }));
                               }
                             }}
-                            className="rounded accent-blue-500"
+                            className="rounded accent-emerald-600"
                           />
                           <Label htmlFor={type} className="text-sm text-foreground">{type}</Label>
                         </div>
@@ -866,7 +866,7 @@ const Profile = () => {
 
                   {/* Framsteg mot mål */}
                   {goalProgress > 0 && (
-                    <div className="pt-4 border-t border-white/10">
+                    <div className="pt-4 border-t border-gray-100">
                       <div className="flex justify-between items-center mb-2">
                         <Label className="text-muted-foreground">Framsteg mot viktmål</Label>
                         <span className="text-sm font-medium text-foreground">{goalProgress}%</span>
@@ -875,7 +875,7 @@ const Profile = () => {
                     </div>
                   )}
 
-                  <Button onClick={handleSave} className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl">
+                  <Button onClick={handleSave} className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl">
                     Spara träningsmål
                   </Button>
                 </CardContent>
@@ -884,10 +884,10 @@ const Profile = () => {
 
             {/* Kostmål tab */}
             <TabsContent value="nutrition" className="space-y-6">
-              <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+              <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-foreground">
-                    <Utensils className="h-5 w-5 text-blue-400" />
+                    <Utensils className="h-5 w-5 text-emerald-600" />
                     Kostmål
                   </CardTitle>
                 </CardHeader>
@@ -901,7 +901,7 @@ const Profile = () => {
                         value={nutritionGoals.dailyCalories || ''}
                         onChange={(e) => setNutritionGoals(prev => ({ ...prev, dailyCalories: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 2000"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -913,7 +913,7 @@ const Profile = () => {
                         value={nutritionGoals.dailyProtein || ''}
                         onChange={(e) => setNutritionGoals(prev => ({ ...prev, dailyProtein: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 150"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -925,7 +925,7 @@ const Profile = () => {
                         value={nutritionGoals.dailyCarbs || ''}
                         onChange={(e) => setNutritionGoals(prev => ({ ...prev, dailyCarbs: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 200"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -937,7 +937,7 @@ const Profile = () => {
                         value={nutritionGoals.dailyFat || ''}
                         onChange={(e) => setNutritionGoals(prev => ({ ...prev, dailyFat: parseInt(e.target.value) || undefined }))}
                         placeholder="t.ex. 70"
-                        className="bg-white/5 border-white/10 rounded-xl text-foreground placeholder:text-muted-foreground"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
 
@@ -947,12 +947,12 @@ const Profile = () => {
                         value={nutritionGoals.dietType || ''}
                         onValueChange={(value) => setNutritionGoals(prev => ({ ...prev, dietType: value }))}
                       >
-                        <SelectTrigger className="bg-white/5 border-white/10 rounded-xl text-foreground">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-foreground">
                           <SelectValue placeholder="Välj kosttyp" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#1A1A2F] border-white/10 rounded-xl">
+                        <SelectContent className="bg-white border-gray-200 rounded-xl shadow-sm">
                           {Object.entries(dietTypes).map(([key, label]) => (
-                            <SelectItem key={key} value={key} className="text-foreground hover:bg-white/10 focus:bg-white/10 focus:text-foreground">{label}</SelectItem>
+                            <SelectItem key={key} value={key} className="text-foreground hover:bg-gray-100 focus:bg-gray-100 focus:text-foreground">{label}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -961,7 +961,7 @@ const Profile = () => {
 
                   {/* Synka med kalorieuträknaren */}
                   {personalInfo.weight && personalInfo.activityLevel && (
-                    <div className="pt-4 border-t border-white/10">
+                    <div className="pt-4 border-t border-gray-100">
                       <div className="flex items-center justify-between mb-2">
                         <div>
                           <h4 className="font-medium text-foreground">Hormozi Kalorieuträknare</h4>
@@ -969,7 +969,7 @@ const Profile = () => {
                             Synka dina kostmål med kalorieuträknaren baserat på din vikt och aktivitetsnivå
                           </p>
                         </div>
-                        <Button onClick={syncWithCalorieCalculator} variant="outline" className="bg-white/5 border-white/10 text-foreground hover:bg-white/10 rounded-xl">
+                        <Button onClick={syncWithCalorieCalculator} variant="outline" className="bg-gray-50 border-gray-200 text-foreground hover:bg-gray-100 rounded-xl">
                           <Calculator className="w-4 h-4 mr-2" />
                           Synka
                         </Button>
@@ -982,7 +982,7 @@ const Profile = () => {
                     </div>
                   )}
 
-                  <Button onClick={handleSave} className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl">
+                  <Button onClick={handleSave} className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl">
                     Spara kostmål
                   </Button>
                 </CardContent>
@@ -995,10 +995,10 @@ const Profile = () => {
               <WorkoutLogHistory userId={currentUser?.id} />
 
               <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+                <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <TrendingUp className="h-5 w-5 text-blue-400" />
+                      <TrendingUp className="h-5 w-5 text-emerald-600" />
                       Framsteg & Statistik
                     </CardTitle>
                   </CardHeader>
@@ -1026,7 +1026,7 @@ const Profile = () => {
                     </div>
 
                     {goalProgress > 0 && (
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-gray-100">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm text-muted-foreground">Framsteg mot mål</span>
                           <span className="font-medium text-foreground">{goalProgress}%</span>
@@ -1037,10 +1037,10 @@ const Profile = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border-white/10 bg-white/5 rounded-2xl backdrop-blur-sm">
+                <Card className="border-gray-100 bg-white rounded-2xl shadow-sm">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Activity className="h-5 w-5 text-blue-400" />
+                      <Activity className="h-5 w-5 text-emerald-600" />
                       Aktivitetsöversikt
                     </CardTitle>
                   </CardHeader>

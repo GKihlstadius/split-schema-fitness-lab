@@ -30,7 +30,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
       <div className="flex flex-col items-center gap-2">
         <button
           disabled
-          className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-700"
+          className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100"
         >
           <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
         </button>
@@ -56,9 +56,9 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
       <div className="flex flex-col items-center gap-2">
         <button
           onClick={onCheckIn}
-          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gray-900 shadow-lg transition-transform hover:scale-105 active:scale-95"
         >
-          <span className="absolute inset-0 animate-ping rounded-full bg-blue-500/30" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-gray-900/20" />
           <div className="flex flex-col items-center">
             <MapPin className="h-7 w-7 text-white" />
             <span className="mt-0.5 text-xs font-bold uppercase tracking-wider text-white">
@@ -67,7 +67,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
           </div>
         </button>
         {gymName && (
-          <p className="text-sm font-medium text-white">{gymName}</p>
+          <p className="text-sm font-medium text-gray-900">{gymName}</p>
         )}
         {distance !== null && (
           <p className="text-xs text-gray-400">{formatDistance(distance)} bort</p>
@@ -80,13 +80,13 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
     <div className="flex flex-col items-center gap-2">
       <button
         disabled
-        className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-800 ring-1 ring-gray-700"
+        className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 ring-1 ring-gray-200"
       >
-        <MapPin className="h-7 w-7 text-gray-500" />
+        <MapPin className="h-7 w-7 text-gray-400" />
       </button>
       <p className="text-sm text-gray-500">Inget gym i närheten</p>
       {distance !== null && (
-        <p className="text-xs text-gray-600">
+        <p className="text-xs text-gray-400">
           Närmaste gym: {formatDistance(distance)}
         </p>
       )}

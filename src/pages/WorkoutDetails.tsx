@@ -3,128 +3,138 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { workoutPrograms } from '@/data/workoutPrograms';
 import { ArrowLeft, Dumbbell, RefreshCcw } from 'lucide-react';
-import { Exercise } from '@/types/workout';
+import { Exercise, WorkoutProgram } from '@/types/workout';
+import { getCurrentUser, getUserSetting } from '@/utils/supabaseAuth';
 
 const WorkoutDetails = () => {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [dayFocus, setDayFocus] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Hitta träningsdagen baserat på URL-parametern
     if (!day) return;
-    
-    // Sök igenom alla program för att hitta den specifika dagen
-    for (const program of workoutPrograms) {
+
+    const loadExercises = async () => {
+      let program: WorkoutProgram = workoutPrograms[0];
+
+      // Try to load the user's selected program
+      try {
+        const result = await getCurrentUser();
+        if (result.success && result.user) {
+          const savedProgramId = await getUserSetting(result.user.id, 'selectedWorkoutProgram');
+          if (savedProgramId) {
+            const found = workoutPrograms.find(p => p.id === savedProgramId);
+            if (found) program = found;
+          }
+        }
+      } catch {
+        // Fall back to first program
+      }
+
       const foundDay = program.weeklyPlan.find(d => d.day === day);
       if (foundDay) {
         setExercises(foundDay.exercises);
-        break;
+        setDayFocus(foundDay.focus);
       }
-    }
+      setLoading(false);
+    };
+
+    loadExercises();
   }, [day]);
 
-  // Funktion för att generera nya slumpmässiga övningar
   const regenerateExercises = () => {
-    if (!day) return;
-    
-    // Hitta programmet och dagen
-    for (const program of workoutPrograms) {
-      const foundDayIndex = program.weeklyPlan.findIndex(d => d.day === day);
-      if (foundDayIndex >= 0) {
-        const foundDay = program.weeklyPlan[foundDayIndex];
-        
-        // Uppdatera övningar med slumpmässiga alternativ
-        const updatedExercises = foundDay.exercises.map(exercise => {
-          if (exercise.alternatives && exercise.alternatives.length > 0) {
-            const randomIndex = Math.floor(Math.random() * exercise.alternatives.length);
-            return {
-              ...exercise,
-              name: exercise.alternatives[randomIndex]
-            };
-          }
-          return exercise;
-        });
-        
-        setExercises(updatedExercises);
-        break;
-      }
-    }
+    setExercises(prev =>
+      prev.map(exercise => {
+        if (exercise.alternatives && exercise.alternatives.length > 0) {
+          const idx = Math.floor(Math.random() * exercise.alternatives.length);
+          return { ...exercise, name: exercise.alternatives[idx] };
+        }
+        return exercise;
+      })
+    );
   };
 
-  // Hitta dagens namn
-  const getDayName = () => {
-    if (!day) return 'Träningsdag';
-    
-    for (const program of workoutPrograms) {
-      const foundDay = program.weeklyPlan.find(d => d.day === day);
-      if (foundDay) {
-        return foundDay.day;
-      }
-    }
-    
-    return 'Träningsdag';
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background pb-24 flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center gap-3">
+          <Dumbbell className="h-8 w-8 text-gray-300" />
+          <p className="text-muted-foreground text-sm">Laddar övningar...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="flex flex-col items-center px-6 py-8">
-        <div className="w-full max-w-4xl">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" onClick={() => navigate('/workouts')}>
-              <ArrowLeft className="h-5 w-5" />
+      <div className="w-full max-w-screen-sm mx-auto px-5 pt-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-xl border-gray-200 h-10 w-10"
+              onClick={() => navigate('/workouts')}
+            >
+              <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-3xl font-bold">{getDayName()}</h1>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">{day}</h1>
+              {dayFocus && <p className="text-xs text-muted-foreground">{dayFocus}</p>}
+            </div>
           </div>
-          <Button 
-            variant="outline" 
-            className="flex items-center gap-2"
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-xl border-gray-200 text-sm"
             onClick={regenerateExercises}
           >
-            <RefreshCcw className="h-4 w-4" />
-            <span className="hidden sm:inline">Slumpa övningar</span>
+            <RefreshCcw className="h-3.5 w-3.5 mr-1.5" />
+            Slumpa
           </Button>
         </div>
-        
-        <div className="space-y-6">
+
+        {/* Exercises */}
+        <div className="space-y-3">
           {exercises.map((exercise, index) => (
-            <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-medium">
+            <div key={index} className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-semibold">
                   {index + 1}
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{exercise.name}</h3>
+                <h3 className="text-base font-semibold text-foreground">{exercise.name}</h3>
               </div>
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="bg-white/5 rounded-xl p-3">
-                  <div className="text-xs text-muted-foreground mb-1">Set</div>
-                  <div className="font-medium text-foreground">{exercise.sets}</div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="bg-gray-50 rounded-xl p-2.5">
+                  <div className="text-[10px] text-muted-foreground mb-0.5">Set</div>
+                  <div className="text-sm font-semibold text-foreground">{exercise.sets}</div>
                 </div>
-                <div className="bg-white/5 rounded-xl p-3">
-                  <div className="text-xs text-muted-foreground mb-1">Reps</div>
-                  <div className="font-medium text-foreground">{exercise.reps}</div>
+                <div className="bg-gray-50 rounded-xl p-2.5">
+                  <div className="text-[10px] text-muted-foreground mb-0.5">Reps</div>
+                  <div className="text-sm font-semibold text-foreground">{exercise.reps}</div>
                 </div>
-                <div className="bg-white/5 rounded-xl p-3">
-                  <div className="text-xs text-muted-foreground mb-1">Vila</div>
-                  <div className="font-medium text-foreground">{exercise.notes || '-'}</div>
+                <div className="bg-gray-50 rounded-xl p-2.5">
+                  <div className="text-[10px] text-muted-foreground mb-0.5">Vila</div>
+                  <div className="text-sm font-semibold text-foreground">{exercise.rest || '-'}</div>
                 </div>
               </div>
             </div>
           ))}
-          
+
           {exercises.length === 0 && (
-            <div className="text-center py-16 bg-white/5 border border-white/10 rounded-2xl">
-              <Dumbbell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">Inga övningar hittades</h3>
-              <p className="text-muted-foreground">Det finns inga övningar för denna dag.</p>
+            <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl shadow-sm">
+              <Dumbbell className="h-10 w-10 mx-auto text-gray-300 mb-3" />
+              <h3 className="text-base font-medium text-foreground mb-1">Inga övningar hittades</h3>
+              <p className="text-sm text-muted-foreground">Det finns inga övningar för denna dag.</p>
             </div>
           )}
-        </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default WorkoutDetails; 
+export default WorkoutDetails;

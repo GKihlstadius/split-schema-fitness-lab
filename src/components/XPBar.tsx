@@ -21,10 +21,10 @@ export const XPBar: React.FC<XPBarProps> = ({
   const fmt = (n: number) => n.toLocaleString('sv-SE');
 
   return (
-    <div className="w-full rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm p-4">
+    <div className="w-full rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-500 shadow-lg shadow-blue-500/20">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-900 shadow-sm">
             <span className="text-lg font-bold text-white">{level}</span>
           </div>
           <div>
@@ -40,9 +40,9 @@ export const XPBar: React.FC<XPBarProps> = ({
         </div>
       </div>
 
-      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-white/10">
+      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-gray-100">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-700 ease-out"
+          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 transition-all duration-700 ease-out"
           style={{ width: `${clampedProgress * 100}%` }}
         />
       </div>

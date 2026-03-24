@@ -93,7 +93,7 @@ const Login = () => {
       <div className="w-full max-w-sm px-6">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-2xl bg-gray-900 flex items-center justify-center mx-auto mb-4">
             <Dumbbell className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">GymQuest</h1>
@@ -101,7 +101,7 @@ const Login = () => {
         </div>
 
         {/* Form Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 space-y-5">
+        <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 space-y-5">
           <div className="text-center mb-2">
             <h2 className="text-xl font-semibold text-foreground">
               {isRegistering ? 'Skapa konto' : 'Logga in'}
@@ -112,16 +112,16 @@ const Login = () => {
           </div>
 
           {error && (
-            <Alert variant="destructive" className="bg-red-500/10 border-red-500/20">
+            <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-700">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription className="ml-2">{error}</AlertDescription>
             </Alert>
           )}
 
           {success && (
-            <Alert className="border-green-500/20 bg-green-500/10">
-              <CheckCircle className="h-4 w-4 text-green-400" />
-              <AlertDescription className="text-green-300 ml-2">{success}</AlertDescription>
+            <Alert className="border-emerald-200 bg-emerald-50">
+              <CheckCircle className="h-4 w-4 text-emerald-700" />
+              <AlertDescription className="text-emerald-700 ml-2">{success}</AlertDescription>
             </Alert>
           )}
 
@@ -137,7 +137,7 @@ const Login = () => {
                   placeholder="din@email.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="pl-10 bg-white/5 border-white/10 focus:border-blue-500/50 rounded-xl h-11"
+                  className="pl-10 bg-gray-50 border-gray-200 focus:border-emerald-300 rounded-xl h-11"
                   disabled={isLoading}
                 />
               </div>
@@ -153,7 +153,7 @@ const Login = () => {
                   placeholder="Minst 6 tecken"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="pr-10 bg-white/5 border-white/10 focus:border-blue-500/50 rounded-xl h-11"
+                  className="pr-10 bg-gray-50 border-gray-200 focus:border-emerald-300 rounded-xl h-11"
                   disabled={isLoading}
                 />
                 <Button
@@ -178,7 +178,7 @@ const Login = () => {
                   placeholder="Upprepa lösenord"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="bg-white/5 border-white/10 focus:border-blue-500/50 rounded-xl h-11"
+                  className="bg-gray-50 border-gray-200 focus:border-emerald-300 rounded-xl h-11"
                   disabled={isLoading}
                 />
               </div>
@@ -187,7 +187,7 @@ const Login = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-11 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium"
+              className="w-full h-11 rounded-xl bg-gray-900 hover:bg-gray-800 text-white font-medium"
               size="lg"
             >
               {isLoading ? 'Bearbetar...' : (isRegistering ? 'Skapa konto' : 'Logga in')}
@@ -196,19 +196,19 @@ const Login = () => {
 
           {!isRegistering && (
             <div className="text-center">
-              <Button asChild variant="link" className="text-sm text-muted-foreground hover:text-blue-400">
+              <Button asChild variant="link" className="text-sm text-muted-foreground hover:text-emerald-600">
                 <Link to="/forgot-password">Glömt lösenord?</Link>
               </Button>
             </div>
           )}
 
-          <div className="text-center pt-2 border-t border-white/10">
+          <div className="text-center pt-2 border-t border-gray-100">
             <Button
               type="button"
               variant="link"
               onClick={toggleAuthMode}
               disabled={isLoading}
-              className="text-sm text-blue-400 hover:text-blue-300"
+              className="text-sm text-emerald-600 hover:text-emerald-500"
             >
               {isRegistering
                 ? 'Har du redan ett konto? Logga in'

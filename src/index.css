@@ -3,159 +3,76 @@
 @tailwind utilities;
 
 /* =============================================================================
-   Cal AI-Inspired Dark-First Design System
-   Fitness Lab — Deep black, electric accents, glass-morphism
+   Cal AI-Inspired Light Design System
+   GymQuest — Clean white, subtle shadows, green accents, premium minimal
    ============================================================================= */
 
 @layer base {
-  /* Dark theme is the DEFAULT (gym-goers prefer dark mode) */
   :root {
-    /* Background hierarchy: deep black → charcoal */
-    --background: 240 20% 4%;          /* #0A0A0F */
-    --foreground: 0 0% 95%;            /* near-white */
+    --background: 0 0% 98%;              /* #FAFAFA */
+    --foreground: 0 0% 9%;               /* #171717 near-black */
 
-    /* Cards: slightly elevated surface */
-    --card: 240 18% 10%;               /* #1A1A2E */
-    --card-foreground: 0 0% 95%;
-
-    /* Popover: same as card */
-    --popover: 240 18% 10%;
-    --popover-foreground: 0 0% 95%;
-
-    /* Primary: Electric blue */
-    --primary: 217 91% 60%;            /* #3B82F6 */
-    --primary-foreground: 0 0% 100%;
-
-    /* Secondary: Muted dark surface */
-    --secondary: 240 15% 14%;
-    --secondary-foreground: 220 10% 80%;
-
-    /* Muted: Subtle gray for disabled/hint text */
-    --muted: 240 12% 16%;
-    --muted-foreground: 220 10% 55%;
-
-    /* Accent: Electric blue (same as primary for dark-first) */
-    --accent: 217 91% 60%;
-    --accent-foreground: 0 0% 100%;
-
-    /* Destructive: Red */
-    --destructive: 0 84% 60%;          /* #EF4444 */
-    --destructive-foreground: 0 0% 100%;
-
-    /* Borders & inputs */
-    --border: 240 15% 18%;
-    --input: 240 15% 18%;
-    --ring: 217 91% 60%;
-
-    --radius: 0.75rem;
-
-    /* === Semantic color tokens === */
-    --success: 160 84% 39%;            /* #10B981 emerald */
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;             /* #F59E0B amber */
-    --warning-foreground: 0 0% 0%;
-    --streak: 38 92% 50%;              /* amber for streaks */
-    --xp: 160 84% 39%;                 /* emerald for XP */
-
-    /* === Muscle group colors — vibrant on dark === */
-    --muscle-chest: 0 75% 55%;
-    --muscle-back: 217 80% 60%;
-    --muscle-shoulders: 45 85% 55%;
-    --muscle-biceps: 150 60% 50%;
-    --muscle-triceps: 270 60% 60%;
-    --muscle-legs: 25 80% 55%;
-    --muscle-quads: 25 80% 55%;
-    --muscle-hamstrings: 20 75% 50%;
-    --muscle-glutes: 330 70% 55%;
-    --muscle-calves: 45 70% 60%;
-    --muscle-forearms: 160 55% 50%;
-    --muscle-core: 195 80% 55%;
-    --muscle-rest: 240 10% 35%;
-
-    /* === Glass-morphism tokens === */
-    --glass-bg: 240 20% 12%;
-    --glass-border: 240 15% 22%;
-
-    /* Sidebar (dark variant) */
-    --sidebar-background: 240 20% 6%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 15% 14%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 240 15% 18%;
-    --sidebar-ring: 217 91% 60%;
-  }
-
-  /* Light mode override (secondary — applied via .light class) */
-  .light {
-    --background: 220 20% 97%;
-    --foreground: 220 25% 12%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 12%;
+    --card: 0 0% 100%;                   /* pure white */
+    --card-foreground: 0 0% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 12%;
+    --popover-foreground: 0 0% 9%;
 
-    --primary: 217 91% 55%;
+    --primary: 0 0% 9%;                  /* black primary (Cal AI style) */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 93%;
-    --secondary-foreground: 220 25% 20%;
+    --secondary: 0 0% 96%;              /* #F5F5F5 */
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 220 15% 93%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;        /* medium gray */
 
-    --accent: 217 91% 55%;
+    --accent: 160 84% 39%;              /* emerald #10B981 - health green */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 217 91% 55%;
+    --border: 0 0% 90%;                 /* #E5E5E5 */
+    --input: 0 0% 90%;
+    --ring: 0 0% 9%;
 
+    --radius: 0.875rem;
+
+    /* Semantic */
     --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 0%;
-    --streak: 38 92% 50%;
-    --xp: 160 84% 39%;
+    --streak: 25 95% 53%;               /* orange */
+    --xp: 160 84% 39%;                  /* emerald */
 
-    /* Muscle group colors — light mode */
-    --muscle-chest: 0 80% 55%;
-    --muscle-back: 210 80% 55%;
-    --muscle-shoulders: 45 80% 50%;
-    --muscle-biceps: 120 60% 45%;
-    --muscle-triceps: 270 60% 55%;
-    --muscle-legs: 30 80% 50%;
-    --muscle-quads: 30 80% 50%;
-    --muscle-hamstrings: 30 80% 55%;
-    --muscle-glutes: 330 80% 55%;
-    --muscle-calves: 45 80% 60%;
-    --muscle-forearms: 160 60% 45%;
-    --muscle-core: 195 80% 50%;
-    --muscle-rest: 215 15% 80%;
+    /* Muscle group colors */
+    --muscle-chest: 0 72% 51%;
+    --muscle-back: 217 71% 53%;
+    --muscle-shoulders: 38 92% 50%;
+    --muscle-biceps: 142 71% 45%;
+    --muscle-triceps: 271 63% 52%;
+    --muscle-legs: 25 75% 47%;
+    --muscle-quads: 25 75% 47%;
+    --muscle-hamstrings: 20 70% 45%;
+    --muscle-glutes: 330 65% 50%;
+    --muscle-calves: 38 65% 55%;
+    --muscle-forearms: 160 50% 42%;
+    --muscle-core: 195 70% 45%;
+    --muscle-rest: 0 0% 75%;
 
-    --glass-bg: 0 0% 100%;
-    --glass-border: 220 15% 88%;
-
-    --sidebar-background: 220 20% 97%;
-    --sidebar-foreground: 220 25% 12%;
-    --sidebar-primary: 217 91% 55%;
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 0 0% 9%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 93%;
-    --sidebar-accent-foreground: 220 25% 12%;
-    --sidebar-border: 220 15% 88%;
-    --sidebar-ring: 217 91% 55%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 9%;
   }
 }
-
-/* =============================================================================
-   Base resets & defaults
-   ============================================================================= */
 
 @layer base {
   * {
@@ -165,6 +82,8 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html, body {
@@ -173,273 +92,69 @@
   }
 }
 
-/* =============================================================================
-   Components
-   ============================================================================= */
-
 @layer components {
-  /* --- Glass-morphism cards --- */
-  .glass-card {
-    background: hsl(var(--glass-bg) / 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--glass-border) / 0.3);
-    border-radius: var(--radius);
-  }
-
-  .glass-card-strong {
-    background: hsl(var(--glass-bg) / 0.8);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid hsl(var(--glass-border) / 0.4);
-    border-radius: var(--radius);
-  }
-
-  /* --- XP bar gradient (blue → purple) --- */
-  .xp-bar {
-    background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 50%, #A855F7 100%);
-    border-radius: 9999px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .xp-bar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-    animation: xp-shimmer 2s ease-in-out infinite;
-  }
-
-  /* --- Streak fire gradient (orange → red) --- */
-  .streak-gradient {
-    background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .streak-badge {
-    background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
-    color: white;
-    border-radius: 9999px;
-  }
-
-  /* --- Glow effects --- */
-  .glow-blue {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1);
-  }
-
-  .glow-green {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 60px rgba(16, 185, 129, 0.1);
-  }
-
-  .glow-amber {
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 0 60px rgba(245, 158, 11, 0.1);
-  }
-
-  .glow-red {
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3), 0 0 60px rgba(239, 68, 68, 0.1);
-  }
-
   /* --- Muscle group badges --- */
   .muscle-badge-chest {
-    @apply bg-[hsl(var(--muscle-chest)/0.15)] text-[hsl(var(--muscle-chest)/1)];
+    @apply bg-[hsl(var(--muscle-chest)/0.1)] text-[hsl(var(--muscle-chest)/1)];
   }
-
   .muscle-badge-back {
-    @apply bg-[hsl(var(--muscle-back)/0.15)] text-[hsl(var(--muscle-back)/1)];
+    @apply bg-[hsl(var(--muscle-back)/0.1)] text-[hsl(var(--muscle-back)/1)];
   }
-
   .muscle-badge-shoulders {
-    @apply bg-[hsl(var(--muscle-shoulders)/0.15)] text-[hsl(var(--muscle-shoulders)/1)];
+    @apply bg-[hsl(var(--muscle-shoulders)/0.1)] text-[hsl(var(--muscle-shoulders)/1)];
   }
-
   .muscle-badge-biceps {
-    @apply bg-[hsl(var(--muscle-biceps)/0.15)] text-[hsl(var(--muscle-biceps)/1)];
+    @apply bg-[hsl(var(--muscle-biceps)/0.1)] text-[hsl(var(--muscle-biceps)/1)];
   }
-
   .muscle-badge-triceps {
-    @apply bg-[hsl(var(--muscle-triceps)/0.15)] text-[hsl(var(--muscle-triceps)/1)];
+    @apply bg-[hsl(var(--muscle-triceps)/0.1)] text-[hsl(var(--muscle-triceps)/1)];
   }
-
   .muscle-badge-legs {
-    @apply bg-[hsl(var(--muscle-legs)/0.15)] text-[hsl(var(--muscle-legs)/1)];
+    @apply bg-[hsl(var(--muscle-legs)/0.1)] text-[hsl(var(--muscle-legs)/1)];
   }
-
   .muscle-badge-quads {
-    @apply bg-[hsl(var(--muscle-quads)/0.15)] text-[hsl(var(--muscle-quads)/1)];
+    @apply bg-[hsl(var(--muscle-quads)/0.1)] text-[hsl(var(--muscle-quads)/1)];
   }
-
   .muscle-badge-hamstrings {
-    @apply bg-[hsl(var(--muscle-hamstrings)/0.15)] text-[hsl(var(--muscle-hamstrings)/1)];
+    @apply bg-[hsl(var(--muscle-hamstrings)/0.1)] text-[hsl(var(--muscle-hamstrings)/1)];
   }
-
   .muscle-badge-glutes {
-    @apply bg-[hsl(var(--muscle-glutes)/0.15)] text-[hsl(var(--muscle-glutes)/1)];
+    @apply bg-[hsl(var(--muscle-glutes)/0.1)] text-[hsl(var(--muscle-glutes)/1)];
   }
-
   .muscle-badge-calves {
-    @apply bg-[hsl(var(--muscle-calves)/0.15)] text-[hsl(var(--muscle-calves)/1)];
+    @apply bg-[hsl(var(--muscle-calves)/0.1)] text-[hsl(var(--muscle-calves)/1)];
   }
-
   .muscle-badge-forearms {
-    @apply bg-[hsl(var(--muscle-forearms)/0.15)] text-[hsl(var(--muscle-forearms)/1)];
+    @apply bg-[hsl(var(--muscle-forearms)/0.1)] text-[hsl(var(--muscle-forearms)/1)];
   }
-
   .muscle-badge-core {
-    @apply bg-[hsl(var(--muscle-core)/0.15)] text-[hsl(var(--muscle-core)/1)];
+    @apply bg-[hsl(var(--muscle-core)/0.1)] text-[hsl(var(--muscle-core)/1)];
   }
-
   .muscle-badge-rest {
-    @apply bg-[hsl(var(--muscle-rest)/0.15)] text-[hsl(var(--muscle-rest)/1)];
+    @apply bg-[hsl(var(--muscle-rest)/0.1)] text-[hsl(var(--muscle-rest)/1)];
   }
 }
 
-/* =============================================================================
-   Utilities
-   ============================================================================= */
-
-@layer utilities {
-  /* Text gradient utility */
-  .text-gradient-blue {
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-xp {
-    background: linear-gradient(135deg, #10B981, #3B82F6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-}
-
-/* =============================================================================
-   Animations & Keyframes
-   ============================================================================= */
-
-/* XP shimmer for progress bar */
-@keyframes xp-shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* XP gain — number floats up and fades out */
-@keyframes xp-gain {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-20px) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-40px) scale(1);
-  }
-}
-
-/* Level up — scale bounce with glow */
-@keyframes level-up {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
-  }
-  25% {
-    transform: scale(1.25);
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
-  }
-  50% {
-    transform: scale(0.95);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-  }
-  75% {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-/* Pulse glow — subtle pulsing for check-in / CTA buttons */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.05);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.15);
-  }
-}
-
-/* Streak flame — flickering fire effect */
-@keyframes streak-flame {
-  0%, 100% {
-    text-shadow: 0 0 4px rgba(245, 158, 11, 0.6), 0 0 12px rgba(239, 68, 68, 0.3);
-    transform: scale(1);
-  }
-  25% {
-    text-shadow: 0 0 6px rgba(245, 158, 11, 0.8), 0 0 18px rgba(239, 68, 68, 0.4);
-    transform: scale(1.05) rotate(-1deg);
-  }
-  50% {
-    text-shadow: 0 0 8px rgba(245, 158, 11, 0.7), 0 0 22px rgba(239, 68, 68, 0.5);
-    transform: scale(1.08) rotate(1deg);
-  }
-  75% {
-    text-shadow: 0 0 5px rgba(245, 158, 11, 0.9), 0 0 16px rgba(239, 68, 68, 0.35);
-    transform: scale(1.03) rotate(-0.5deg);
-  }
-}
-
-/* Slide up entrance */
+/* Animations */
 @keyframes slide-up {
-  0% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
-
-/* Fade in entrance */
 @keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes xp-gain {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-16px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-32px) scale(0.9); }
+}
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
 }
 
-/* === Animation utility classes === */
-.animate-xp-gain {
-  animation: xp-gain 1s ease-out forwards;
-}
-
-.animate-level-up {
-  animation: level-up 0.6s ease-out;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-streak-flame {
-  animation: streak-flame 1.5s ease-in-out infinite;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
+.animate-slide-up { animation: slide-up 0.3s ease-out; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-xp-gain { animation: xp-gain 1.5s ease-out forwards; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }

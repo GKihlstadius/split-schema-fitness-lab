@@ -208,7 +208,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
           Loggbok
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-[#0A0A0F] border-white/10 backdrop-blur-xl">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white border-gray-100">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
@@ -218,7 +218,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
         
         <div className="space-y-4">
           {/* Datumväljare */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <div className="bg-white border border-gray-100 rounded-2xl p-4">
               <div className="flex items-center gap-3">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
                 <div className="flex-1">
@@ -230,7 +230,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="mt-1 bg-white/5 border-white/10 rounded-xl text-foreground"
+                    className="mt-1 bg-white border-gray-100 rounded-xl text-foreground"
                   />
                 </div>
               </div>
@@ -241,10 +241,10 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
           </p>
           
           {exercises.map((exercise, index) => (
-            <div key={exercise.name} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+            <div key={exercise.name} className="bg-white border border-gray-100 rounded-2xl p-4">
                <div className="mb-3">
                  <div className="flex items-center gap-3 mb-1">
-                   <div className="w-7 h-7 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-medium">
+                   <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-medium">
                      {index + 1}
                    </div>
                    <h4 className="text-base font-medium text-foreground">{exercise.name}</h4>
@@ -255,7 +255,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                  {exercise.tags && exercise.tags.length > 0 && (
                    <div className="flex flex-wrap gap-1 mt-2 ml-10">
                      {exercise.tags.map((tag, tagIndex) => (
-                       <span key={tagIndex} className="text-xs px-2 py-1 bg-white/10 rounded-md text-muted-foreground">
+                       <span key={tagIndex} className="text-xs px-2 py-1 bg-gray-100 rounded-md text-muted-foreground">
                          {tag}
                        </span>
                      ))}
@@ -272,7 +272,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     min="0"
                     value={exerciseLogs[index]?.sets || ''}
                     onChange={(e) => updateExerciseLog(index, 'sets', parseInt(e.target.value) || 0)}
-                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
+                    className="bg-white border-gray-100 rounded-xl text-foreground"
                   />
                 </div>
                 <div>
@@ -284,7 +284,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     min="0"
                     value={exerciseLogs[index]?.reps || ''}
                     onChange={(e) => updateExerciseLog(index, 'reps', parseInt(e.target.value) || 0)}
-                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
+                    className="bg-white border-gray-100 rounded-xl text-foreground"
                   />
                 </div>
                 <div>
@@ -297,7 +297,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     step="0.5"
                     value={exerciseLogs[index]?.weight || ''}
                     onChange={(e) => updateExerciseLog(index, 'weight', parseFloat(e.target.value) || 0)}
-                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
+                    className="bg-white border-gray-100 rounded-xl text-foreground"
                   />
                 </div>
               </div>
