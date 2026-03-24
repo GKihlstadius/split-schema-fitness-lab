@@ -603,7 +603,7 @@ const Profile = () => {
                           <AlertDialogHeader>
                             <AlertDialogTitle className="text-foreground">Logga ut?</AlertDialogTitle>
                             <AlertDialogDescription className="text-muted-foreground">
-                              Du kommer att loggas ut fran din session. All data sparas sakert i molnet.
+                              Du kommer att loggas ut från din session. All data sparas säkert i molnet.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -809,7 +809,7 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="targetBodyFat" className="text-muted-foreground text-xs uppercase tracking-wider">Mal kroppsfett (%)</Label>
+                      <Label htmlFor="targetBodyFat" className="text-muted-foreground text-xs uppercase tracking-wider">Mål kroppsfett (%)</Label>
                       <Input
                         id="targetBodyFat"
                         type="number"
@@ -821,7 +821,7 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="weeklyWorkouts" className="text-muted-foreground text-xs uppercase tracking-wider">Traningar per vecka</Label>
+                      <Label htmlFor="weeklyWorkouts" className="text-muted-foreground text-xs uppercase tracking-wider">Träningar per vecka</Label>
                       <Input
                         id="weeklyWorkouts"
                         type="number"
@@ -864,7 +864,7 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {/* Framsteg mot mal */}
+                  {/* Framsteg mot mål */}
                   {goalProgress > 0 && (
                     <div className="pt-4 border-t border-white/10">
                       <div className="flex justify-between items-center mb-2">
@@ -876,7 +876,7 @@ const Profile = () => {
                   )}
 
                   <Button onClick={handleSave} className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl">
-                    Spara traningsmaal
+                    Spara träningsmål
                   </Button>
                 </CardContent>
               </Card>
@@ -948,7 +948,7 @@ const Profile = () => {
                         onValueChange={(value) => setNutritionGoals(prev => ({ ...prev, dietType: value }))}
                       >
                         <SelectTrigger className="bg-white/5 border-white/10 rounded-xl text-foreground">
-                          <SelectValue placeholder="Valj kosttyp" />
+                          <SelectValue placeholder="Välj kosttyp" />
                         </SelectTrigger>
                         <SelectContent className="bg-[#1A1A2F] border-white/10 rounded-xl">
                           {Object.entries(dietTypes).map(([key, label]) => (
@@ -959,14 +959,14 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {/* Synka med kalorieutraknaren */}
+                  {/* Synka med kalorieuträknaren */}
                   {personalInfo.weight && personalInfo.activityLevel && (
                     <div className="pt-4 border-t border-white/10">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-medium text-foreground">Hormozi Kalorieutraknare</h4>
+                          <h4 className="font-medium text-foreground">Hormozi Kalorieuträknare</h4>
                           <p className="text-sm text-muted-foreground">
-                            Synka dina kostmål med kalorieutraknaren baserat pa din vikt och aktivitetsniva
+                            Synka dina kostmål med kalorieuträknaren baserat på din vikt och aktivitetsnivå
                           </p>
                         </div>
                         <Button onClick={syncWithCalorieCalculator} variant="outline" className="bg-white/5 border-white/10 text-foreground hover:bg-white/10 rounded-xl">
@@ -1028,7 +1028,7 @@ const Profile = () => {
                     {goalProgress > 0 && (
                       <div className="pt-4 border-t border-white/10">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-muted-foreground">Framsteg mot mal</span>
+                          <span className="text-sm text-muted-foreground">Framsteg mot mål</span>
                           <span className="font-medium text-foreground">{goalProgress}%</span>
                         </div>
                         <Progress value={goalProgress} className="h-3" />
@@ -1041,23 +1041,23 @@ const Profile = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Activity className="h-5 w-5 text-blue-400" />
-                      Aktivitetsoversikt
+                      Aktivitetsöversikt
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">Planerade traningar/vecka</span>
+                        <span className="text-sm text-muted-foreground">Planerade träningar/vecka</span>
                         <span className="font-medium text-foreground">{fitnessGoals.weeklyWorkouts || 0}</span>
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">Dagligt kalorimal</span>
+                        <span className="text-sm text-muted-foreground">Dagligt kalorimål</span>
                         <span className="font-medium text-foreground">{nutritionGoals.dailyCalories || 0} kcal</span>
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">Proteinmal</span>
+                        <span className="text-sm text-muted-foreground">Proteinmål</span>
                         <span className="font-medium text-foreground">{nutritionGoals.dailyProtein || 0}g</span>
                       </div>
 
