@@ -185,8 +185,8 @@ const DailyMealPlannerPage = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl bg-emerald-50">
-              <CalendarDays className="h-6 w-6 text-emerald-600" />
+            <div className="p-2 rounded-xl bg-primary/10">
+              <CalendarDays className="h-6 w-6 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Daglig måltidsplanering</h1>
           </div>
@@ -195,7 +195,7 @@ const DailyMealPlannerPage = () => {
         </p>
         
         <div className="grid grid-cols-1 gap-8 max-w-6xl">
-          <Card className="mb-6 border-gray-100 bg-white rounded-2xl">
+          <Card className="mb-6 border-border bg-card rounded-2xl">
             <CardContent className="pt-6">
               <Tabs defaultValue="manual" onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -309,7 +309,7 @@ const DailyMealPlannerPage = () => {
                         </Select>
                       </div>
                       
-                      <div className="space-y-4 pt-4 border-t border-gray-100">
+                      <div className="space-y-4 pt-4 border-t border-border">
                         <div className="space-y-2">
                           <div className="flex justify-between">
                             <Label htmlFor="proteinMultiplier">Protein per pound kroppsvikt</Label>
@@ -361,7 +361,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white ${preset.warning ? 'border-red-200 bg-red-50' : ''}`}
+                                  className={`p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card ${preset.warning ? 'border-red-200 bg-red-50' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -381,7 +381,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white"
+                                  className="p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -400,7 +400,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white ${preset.warning ? 'border-red-200 bg-red-50' : ''}`}
+                                  className={`p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card ${preset.warning ? 'border-red-200 bg-red-50' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -420,7 +420,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white ${preset.warning ? 'border-orange-200 bg-orange-50' : ''}`}
+                                  className={`p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card ${preset.warning ? 'border-orange-200 bg-orange-50' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -440,7 +440,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white"
+                                  className="p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -459,7 +459,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white"
+                                  className="p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -478,7 +478,7 @@ const DailyMealPlannerPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border border-gray-100 rounded-xl text-center cursor-pointer hover:bg-gray-100 transition-colors bg-white"
+                                  className="p-3 border border-border rounded-xl text-center cursor-pointer hover:bg-secondary transition-colors bg-card"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -492,7 +492,7 @@ const DailyMealPlannerPage = () => {
                     </div>
                     
                     {targetKcal > 0 && (
-                      <div className="space-y-2 pt-4 border-t border-gray-100">
+                      <div className="space-y-2 pt-4 border-t border-border">
                         <div className="flex justify-between">
                           <span>Kaloriforbruk:</span>
                           <span className="font-medium">{weight && typeof weight === 'number' ? Math.round(weight * 2.20462 * customMultiplier) : 0} kcal ({customMultiplier}x)</span>

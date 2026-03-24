@@ -76,7 +76,7 @@ const WorkoutDetails = () => {
             <Button
               variant="outline"
               size="icon"
-              className="rounded-xl border-gray-200 h-10 w-10"
+              className="rounded-xl border-border h-10 w-10"
               onClick={() => navigate('/workouts')}
             >
               <ArrowLeft className="h-4 w-4" />
@@ -89,7 +89,7 @@ const WorkoutDetails = () => {
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl border-gray-200 text-sm"
+            className="rounded-xl border-border text-sm"
             onClick={regenerateExercises}
           >
             <RefreshCcw className="h-3.5 w-3.5 mr-1.5" />
@@ -100,23 +100,23 @@ const WorkoutDetails = () => {
         {/* Exercises */}
         <div className="space-y-3">
           {exercises.map((exercise, index) => (
-            <div key={index} className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
+            <div key={index} className="bg-card border border-border rounded-2xl shadow-sm p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-semibold">
+                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold">
                   {index + 1}
                 </div>
                 <h3 className="text-base font-semibold text-foreground">{exercise.name}</h3>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
-                <div className="bg-gray-50 rounded-xl p-2.5">
+                <div className="bg-muted rounded-xl p-2.5">
                   <div className="text-[10px] text-muted-foreground mb-0.5">Set</div>
                   <div className="text-sm font-semibold text-foreground">{exercise.sets}</div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-2.5">
+                <div className="bg-muted rounded-xl p-2.5">
                   <div className="text-[10px] text-muted-foreground mb-0.5">Reps</div>
                   <div className="text-sm font-semibold text-foreground">{exercise.reps}</div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-2.5">
+                <div className="bg-muted rounded-xl p-2.5">
                   <div className="text-[10px] text-muted-foreground mb-0.5">Vila</div>
                   <div className="text-sm font-semibold text-foreground">{exercise.rest || '-'}</div>
                 </div>
@@ -125,7 +125,7 @@ const WorkoutDetails = () => {
           ))}
 
           {exercises.length === 0 && (
-            <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl shadow-sm">
+            <div className="text-center py-16 bg-card border border-border rounded-2xl shadow-sm">
               <Dumbbell className="h-10 w-10 mx-auto text-gray-300 mb-3" />
               <h3 className="text-base font-medium text-foreground mb-1">Inga övningar hittades</h3>
               <p className="text-sm text-muted-foreground">Det finns inga övningar för denna dag.</p>

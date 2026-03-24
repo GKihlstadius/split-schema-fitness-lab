@@ -7,8 +7,8 @@ const CalorieCalculatorPage = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-xl bg-emerald-50">
-            <Flame className="h-6 w-6 text-emerald-600" />
+          <div className="p-2 rounded-xl bg-primary/10">
+            <Flame className="h-6 w-6 text-primary" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Kaloriräknare</h1>
         </div>
