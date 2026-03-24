@@ -60,9 +60,9 @@ function getWorkoutIntensity(
 
 const intensityColor: Record<string, string> = {
   none: 'bg-secondary',
-  light: 'bg-emerald-200',
-  full: 'bg-emerald-500',
-  double: 'bg-emerald-700',
+  light: 'bg-primary/30',
+  full: 'bg-primary/60',
+  double: 'bg-primary',
 };
 
 // ---------------------------------------------------------------------------
