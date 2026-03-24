@@ -8,7 +8,7 @@ const tabs = [
   { path: '/profile', icon: User, label: 'Profil' },
 ];
 
-const HIDDEN_PATHS = ['/login', '/forgot-password', '/reset-password'];
+const HIDDEN_PATHS = ['/login', '/forgot-password', '/reset-password', '/onboarding'];
 const HIDDEN_PREFIXES = ['/auth/'];
 
 export function BottomNav() {

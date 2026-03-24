@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { workoutPrograms } from '@/data/workoutPrograms';
 import {
@@ -207,7 +207,7 @@ const Home = () => {
     .slice(0, 3) || [];
 
   const levelInfo = gamification ? calculateLevel(gamification.xp) : null;
-  const hasGyms = loadGymLocations().length > 0;
+  const hasGyms = useMemo(() => loadGymLocations().length > 0, [nearestGymId]);
 
   if (loading) return <HomeSkeleton />;
 

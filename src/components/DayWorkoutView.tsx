@@ -38,7 +38,7 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
   useEffect(() => {
     setExercises(dayPlan.exercises);
     setHasChanges(false);
-  }, [dayPlan.day]);
+  }, [dayPlan.day, dayPlan.exercises]);
   
   const handleApplyRandomExercises = (randomExercises: Exercise[]) => {
     setExercises(randomExercises);

@@ -72,7 +72,7 @@ const WorkoutDetails = () => {
         <div className="w-full max-w-4xl">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" onClick={() => navigate('/workout')}>
+            <Button variant="outline" size="icon" onClick={() => navigate('/workouts')}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-3xl font-bold">{getDayName()}</h1>

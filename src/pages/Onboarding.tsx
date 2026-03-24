@@ -35,15 +35,16 @@ export default function Onboarding() {
     }
 
     try {
-      const user = await getCurrentUser();
-      if (user) {
+      const result = await getCurrentUser();
+      if (result.success && result.user) {
         if (selectedGoal) {
-          await saveUserSetting(user.id, 'goal', selectedGoal);
+          await saveUserSetting(result.user.id, 'goal', selectedGoal);
         }
         if (selectedProgramId) {
           const program = workoutPrograms.find((p) => p.id === selectedProgramId);
           if (program) {
-            await saveWorkoutProgram(user.id, program.id, program.name);
+            await saveUserSetting(result.user.id, 'selectedWorkoutProgram', program.id);
+            await saveWorkoutProgram(result.user.id, program.id, program.name);
           }
         }
       }
@@ -167,7 +168,7 @@ export default function Onboarding() {
                     <button
                       key={goal.id}
                       onClick={() => setSelectedGoal(goal.id)}
-                      className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border transition-all duration-200 ${
+                      className={`relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border transition-all duration-200 ${
                         selected
                           ? 'border-blue-500 bg-blue-500/10'
                           : 'border-white/10 bg-white/5 hover:bg-white/10'
