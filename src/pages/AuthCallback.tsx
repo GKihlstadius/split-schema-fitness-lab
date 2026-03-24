@@ -11,27 +11,18 @@ const AuthCallback = () => {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        console.log('🔄 AuthCallback: Hanterar inloggning');
-        console.log('📍 URL:', window.location.href);
-        
         // Extrahera tokens från både hash och query parameters
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const queryParams = new URLSearchParams(location.search);
-
-        console.log('📊 Auth params:', { 
-          hash: Object.fromEntries(hashParams.entries()),
-          query: Object.fromEntries(queryParams.entries())
-        });
 
         // Hämta tokens från antingen hash eller query
         const accessToken = hashParams.get('access_token') || queryParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token') || queryParams.get('refresh_token');
         const type = hashParams.get('type') || queryParams.get('type');
-        
+
         // Om detta är en lösenordsåterställning, skicka till ResetPassword
         if (type === 'recovery') {
-          console.log('🔑 Detta är en lösenordsåterställning');
-          navigate('/auth/reset-password', { 
+          navigate('/auth/reset-password', {
             replace: true,
             state: { accessToken, refreshToken }
           });
@@ -40,10 +31,8 @@ const AuthCallback = () => {
 
         // Kontrollera om token bara är ett ID-nummer (inte en JWT)
         const isTokenOnlyId = accessToken && !accessToken.includes('.') && !isNaN(Number(accessToken));
-        
+
         if (isTokenOnlyId) {
-          console.log('⚠️ Token är bara ett ID-nummer, inte en JWT');
-          
           // För detta fall, vi kan inte använda setSession
           // Istället omdirigerar vi till login
           setMessage('Autentisering slutförd. Omdirigerar till inloggning...');
@@ -55,8 +44,6 @@ const AuthCallback = () => {
 
         // För alla andra fall, försök sätta session
         if (accessToken) {
-          console.log('🔑 Tokens hittade, försöker sätta session');
-          
           // Försök sätta session med tokens
           const { data, error } = await supabase.auth.setSession({
             access_token: accessToken,
@@ -64,7 +51,6 @@ const AuthCallback = () => {
           });
 
           if (error) {
-            console.error('❌ Fel vid sätta session:', error);
             setMessage('Autentisering misslyckades. Omdirigerar...');
             setTimeout(() => {
               navigate('/login', { replace: true });
@@ -73,32 +59,26 @@ const AuthCallback = () => {
           }
 
           if (data.session) {
-            console.log('✅ Session skapad, omdirigerar till startsidan');
             navigate('/', { replace: true });
             return;
           }
         }
 
         // Om vi inte har tokens eller session, försök hämta session
-        console.log('⚠️ Inga tokens eller ingen session, försöker getSession');
-        
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error) {
-          console.error('❌ Fel vid hämtning av session:', error);
           navigate('/login', { replace: true });
           return;
         }
-        
+
         if (data?.session) {
-          console.log('✅ Session hittad, omdirigerar till startsidan');
           navigate('/', { replace: true });
         } else {
-          console.log('⚠️ Ingen session hittad, omdirigerar till login');
           navigate('/login', { replace: true });
         }
       } catch (error) {
-        console.error('💥 Oväntat fel i AuthCallback:', error);
+        console.error('Unexpected error in AuthCallback:', error);
         navigate('/login', { replace: true });
       }
     };

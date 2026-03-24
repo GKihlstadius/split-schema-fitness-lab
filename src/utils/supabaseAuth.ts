@@ -1,5 +1,5 @@
 import { supabase, getRedirectUrl } from '@/lib/supabase';
-import type { User, Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 
 export interface UserData {
   id: string;
@@ -30,40 +30,33 @@ export const signInWithGoogle = async () => {
 
 // Registrera med e-post
 export const signUpWithEmail = async (email: string, password: string) => {
-  console.log('Försöker registrera användare med e-post:', email);
   try {
-    console.log('Anropar supabase.auth.signUp...');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    console.log('Svar från supabase.auth.signUp:', { data, error });
-
     if (error) {
-      console.error('Registreringsfel:', error.message);
-      return { 
-        success: false, 
-        error: error.message 
+      return {
+        success: false,
+        error: error.message
       };
     }
 
     // Om registrering lyckades
     if (data.user) {
-      console.log('Registrering lyckades! Användar-ID:', data.user.id);
-      return { 
-        success: true, 
+      return {
+        success: true,
         user: data.user,
       };
     }
 
-    console.warn('Okänt fel: Ingen användare returnerades men inget fel heller');
     return { success: false, error: 'Okänt fel vid registrering' };
   } catch (error) {
-    console.error('Oväntat fel i signUpWithEmail:', error);
-    return { 
-      success: false, 
-      error: error.message || 'Ett oväntat fel uppstod' 
+    console.error('Unexpected error in signUpWithEmail:', error);
+    return {
+      success: false,
+      error: error.message || 'Ett oväntat fel uppstod'
     };
   }
 };
@@ -93,7 +86,7 @@ export const signInWithEmail = async (email: string, password: string) => {
 
     return { success: false, error: 'Okänt fel vid inloggning' };
   } catch (error) {
-    console.error('Unexpected error i signInWithEmail:', error);
+    console.error('Unexpected error in signInWithEmail:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -111,13 +104,13 @@ export const resetPassword = async (email: string) => {
     });
 
     if (error) {
-      console.error('❌ Fel vid återställning av lösenord:', error.message);
+      console.error('Error resetting password:', error.message);
       return { success: false, error: error.message };
     }
 
     return { success: true };
   } catch (error) {
-    console.error('💥 Unexpected error i resetPassword:', error);
+    console.error('Unexpected error in resetPassword:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -127,24 +120,19 @@ export const resetPassword = async (email: string) => {
 
 // Uppdatera lösenord (använd efter reset)
 export const updatePassword = async (newPassword: string) => {
-  console.log('🔄 Supabase update password');
-  
   try {
     const { data, error } = await supabase.auth.updateUser({
       password: newPassword
     });
 
-    console.log('📊 Supabase update password response:', { data, error });
-
     if (error) {
-      console.error('❌ Supabase update password error:', error);
+      console.error('Error updating password:', error);
       return { success: false, error: error.message };
     }
 
-    console.log('✅ Supabase lösenord uppdaterat');
     return { success: true, data };
   } catch (networkError) {
-    console.error('🌐 Network error under password update:', networkError);
+    console.error('Network error during password update:', networkError);
     return { success: false, error: `Nätverksfel: ${networkError.message}` };
   }
 };
@@ -155,13 +143,13 @@ export const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     
     if (error) {
-      console.error('Utloggningsfel:', error.message);
+      console.error('Error signing out:', error.message);
       return { success: false, error: error.message };
     }
 
     return { success: true };
   } catch (error) {
-    console.error('Unexpected error i signOut:', error);
+    console.error('Unexpected error in signOut:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -175,13 +163,13 @@ export const getCurrentUser = async () => {
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error) {
-      console.error('❌ Fel vid hämtning av användare:', error.message);
+      console.error('Error fetching user:', error.message);
       return { success: false, error: error.message };
     }
 
     return { success: true, user };
   } catch (error) {
-    console.error('💥 Unexpected error i getCurrentUser:', error);
+    console.error('Unexpected error in getCurrentUser:', error);
     return { 
       success: false, 
       error: error.message || 'Ett oväntat fel uppstod' 
@@ -242,7 +230,7 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
     }
 
     if (error) {
-      console.error('Supabase fel vid sparning av användarinställningar:', error);
+      console.error('Error saving user settings:', error);
       
       // Specifika felmeddelanden baserat på felkod
       if (error.code === '42P01') {
@@ -258,7 +246,7 @@ export const saveUserSettings = async (userId: string, settings: Record<string, 
       }
     }
   } catch (networkError: any) {
-    console.error('Nätverksfel vid sparning av användarinställningar:', networkError);
+    console.error('Network error saving user settings:', networkError);
     
     if (networkError.message?.includes('user_settings') || networkError.message?.includes('Databasfel')) {
       // Re-throw specifika felmeddelanden

@@ -1,26 +1,19 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Dumbbell } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Log 404 errors for debugging
-    console.warn("404: Route not found:", location.pathname);
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <div className="flex flex-col items-center px-6 py-8">
-        <div className="flex items-center justify-center min-h-[80vh]">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">404</h1>
-            <p className="text-xl text-gray-600 mb-4">Oops! Sidan hittades inte</p>
-            <a href="/" className="text-primary hover:text-primary/80 underline">
-              Tillbaka till startsidan
-            </a>
-          </div>
+    <div className="min-h-screen bg-background pb-24 flex items-center justify-center">
+      <div className="text-center px-6">
+        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6">
+          <Dumbbell className="h-8 w-8 text-muted-foreground/50" />
         </div>
+        <h1 className="text-5xl font-bold text-foreground mb-2">404</h1>
+        <p className="text-muted-foreground mb-6">Sidan hittades inte</p>
+        <Button asChild className="bg-blue-500 hover:bg-blue-600 text-white rounded-xl h-11 px-8">
+          <Link to="/">Tillbaka till startsidan</Link>
+        </Button>
       </div>
     </div>
   );

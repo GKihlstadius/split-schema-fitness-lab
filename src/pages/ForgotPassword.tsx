@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dumbbell, Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { resetPassword } from '@/utils/supabaseAuth';
@@ -16,13 +15,12 @@ const ForgotPassword = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email.trim()) {
       setError('Vänligen ange din e-postadress');
       return;
     }
 
-    // Grundläggande e-post validering
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Vänligen ange en giltig e-postadress');
@@ -34,122 +32,97 @@ const ForgotPassword = () => {
     setSuccess('');
 
     try {
-      console.log('🔄 Skickar lösenordsåterställning för:', email);
-      
       const result = await resetPassword(email);
-      
+
       if (result.success) {
-        setSuccess('Vi har skickat instruktioner för lösenordsåterställning till din e-post. Kontrollera din inkorg (och skräppost).');
-        setEmail(''); // Rensa formuläret
+        setSuccess('Instruktioner har skickats till din e-post. Kontrollera din inkorg och skräppost.');
+        setEmail('');
       } else {
-        console.error('❌ Reset password fel:', result.error);
-        setError(result.error || 'Ett fel uppstod vid skickandet av återställningsmail');
+        setError(result.error || 'Ett fel uppstod');
       }
-    } catch (error) {
-      console.error('💥 Lösenordsåterställning misslyckades:', error);
-      setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
+    } catch (err: any) {
+      setError(`Nätverksfel: ${err.message || 'Kontrollera din internetanslutning'}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    // Rensa meddelanden när användaren börjar skriva
-    if (error) setError('');
-    if (success) setSuccess('');
-  };
-
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="w-full max-w-md px-6">
+      <div className="w-full max-w-sm px-6">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center">
-            <Dumbbell className="h-8 w-8 text-primary" />
+        <div className="text-center mb-10">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
+            <Dumbbell className="h-7 w-7 text-white" />
           </div>
+          <h1 className="text-2xl font-bold text-foreground">Glömt lösenord?</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            Ange din e-post så skickar vi en återställningslänk
+          </p>
         </div>
 
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">
-              Glömt lösenord?
-            </CardTitle>
-            <CardDescription>
-              Ange din e-postadress så skickar vi instruktioner för att återställa ditt lösenord
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 space-y-5">
+          {error && (
+            <Alert variant="destructive" className="bg-red-500/10 border-red-500/20">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-            {success && (
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800 ml-2">{success}</AlertDescription>
-              </Alert>
-            )}
+          {success && (
+            <Alert className="border-emerald-500/20 bg-emerald-500/10">
+              <CheckCircle className="h-4 w-4 text-emerald-400" />
+              <AlertDescription className="text-emerald-300 ml-2">{success}</AlertDescription>
+            </Alert>
+          )}
 
-            {/* Återställningsformulär */}
-            <form onSubmit={handleResetPassword} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">E-postadress</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="din@email.com"
-                    value={email}
-                    onChange={handleInputChange}
-                    className="pl-10"
-                    disabled={isLoading}
-                    required
-                  />
-                </div>
+          <form onSubmit={handleResetPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm text-muted-foreground">E-postadress</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="din@email.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (error) setError('');
+                    if (success) setSuccess('');
+                  }}
+                  className="pl-10 bg-white/5 border-white/10 rounded-xl h-11"
+                  disabled={isLoading}
+                  required
+                />
               </div>
-
-              <Button 
-                type="submit"
-                disabled={isLoading}
-                className="w-full"
-                size="lg"
-              >
-                {isLoading ? 'Skickar...' : 'Skicka återställningslänk'}
-              </Button>
-            </form>
-
-            {/* Information */}
-            <div className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-              <p className="font-medium mb-1">📧 Vad händer nu?</p>
-              <p>Du kommer att få ett e-mail med en länk för att återställa ditt lösenord. Länken är giltig i 1 timme.</p>
             </div>
 
-            {/* Tillbaka till inloggning */}
-            <div className="text-center">
-              <Button
-                asChild
-                variant="link"
-                disabled={isLoading}
-                className="text-sm"
-              >
-                <Link to="/login">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Tillbaka till inloggning
-                </Link>
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium"
+              size="lg"
+            >
+              {isLoading ? 'Skickar...' : 'Skicka återställningslänk'}
+            </Button>
+          </form>
 
-          </CardContent>
-        </Card>
+          <div className="text-sm text-muted-foreground bg-white/5 border border-white/10 p-3 rounded-xl">
+            <p>Du får ett e-mail med en länk som är giltig i 1 timme.</p>
+          </div>
 
+          <div className="text-center pt-2 border-t border-white/10">
+            <Button asChild variant="link" className="text-sm text-blue-400 hover:text-blue-300">
+              <Link to="/login">
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Tillbaka till inloggning
+              </Link>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ForgotPassword; 
+export default ForgotPassword;

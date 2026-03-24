@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// Card imports removed - using dark-themed divs instead
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, TrendingUp, Dumbbell, Clock } from 'lucide-react';
@@ -143,14 +143,12 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Laddar träningsloggar...
-          </CardTitle>
-        </CardHeader>
-      </Card>
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="flex items-center gap-2 text-foreground">
+          <Clock className="h-5 w-5 animate-spin" />
+          <span className="font-semibold">Laddar träningsloggar...</span>
+        </div>
+      </div>
     );
   }
 
@@ -176,26 +174,24 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
       </div>
 
       {groupedLogs.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-8">
+        <div className="bg-white/5 border border-white/10 rounded-2xl text-center py-12 px-6">
             <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">Inga träningsloggar ännu</h3>
+            <h3 className="text-lg font-medium text-foreground mb-2">Inga träningsloggar ännu</h3>
             <p className="text-muted-foreground">
               Börja logga dina träningspass för att se din progress här!
             </p>
-          </CardContent>
-        </Card>
+        </div>
       ) : (
         <div className="space-y-4">
           {groupedLogs.map((session, index) => (
-            <Card key={index} className="border border-border">
-              <CardHeader className="pb-3">
+            <div key={index} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+              <div className="p-5 pb-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
+                    <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-blue-400" />
                       {formatDate(session.date)}
-                    </CardTitle>
+                    </h3>
                     <p className="text-sm text-muted-foreground">
                       {session.program_name} - {session.day}
                     </p>
@@ -206,35 +202,35 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
                     <div>{Math.round(session.totalWeight)}kg total volym</div>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+              </div>
+              <div className="px-5 pb-5">
+                <div className="space-y-2">
                   {session.exercises.map((exercise, exerciseIndex) => {
                     const trend = getProgressTrend(exercise.exercise_name);
                     return (
-                      <div 
-                        key={exerciseIndex} 
-                        className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                      <div
+                        key={exerciseIndex}
+                        className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="text-sm font-medium">
+                          <div className="text-sm font-medium text-foreground">
                             {exercise.exercise_name}
                           </div>
                           {trend && (
-                            <TrendingUp 
+                            <TrendingUp
                               className={`h-4 w-4 ${
-                                trend === 'up' ? 'text-green-500' : 
-                                trend === 'down' ? 'text-red-500 rotate-180' : 
-                                'text-gray-500'
-                              }`} 
+                                trend === 'up' ? 'text-green-500' :
+                                trend === 'down' ? 'text-red-500 rotate-180' :
+                                'text-muted-foreground'
+                              }`}
                             />
                           )}
                         </div>
                         <div className="flex items-center gap-4 text-sm">
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="border-white/10">
                             {exercise.sets} × {exercise.reps}
                           </Badge>
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="border-white/10">
                             {exercise.weight}kg
                           </Badge>
                           <span className="text-muted-foreground">
@@ -245,8 +241,8 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
                     );
                   })}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       )}

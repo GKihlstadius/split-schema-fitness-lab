@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { DayPlan, Exercise } from '@/types/workout';
 import { RandomExerciseGenerator } from './RandomExerciseGenerator';
 import { WorkoutLogger } from './WorkoutLogger';
-import { exerciseDatabase, searchExercises } from '@/data/exerciseDatabase';
+import { exerciseDatabase } from '@/data/exerciseDatabase';
 import {
   Command,
   CommandEmpty,
@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Check, ChevronDown, Save } from 'lucide-react';
+import { Check, ChevronDown, Dumbbell, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
@@ -276,11 +276,19 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
           </div>
         </div>
         
+        {exercises.length === 0 && (
+          <div className="text-center py-16 bg-white/5 border border-white/10 rounded-2xl">
+            <Dumbbell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">Inga övningar</h3>
+            <p className="text-muted-foreground">Det finns inga övningar för denna dag.</p>
+          </div>
+        )}
+
         {exercises.map((exercise, index) => (
-          <div key={index} className="border-b border-border pb-5 last:border-0">
+          <div key={index} className="border-b border-white/10 pb-5 last:border-0">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-light">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-medium text-sm">
                   {index + 1}
                 </div>
                 
@@ -297,7 +305,7 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
                       <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[300px] p-0">
+                  <PopoverContent className="w-[300px] p-0 bg-[#1A1A2E] border-white/10">
                     <Command>
                       <CommandInput placeholder="Sök övningar..." />
                       <CommandList>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// Card imports removed - using dark-themed divs instead
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { BookOpen, Plus, Save, Calendar } from 'lucide-react';
-import { supabase, WorkoutLog } from '@/lib/supabase';
+import { BookOpen, Save, Calendar } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Exercise } from '@/types/workout';
 
@@ -48,7 +48,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
           
           existingLogs = data || [];
         } catch (supabaseError) {
-          console.warn('Supabase laddning misslyckades, försöker localStorage backup:', supabaseError);
+          // Supabase load failed, fall back to localStorage
         }
       }
 
@@ -145,7 +145,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
           if (error) throw error;
           savedToCloud = true;
         } catch (supabaseError) {
-          console.warn('Supabase sparning misslyckades, använder localStorage backup:', supabaseError);
+          // Supabase save failed, fall back to localStorage
         }
       }
 
@@ -208,7 +208,7 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
           Loggbok
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-[#0A0A0F] border-white/10 backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
@@ -218,12 +218,11 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
         
         <div className="space-y-4">
           {/* Datumväljare */}
-          <Card className="bg-muted/30">
-            <CardContent className="pt-4">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
               <div className="flex items-center gap-3">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
                 <div className="flex-1">
-                  <Label htmlFor="workout-date" className="text-sm font-medium">
+                  <Label htmlFor="workout-date" className="text-sm font-medium text-foreground">
                     Träningsdatum
                   </Label>
                   <Input
@@ -231,37 +230,41 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="mt-1"
+                    className="mt-1 bg-white/5 border-white/10 rounded-xl text-foreground"
                   />
                 </div>
               </div>
-            </CardContent>
-          </Card>
+          </div>
           
           <p className="text-sm text-muted-foreground">
             Logga dina reps och vikt för varje övning. Data sparas med valt datum.
           </p>
           
           {exercises.map((exercise, index) => (
-            <Card key={exercise.name} className="border border-border">
-                             <CardHeader className="pb-3">
-                 <CardTitle className="text-base">{exercise.name}</CardTitle>
-                 <p className="text-sm text-muted-foreground">
+            <div key={exercise.name} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+               <div className="mb-3">
+                 <div className="flex items-center gap-3 mb-1">
+                   <div className="w-7 h-7 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-medium">
+                     {index + 1}
+                   </div>
+                   <h4 className="text-base font-medium text-foreground">{exercise.name}</h4>
+                 </div>
+                 <p className="text-sm text-muted-foreground ml-10">
                    Rekommenderat: {exercise.sets} set × {exercise.reps} reps
                  </p>
                  {exercise.tags && exercise.tags.length > 0 && (
-                   <div className="flex flex-wrap gap-1 mt-2">
+                   <div className="flex flex-wrap gap-1 mt-2 ml-10">
                      {exercise.tags.map((tag, tagIndex) => (
-                       <span key={tagIndex} className="text-xs px-2 py-1 bg-muted rounded-md">
+                       <span key={tagIndex} className="text-xs px-2 py-1 bg-white/10 rounded-md text-muted-foreground">
                          {tag}
                        </span>
                      ))}
                    </div>
                  )}
-               </CardHeader>
-              <CardContent className="grid grid-cols-3 gap-3">
+               </div>
+              <div className="grid grid-cols-3 gap-3 ml-10">
                 <div>
-                  <Label htmlFor={`sets-${index}`} className="text-xs">Set</Label>
+                  <Label htmlFor={`sets-${index}`} className="text-xs text-muted-foreground">Set</Label>
                   <Input
                     id={`sets-${index}`}
                     type="number"
@@ -269,10 +272,11 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     min="0"
                     value={exerciseLogs[index]?.sets || ''}
                     onChange={(e) => updateExerciseLog(index, 'sets', parseInt(e.target.value) || 0)}
+                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
                   />
                 </div>
                 <div>
-                  <Label htmlFor={`reps-${index}`} className="text-xs">Reps</Label>
+                  <Label htmlFor={`reps-${index}`} className="text-xs text-muted-foreground">Reps</Label>
                   <Input
                     id={`reps-${index}`}
                     type="number"
@@ -280,10 +284,11 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     min="0"
                     value={exerciseLogs[index]?.reps || ''}
                     onChange={(e) => updateExerciseLog(index, 'reps', parseInt(e.target.value) || 0)}
+                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
                   />
                 </div>
                 <div>
-                  <Label htmlFor={`weight-${index}`} className="text-xs">Vikt (kg)</Label>
+                  <Label htmlFor={`weight-${index}`} className="text-xs text-muted-foreground">Vikt (kg)</Label>
                   <Input
                     id={`weight-${index}`}
                     type="number"
@@ -292,10 +297,11 @@ export function WorkoutLogger({ programName, day, exercises }: WorkoutLoggerProp
                     step="0.5"
                     value={exerciseLogs[index]?.weight || ''}
                     onChange={(e) => updateExerciseLog(index, 'weight', parseFloat(e.target.value) || 0)}
+                    className="bg-white/5 border-white/10 rounded-xl text-foreground"
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
           
           <div className="flex justify-end gap-2 pt-4">

@@ -390,7 +390,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
         </div>
       </div>
 
-      <Card className="border-border shadow-none">
+      <Card className="border-white/10 bg-white/5 rounded-2xl">
         <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">
@@ -402,7 +402,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
 
           {/* Mål-flik */}
           <TabsContent value="goals" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
-            <div className="space-y-4 p-4 sm:p-6 border-border rounded-lg bg-card">
+            <div className="space-y-4 p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-light text-base sm:text-lg text-primary">Snabb målsättning (Harmozi-metoden)</h3>
               
               <div className="grid grid-cols-1 gap-4">
@@ -447,23 +447,23 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
 
             {/* Visa beräknade mål */}
             {targetKcal > 0 && (
-              <div className="space-y-4 p-4 sm:p-6 border-border rounded-lg bg-card">
+              <div className="space-y-4 p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
                 <h3 className="font-light text-base sm:text-lg text-primary">Dina dagliga mål</h3>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center">
                   <div className="p-3 sm:p-0">
-                    <div className="text-xl sm:text-2xl font-bold text-green-600">{targetKcal}</div>
+                    <div className="text-xl sm:text-2xl font-bold text-green-400">{targetKcal}</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Kalorier</div>
                   </div>
                   <div className="p-3 sm:p-0">
-                    <div className="text-xl sm:text-2xl font-bold text-blue-600">{targetProtein}g</div>
+                    <div className="text-xl sm:text-2xl font-bold text-blue-400">{targetProtein}g</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Protein</div>
                   </div>
                   <div className="p-3 sm:p-0">
-                    <div className="text-xl sm:text-2xl font-bold text-orange-600">{targetCarbs}g</div>
+                    <div className="text-xl sm:text-2xl font-bold text-orange-400">{targetCarbs}g</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Kolhydrater</div>
                   </div>
                   <div className="p-3 sm:p-0">
-                    <div className="text-xl sm:text-2xl font-bold text-purple-600">{targetFat}g</div>
+                    <div className="text-xl sm:text-2xl font-bold text-purple-400">{targetFat}g</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Fett</div>
                   </div>
                 </div>
@@ -486,7 +486,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
             </div>
 
             {/* Lägg till livsmedel */}
-            <div className="space-y-4 p-4 sm:p-6 border-border rounded-lg bg-card">
+            <div className="space-y-4 p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-light text-base sm:text-lg text-primary">Lägg till livsmedel</h3>
               
               <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -566,7 +566,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
 
                     const multiplier = item.grams / 100;
                     return (
-                      <div key={item.id} className="p-4 border rounded-lg bg-white">
+                      <div key={item.id} className="p-4 border border-white/10 rounded-xl bg-white/5">
                         <div className="space-y-3">
                           <div className="flex justify-between items-start">
                             <div className="flex-1 min-w-0">
@@ -606,7 +606,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                 </div>
 
                 {/* Måltidssammanfattning */}
-                <div className="p-4 sm:p-6 border-border rounded-lg bg-card">
+                <div className="p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
                   <h4 className="font-light text-base sm:text-lg text-primary mb-3">Måltidssammanfattning</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center text-sm">
                     <div className="p-2 sm:p-0">
@@ -656,14 +656,14 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
           <TabsContent value="daily" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
             {/* Snabb tillägg av sparade måltider */}
             {quickMeals.length > 0 && (
-              <div className="space-y-4 p-4 sm:p-6 border-border rounded-lg bg-card">
+              <div className="space-y-4 p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
                 <h3 className="font-light text-base sm:text-lg text-primary flex items-center gap-2">
                   <Plus className="h-4 w-4" />
                   Lägg till sparad måltid
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {quickMeals.slice(0, 6).map(meal => (
-                    <div key={meal.id} className="p-3 bg-white border rounded-lg hover:shadow-md transition-shadow">
+                    <div key={meal.id} className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-sm truncate">{meal.name}</h4>
@@ -707,7 +707,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
             ) : (
               <>
                 {/* Daglig sammanfattning */}
-                <div className="space-y-4 p-4 sm:p-6 border-border rounded-lg bg-card">
+                <div className="space-y-4 p-4 sm:p-6 border border-white/10 rounded-xl bg-white/5">
                   <div className="flex justify-between items-center">
                     <h3 className="font-light text-base sm:text-lg text-primary flex items-center gap-2">
                       <BarChart3 className="h-4 w-4" />
@@ -719,7 +719,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="space-y-2 p-3 sm:p-0 border sm:border-0 rounded sm:rounded-none">
+                    <div className="space-y-2 p-3 sm:p-0 border border-white/10 sm:border-0 rounded-xl sm:rounded-none">
                       <div className="flex justify-between text-sm">
                         <span>Kalorier</span>
                         <span className="font-medium">
@@ -739,7 +739,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                       )}
                     </div>
 
-                    <div className="space-y-2 p-3 sm:p-0 border sm:border-0 rounded sm:rounded-none">
+                    <div className="space-y-2 p-3 sm:p-0 border border-white/10 sm:border-0 rounded-xl sm:rounded-none">
                       <div className="flex justify-between text-sm">
                         <span>Protein</span>
                         <span className="font-medium">
@@ -759,7 +759,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                       )}
                     </div>
 
-                    <div className="space-y-2 p-3 sm:p-0 border sm:border-0 rounded sm:rounded-none">
+                    <div className="space-y-2 p-3 sm:p-0 border border-white/10 sm:border-0 rounded-xl sm:rounded-none">
                       <div className="flex justify-between text-sm">
                         <span>Kolhydrater</span>
                         <span className="font-medium">
@@ -779,7 +779,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                       )}
                     </div>
 
-                    <div className="space-y-2 p-3 sm:p-0 border sm:border-0 rounded sm:rounded-none">
+                    <div className="space-y-2 p-3 sm:p-0 border border-white/10 sm:border-0 rounded-xl sm:rounded-none">
                       <div className="flex justify-between text-sm">
                         <span>Fett</span>
                         <span className="font-medium">
@@ -805,7 +805,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
                 <div className="space-y-3">
                   <h3 className="font-light text-base sm:text-lg text-primary">Måltider för dagen</h3>
                   {dailyMeals.map((meal, index) => (
-                    <Card key={meal.id} className="border-border shadow-none hover:shadow-sm transition-shadow">
+                    <Card key={meal.id} className="border-white/10 bg-white/5 rounded-2xl">
                       <CardContent className="p-4 sm:p-6">
                         <div className="space-y-3 sm:space-y-0 sm:flex sm:justify-between sm:items-start sm:mb-2">
                           <div className="flex-1 min-w-0">
@@ -871,7 +871,7 @@ export const SimplifiedMealPlanner: React.FC<SimplifiedMealPlannerProps> = ({
             ) : (
               <div className="grid grid-cols-1 gap-4">
                 {quickMeals.map(meal => (
-                  <Card key={meal.id} className="border-border shadow-none hover:shadow-sm transition-shadow cursor-pointer">
+                  <Card key={meal.id} className="border-white/10 bg-white/5 rounded-2xl cursor-pointer hover:bg-white/10 transition-colors">
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">

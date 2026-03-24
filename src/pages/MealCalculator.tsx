@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Calculator } from 'lucide-react';
 
 const MealCalculatorPage = () => {
   const [targetKcal, setTargetKcal] = useState<number>(0);
@@ -175,14 +176,19 @@ const MealCalculatorPage = () => {
   return (
     <div className="min-h-screen bg-background pb-24">
       <div className="flex flex-col items-center px-6 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Måltidsräknare</h1>
+        <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 rounded-xl bg-blue-500/10">
+              <Calculator className="h-6 w-6 text-blue-500" />
+            </div>
+            <h1 className="text-2xl font-bold text-foreground">Måltidsräknare</h1>
+          </div>
         <p className="text-center text-muted-foreground mb-8 max-w-lg">
           Räkna ut näringsvärden för dina måltider med data från Livsmedelsverket. Ange dina mål manuellt eller beräkna dem baserat på din vikt.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
           <div>
-            <Card className="mb-6">
+            <Card className="mb-6 border-white/10 bg-white/5 rounded-2xl">
               <CardContent className="pt-6">
                 <Tabs defaultValue="manual" onValueChange={setActiveTab}>
                   <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -297,7 +303,7 @@ const MealCalculatorPage = () => {
                         </Select>
                       </div>
                       
-                      <div className="space-y-4 pt-4 border-t">
+                      <div className="space-y-4 pt-4 border-t border-white/10">
                         <div className="space-y-2">
                           <div className="flex justify-between">
                             <Label htmlFor="proteinMultiplier">Protein per pound kroppsvikt</Label>
@@ -349,12 +355,12 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors ${preset.warning ? 'border-red-300 bg-red-50' : ''}`}
+                                  className={`p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5 ${preset.warning ? 'border-red-500/30 bg-red-500/10' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
                                   <div className="text-xs text-muted-foreground">{preset.multiplier}x • {preset.description}</div>
-                                  {preset.warning && <div className="text-xs text-red-600 mt-1">⚠️ Riskabel</div>}
+                                  {preset.warning && <div className="text-xs text-red-400 mt-1">⚠️ Riskabel</div>}
                                 </div>
                               ))
                             }
@@ -369,7 +375,7 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors"
+                                  className="p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -388,12 +394,12 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors ${preset.warning ? 'border-red-300 bg-red-50' : ''}`}
+                                  className={`p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5 ${preset.warning ? 'border-red-500/30 bg-red-500/10' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
                                   <div className="text-xs text-muted-foreground">{preset.multiplier}x • {preset.description}</div>
-                                  {preset.warning && <div className="text-xs text-red-600 mt-1">⚠️ Riskabel</div>}
+                                  {preset.warning && <div className="text-xs text-red-400 mt-1">⚠️ Riskabel</div>}
                                 </div>
                               ))
                             }
@@ -408,12 +414,12 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className={`p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors ${preset.warning ? 'border-orange-300 bg-orange-50' : ''}`}
+                                  className={`p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5 ${preset.warning ? 'border-orange-500/30 bg-orange-500/10' : ''}`}
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
                                   <div className="text-xs text-muted-foreground">{preset.multiplier}x • {preset.description}</div>
-                                  {preset.warning && <div className="text-xs text-orange-600 mt-1">⚠️ Konsultera expert</div>}
+                                  {preset.warning && <div className="text-xs text-orange-400 mt-1">⚠️ Konsultera expert</div>}
                                 </div>
                               ))
                             }
@@ -428,7 +434,7 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors"
+                                  className="p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -447,7 +453,7 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors"
+                                  className="p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -466,7 +472,7 @@ const MealCalculatorPage = () => {
                               .map((preset, index) => (
                                 <div 
                                   key={index}
-                                  className="p-3 border rounded-md text-center cursor-pointer hover:bg-secondary transition-colors"
+                                  className="p-3 border border-white/10 rounded-xl text-center cursor-pointer hover:bg-white/10 transition-colors bg-white/5"
                                   onClick={() => usePresetMultiplier(preset.multiplier)}
                                 >
                                   <div className="font-medium">{preset.name}</div>
@@ -480,7 +486,7 @@ const MealCalculatorPage = () => {
                     </div>
                     
                     {targetKcal > 0 && (
-                      <div className="space-y-2 pt-4 border-t">
+                      <div className="space-y-2 pt-4 border-t border-white/10">
                         <div className="flex justify-between">
                           <span>Kaloriforbruk:</span>
                           <span className="font-medium">{weight && typeof weight === 'number' ? Math.round(weight * 2.20462 * customMultiplier) : 0} kcal ({customMultiplier}x)</span>

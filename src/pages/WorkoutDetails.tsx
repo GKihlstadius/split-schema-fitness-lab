@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { workoutPrograms } from '@/data/workoutPrograms';
-import { ArrowLeft, RefreshCcw } from 'lucide-react';
+import { ArrowLeft, Dumbbell, RefreshCcw } from 'lucide-react';
 import { Exercise } from '@/types/workout';
 
 const WorkoutDetails = () => {
@@ -90,32 +89,35 @@ const WorkoutDetails = () => {
         
         <div className="space-y-6">
           {exercises.map((exercise, index) => (
-            <Card key={index}>
-              <CardHeader className="pb-2">
-                <CardTitle>{exercise.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <div className="text-sm text-muted-foreground">Set</div>
-                    <div className="font-medium">{exercise.sets}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground">Reps</div>
-                    <div className="font-medium">{exercise.reps}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground">Vila</div>
-                    <div className="font-medium">{exercise.notes || '-'}</div>
-                  </div>
+            <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-medium">
+                  {index + 1}
                 </div>
-              </CardContent>
-            </Card>
+                <h3 className="text-lg font-semibold text-foreground">{exercise.name}</h3>
+              </div>
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="bg-white/5 rounded-xl p-3">
+                  <div className="text-xs text-muted-foreground mb-1">Set</div>
+                  <div className="font-medium text-foreground">{exercise.sets}</div>
+                </div>
+                <div className="bg-white/5 rounded-xl p-3">
+                  <div className="text-xs text-muted-foreground mb-1">Reps</div>
+                  <div className="font-medium text-foreground">{exercise.reps}</div>
+                </div>
+                <div className="bg-white/5 rounded-xl p-3">
+                  <div className="text-xs text-muted-foreground mb-1">Vila</div>
+                  <div className="font-medium text-foreground">{exercise.notes || '-'}</div>
+                </div>
+              </div>
+            </div>
           ))}
           
           {exercises.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">Inga övningar hittades för denna dag.</p>
+            <div className="text-center py-16 bg-white/5 border border-white/10 rounded-2xl">
+              <Dumbbell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">Inga övningar hittades</h3>
+              <p className="text-muted-foreground">Det finns inga övningar för denna dag.</p>
             </div>
           )}
         </div>

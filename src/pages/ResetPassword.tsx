@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dumbbell, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Dumbbell, Eye, EyeOff, CheckCircle, Loader2 } from 'lucide-react';
 import { updatePassword } from '@/utils/supabaseAuth';
 import { supabase } from '@/lib/supabase';
 
@@ -15,93 +14,59 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: ''
-  });
+  const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
   const [isValidSession, setIsValidSession] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kontrollera om användaren har en giltig session för lösenordsåterställning
     const checkSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           setIsValidSession(true);
         } else {
-          // Kolla om vi har tokens i URL hash
           const hashParams = new URLSearchParams(window.location.hash.substring(1));
           if (hashParams.has('access_token')) {
             setIsValidSession(true);
           } else {
-            setError('Sessionen har gått ut. Vänligen begär en ny återställningslänk.');
-            setTimeout(() => {
-              navigate('/forgot-password');
-            }, 3000);
+            setError('Sessionen har gått ut. Du omdirigeras...');
+            setTimeout(() => navigate('/forgot-password'), 3000);
           }
         }
-      } catch (error) {
-        console.error('Fel vid kontroll av session:', error);
-        setError('Ett fel uppstod. Vänligen försök igen.');
+      } catch {
+        setError('Ett fel uppstod. Försök igen.');
       }
     };
-
     checkSession();
   }, [navigate]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.password.trim()) {
-      setError('Vänligen ange ett nytt lösenord');
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError('Lösenordet måste vara minst 6 tecken långt');
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Lösenorden matchar inte');
-      return;
-    }
+    if (!formData.password.trim()) { setError('Ange ett nytt lösenord'); return; }
+    if (formData.password.length < 6) { setError('Lösenordet måste vara minst 6 tecken'); return; }
+    if (formData.password !== formData.confirmPassword) { setError('Lösenorden matchar inte'); return; }
 
     setIsLoading(true);
     setError('');
     setSuccess('');
 
     try {
-      console.log('🔄 Uppdaterar lösenord');
-      
       const result = await updatePassword(formData.password);
-      
       if (result.success) {
-        setSuccess('Ditt lösenord har uppdaterats! Du omdirigeras till inloggningssidan...');
-        
-        // Omdirigera till login efter 3 sekunder
-        setTimeout(() => {
-          navigate('/login');
-        }, 3000);
+        setSuccess('Lösenordet har uppdaterats! Du omdirigeras...');
+        setTimeout(() => navigate('/login'), 3000);
       } else {
-        console.error('❌ Update password fel:', result.error);
-        setError(result.error || 'Ett fel uppstod vid uppdatering av lösenord');
+        setError(result.error || 'Kunde inte uppdatera lösenordet');
       }
-    } catch (error) {
-      console.error('💥 Lösenordsuppdatering misslyckades:', error);
-      setError(`Nätverksfel: ${error.message || 'Kontrollera din internetanslutning'}`);
+    } catch (err: any) {
+      setError(`Nätverksfel: ${err.message || 'Kontrollera din internetanslutning'}`);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-    // Rensa meddelanden när användaren börjar skriva
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     if (error) setError('');
     if (success) setSuccess('');
   };
@@ -109,9 +74,9 @@ const ResetPassword = () => {
   if (!isValidSession && !error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Dumbbell className="h-8 w-8 animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground">Verifierar session...</p>
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <p className="text-muted-foreground text-sm">Verifierar session...</p>
         </div>
       </div>
     );
@@ -119,121 +84,90 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="w-full max-w-md px-6">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center">
-            <Dumbbell className="h-8 w-8 text-primary" />
+      <div className="w-full max-w-sm px-6">
+        <div className="text-center mb-10">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
+            <Dumbbell className="h-7 w-7 text-white" />
           </div>
+          <h1 className="text-2xl font-bold text-foreground">Sätt nytt lösenord</h1>
+          <p className="text-sm text-muted-foreground mt-2">Ange ditt nya lösenord nedan</p>
         </div>
 
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">
-              Sätt nytt lösenord
-            </CardTitle>
-            <CardDescription>
-              Ange ditt nya lösenord
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 space-y-5">
+          {error && (
+            <Alert variant="destructive" className="bg-red-500/10 border-red-500/20">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          {success && (
+            <Alert className="border-emerald-500/20 bg-emerald-500/10">
+              <CheckCircle className="h-4 w-4 text-emerald-400" />
+              <AlertDescription className="text-emerald-300 ml-2">{success}</AlertDescription>
+            </Alert>
+          )}
 
-            {success && (
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800 ml-2">{success}</AlertDescription>
-              </Alert>
-            )}
-
-            {/* Lösenordsformulär */}
-            <form onSubmit={handleResetPassword} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Nytt lösenord</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Minst 6 tecken"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className="pr-10"
-                    disabled={isLoading}
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
+          <form onSubmit={handleResetPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm text-muted-foreground">Nytt lösenord</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Minst 6 tecken"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="pr-10 bg-white/5 border-white/10 rounded-xl h-11"
+                  disabled={isLoading}
+                  required
+                />
+                <Button type="button" variant="ghost" size="sm"
+                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                  onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Bekräfta nytt lösenord</Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Upprepa lösenord"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className="pr-10"
-                    disabled={isLoading}
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              <Button 
-                type="submit"
-                disabled={isLoading}
-                className="w-full"
-                size="lg"
-              >
-                {isLoading ? 'Uppdaterar...' : 'Uppdatera lösenord'}
-              </Button>
-            </form>
-
-            {/* Information */}
-            <div className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-              <p className="font-medium mb-1">🔒 Säkerhetstips:</p>
-              <p>Använd ett starkt lösenord med minst 6 tecken som innehåller både bokstäver och siffror.</p>
             </div>
 
-          </CardContent>
-        </Card>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-sm text-muted-foreground">Bekräfta lösenord</Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Upprepa lösenord"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="pr-10 bg-white/5 border-white/10 rounded-xl h-11"
+                  disabled={isLoading}
+                  required
+                />
+                <Button type="button" variant="ghost" size="sm"
+                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
 
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium"
+              size="lg"
+            >
+              {isLoading ? 'Uppdaterar...' : 'Uppdatera lösenord'}
+            </Button>
+          </form>
+
+          <div className="text-sm text-muted-foreground bg-white/5 border border-white/10 p-3 rounded-xl">
+            <p>Använd minst 6 tecken med både bokstäver och siffror.</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ResetPassword; 
+export default ResetPassword;
