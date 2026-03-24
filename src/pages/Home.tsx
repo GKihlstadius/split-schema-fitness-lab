@@ -33,33 +33,33 @@ const HomeSkeleton = () => (
       {/* Header skeleton */}
       <div className="flex items-center justify-between">
         <div className="space-y-2">
-          <div className="h-7 w-36 bg-gray-100 rounded-lg" />
-          <div className="h-4 w-24 bg-gray-50 rounded-lg" />
+          <div className="h-7 w-36 bg-secondary rounded-lg" />
+          <div className="h-4 w-24 bg-muted rounded-lg" />
         </div>
-        <div className="w-10 h-10 rounded-full bg-gray-100" />
+        <div className="w-10 h-10 rounded-full bg-secondary" />
       </div>
       {/* XP bar skeleton */}
-      <div className="h-24 bg-white shadow-sm border border-gray-100 rounded-2xl" />
+      <div className="h-24 bg-card shadow-sm border border-border rounded-2xl" />
       {/* Stats row skeleton */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="h-24 bg-white shadow-sm border border-gray-100 rounded-2xl" />
-        <div className="h-24 bg-white shadow-sm border border-gray-100 rounded-2xl" />
+        <div className="h-24 bg-card shadow-sm border border-border rounded-2xl" />
+        <div className="h-24 bg-card shadow-sm border border-border rounded-2xl" />
       </div>
       {/* Today's workout skeleton */}
       <div>
-        <div className="h-4 w-24 bg-gray-100 rounded mb-3" />
-        <div className="h-36 bg-white shadow-sm border border-gray-100 rounded-2xl" />
+        <div className="h-4 w-24 bg-secondary rounded mb-3" />
+        <div className="h-36 bg-card shadow-sm border border-border rounded-2xl" />
       </div>
       {/* Program skeleton */}
       <div>
-        <div className="h-4 w-28 bg-gray-100 rounded mb-3" />
-        <div className="h-16 bg-white shadow-sm border border-gray-100 rounded-2xl" />
+        <div className="h-4 w-28 bg-secondary rounded mb-3" />
+        <div className="h-16 bg-card shadow-sm border border-border rounded-2xl" />
       </div>
       {/* Stats grid skeleton */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="h-20 bg-white shadow-sm border border-gray-100 rounded-xl" />
-        <div className="h-20 bg-white shadow-sm border border-gray-100 rounded-xl" />
-        <div className="h-20 bg-white shadow-sm border border-gray-100 rounded-xl" />
+        <div className="h-20 bg-card shadow-sm border border-border rounded-xl" />
+        <div className="h-20 bg-card shadow-sm border border-border rounded-xl" />
+        <div className="h-20 bg-card shadow-sm border border-border rounded-xl" />
       </div>
     </div>
   </div>
@@ -235,7 +235,7 @@ const Home = () => {
             </h1>
           </div>
           <Link to="/profile">
-            <div className="w-11 h-11 rounded-full bg-gray-900 flex items-center justify-center shadow-sm">
+            <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-sm">
               <span className="text-white font-bold text-sm">
                 {levelInfo?.level || 1}
               </span>
@@ -263,9 +263,9 @@ const Home = () => {
             streak={gamification?.currentStreak || 0}
             longestStreak={gamification?.longestStreak || 0}
           />
-          <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4 flex flex-col justify-between">
+          <div className="bg-card shadow-sm border border-border rounded-2xl p-4 flex flex-col justify-between">
             <div className="flex items-center gap-2 mb-1">
-              <Zap className="h-4 w-4 text-emerald-600" />
+              <Zap className="h-4 w-4 text-primary" />
               <span className="text-xs text-muted-foreground">Totalt XP</span>
             </div>
             <p className="text-2xl font-bold text-foreground">
@@ -286,8 +286,8 @@ const Home = () => {
             >
               <div className={`relative overflow-hidden rounded-2xl border p-5 transition-all duration-300 ${
                 isRestDay
-                  ? 'border-gray-100 bg-white'
-                  : 'border-emerald-200 bg-emerald-50 group-hover:bg-emerald-100 group-hover:border-emerald-300'
+                  ? 'border-border bg-card'
+                  : 'border-primary/20 bg-primary/10 group-hover:bg-primary/20 group-hover:border-primary/30'
               }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -298,7 +298,7 @@ const Home = () => {
                       {todayWorkout.muscleGroups.map((mg, i) => (
                         <span
                           key={i}
-                          className="text-[11px] px-2.5 py-0.5 rounded-full bg-gray-100 text-emerald-500 font-medium"
+                          className="text-[11px] px-2.5 py-0.5 rounded-full bg-secondary text-primary font-medium"
                         >
                           {mg}
                         </span>
@@ -309,15 +309,15 @@ const Home = () => {
                     </p>
                   </div>
                   {!isRestDay && (
-                    <div className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center shadow-sm transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-sm transition-shadow">
                       <ChevronRight className="h-6 w-6 text-white" />
                     </div>
                   )}
                 </div>
                 {!isRestDay && (
-                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2">
-                    <Zap className="h-3.5 w-3.5 text-emerald-600" />
-                    <span className="text-xs text-emerald-600 font-medium">
+                  <div className="mt-4 pt-3 border-t border-border flex items-center gap-2">
+                    <Zap className="h-3.5 w-3.5 text-primary" />
+                    <span className="text-xs text-primary font-medium">
                       +{100 + todayWorkout.exercises.length * 10} XP möjligt
                     </span>
                   </div>
@@ -325,10 +325,10 @@ const Home = () => {
               </div>
             </Link>
           ) : (
-            <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 text-center">
+            <div className="rounded-2xl border border-border bg-card shadow-sm p-6 text-center">
               <Dumbbell className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
               <p className="text-muted-foreground text-sm">Inget pass schemalagt idag</p>
-              <Link to="/workouts" className="text-xs text-emerald-600 hover:text-emerald-500 mt-2 inline-block">
+              <Link to="/workouts" className="text-xs text-primary hover:text-primary mt-2 inline-block">
                 Välj ett program
               </Link>
             </div>
@@ -341,15 +341,15 @@ const Home = () => {
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
               Aktivt Program
             </h2>
-            <Link to="/workouts" className="text-xs text-emerald-600 hover:text-emerald-500 transition-colors">
+            <Link to="/workouts" className="text-xs text-primary hover:text-primary transition-colors">
               Byt program
             </Link>
           </div>
           <Link to="/workouts" className="block group">
-            <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4 group-hover:bg-gray-50 transition-colors">
+            <div className="bg-card shadow-sm border border-border rounded-2xl p-4 group-hover:bg-muted transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-                  <Dumbbell className="h-5 w-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Dumbbell className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-foreground truncate">{selectedProgram.name}</h3>
@@ -379,10 +379,10 @@ const Home = () => {
             />
           ) : (
             <Link to="/profile" className="block">
-              <div className="rounded-2xl border border-dashed border-gray-200 bg-white shadow-sm p-5 text-center hover:bg-gray-50 transition-colors">
+              <div className="rounded-2xl border border-dashed border-border bg-card shadow-sm p-5 text-center hover:bg-muted transition-colors">
                 <MapPin className="h-6 w-6 text-muted-foreground/40 mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground">Inget gym sparat</p>
-                <p className="text-xs text-emerald-600 mt-1">Lägg till ditt gym i profilen →</p>
+                <p className="text-xs text-primary mt-1">Lägg till ditt gym i profilen →</p>
               </div>
             </Link>
           )}
@@ -394,20 +394,20 @@ const Home = () => {
             Statistik
           </h2>
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-3.5 text-center">
-              <Dumbbell className="h-4 w-4 text-emerald-600 mx-auto mb-1.5" />
+            <div className="bg-card shadow-sm border border-border rounded-2xl p-3.5 text-center">
+              <Dumbbell className="h-4 w-4 text-primary mx-auto mb-1.5" />
               <p className="text-xl font-bold text-foreground">{gamification?.totalWorkouts || 0}</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">Pass</p>
             </div>
-            <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-3.5 text-center">
+            <div className="bg-card shadow-sm border border-border rounded-2xl p-3.5 text-center">
               <Trophy className="h-4 w-4 text-amber-400 mx-auto mb-1.5" />
               <p className="text-xl font-bold text-foreground">
                 {gamification?.achievements.filter(a => a.unlockedAt).length || 0}
               </p>
               <p className="text-[10px] text-muted-foreground mt-0.5">Prestationer</p>
             </div>
-            <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-3.5 text-center">
-              <Zap className="h-4 w-4 text-emerald-600 mx-auto mb-1.5" />
+            <div className="bg-card shadow-sm border border-border rounded-2xl p-3.5 text-center">
+              <Zap className="h-4 w-4 text-primary mx-auto mb-1.5" />
               <p className="text-xl font-bold text-foreground">
                 {gamification?.personalRecords.length || 0}
               </p>
@@ -423,7 +423,7 @@ const Home = () => {
               <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                 Senaste Prestationer
               </h2>
-              <Link to="/progress" className="text-xs text-emerald-600 hover:text-emerald-500 transition-colors">
+              <Link to="/progress" className="text-xs text-primary hover:text-primary transition-colors">
                 Visa alla
               </Link>
             </div>
@@ -449,16 +449,16 @@ const Home = () => {
                   key={i}
                   className={`rounded-xl p-2 text-center transition-all ${
                     isToday
-                      ? 'bg-emerald-50 border border-emerald-200 shadow-sm'
+                      ? 'bg-primary/10 border border-primary/20 shadow-sm'
                       : isRest
-                        ? 'bg-gray-50 border border-gray-100'
-                        : 'bg-white shadow-sm border border-gray-100'
+                        ? 'bg-muted border border-border'
+                        : 'bg-card shadow-sm border border-border'
                   }`}
                 >
-                  <p className={`text-[10px] font-semibold ${isToday ? 'text-emerald-600' : 'text-muted-foreground'}`}>
+                  <p className={`text-[10px] font-semibold ${isToday ? 'text-primary' : 'text-muted-foreground'}`}>
                     {day.day.slice(0, 3)}
                   </p>
-                  <p className={`text-[8px] mt-0.5 leading-tight ${isToday ? 'text-emerald-500' : 'text-muted-foreground/60'}`}>
+                  <p className={`text-[8px] mt-0.5 leading-tight ${isToday ? 'text-primary' : 'text-muted-foreground/60'}`}>
                     {isRest ? 'Vila' : day.muscleGroups.slice(0, 2).join(', ').slice(0, 10)}
                   </p>
                 </div>

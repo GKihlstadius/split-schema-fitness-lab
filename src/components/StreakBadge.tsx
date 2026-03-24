@@ -10,7 +10,7 @@ const StreakBadge: React.FC<StreakBadgeProps> = ({ streak, longestStreak }) => {
   const isOnFire = streak >= 30;
 
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 flex flex-col justify-between">
+    <div className="rounded-2xl bg-card border border-border shadow-sm p-4 flex flex-col justify-between">
       <div>
         <div className="flex items-center gap-2 mb-1">
           <span className="text-lg">🔥</span>

@@ -143,7 +143,7 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
+      <div className="bg-card border border-border rounded-2xl p-6">
         <div className="flex items-center gap-2 text-foreground">
           <Clock className="h-5 w-5 animate-spin" />
           <span className="font-semibold">Laddar träningsloggar...</span>
@@ -174,7 +174,7 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
       </div>
 
       {groupedLogs.length === 0 ? (
-        <div className="bg-white border border-gray-100 rounded-2xl text-center py-12 px-6">
+        <div className="bg-card border border-border rounded-2xl text-center py-12 px-6">
             <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-2">Inga träningsloggar ännu</h3>
             <p className="text-muted-foreground">
@@ -184,12 +184,12 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
       ) : (
         <div className="space-y-4">
           {groupedLogs.map((session, index) => (
-            <div key={index} className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+            <div key={index} className="bg-card border border-border rounded-2xl overflow-hidden">
               <div className="p-5 pb-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-emerald-600" />
+                      <Calendar className="h-4 w-4 text-primary" />
                       {formatDate(session.date)}
                     </h3>
                     <p className="text-sm text-muted-foreground">
@@ -210,7 +210,7 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
                     return (
                       <div
                         key={exerciseIndex}
-                        className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl"
+                        className="flex items-center justify-between p-3 bg-card border border-border rounded-xl"
                       >
                         <div className="flex items-center gap-3">
                           <div className="text-sm font-medium text-foreground">
@@ -227,10 +227,10 @@ export function WorkoutLogHistory({ userId }: WorkoutLogHistoryProps) {
                           )}
                         </div>
                         <div className="flex items-center gap-4 text-sm">
-                          <Badge variant="outline" className="border-gray-100">
+                          <Badge variant="outline" className="border-border">
                             {exercise.sets} × {exercise.reps}
                           </Badge>
-                          <Badge variant="outline" className="border-gray-100">
+                          <Badge variant="outline" className="border-border">
                             {exercise.weight}kg
                           </Badge>
                           <span className="text-muted-foreground">

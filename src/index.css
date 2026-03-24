@@ -3,51 +3,121 @@
 @tailwind utilities;
 
 /* =============================================================================
-   Cal AI-Inspired Light Design System
-   GymQuest — Clean white, subtle shadows, green accents, premium minimal
+   GymQuest Design System
+   Dark: Stitch "Kinetic Intensity" — #131313 void, #68dba9 electric mint
+   Light: Cal AI minimal — white, subtle gray, emerald accent
    ============================================================================= */
 
 @layer base {
+  /* ── DARK MODE (Stitch Kinetic Intensity) ── Default ── */
   :root {
-    --background: 0 0% 98%;              /* #FAFAFA */
-    --foreground: 0 0% 9%;               /* #171717 near-black */
+    --background: 0 0% 7%;               /* #131313 */
+    --foreground: 30 4% 89%;             /* #e5e2e1 */
 
-    --card: 0 0% 100%;                   /* pure white */
+    --card: 0 0% 13%;                    /* #20201f */
+    --card-foreground: 30 4% 89%;
+
+    --popover: 0 0% 13%;
+    --popover-foreground: 30 4% 89%;
+
+    --primary: 157 60% 63%;             /* #68dba9 electric mint */
+    --primary-foreground: 157 100% 7%;  /* #002114 */
+
+    --secondary: 0 0% 16%;             /* #2a2a2a surface-container-high */
+    --secondary-foreground: 30 4% 89%;
+
+    --muted: 0 0% 11%;                 /* #1c1b1b surface-container-low */
+    --muted-foreground: 150 9% 76%;    /* #bccac0 on-surface-variant */
+
+    --accent: 157 60% 63%;
+    --accent-foreground: 157 100% 7%;
+
+    --destructive: 7 100% 84%;         /* #ffb4ab */
+    --destructive-foreground: 0 100% 3%;
+
+    --border: 155 10% 27%;             /* #3d4a42 outline-variant */
+    --input: 0 0% 11%;
+    --ring: 157 60% 63%;
+
+    --radius: 0.375rem;
+
+    /* Stitch-specific tokens */
+    --surface-lowest: 0 0% 5%;        /* #0e0e0e */
+    --surface-low: 0 0% 11%;          /* #1c1b1b */
+    --surface-mid: 0 0% 13%;          /* #20201f */
+    --surface-high: 0 0% 16%;         /* #2a2a2a */
+    --surface-highest: 0 0% 21%;      /* #353535 */
+    --surface-bright: 0 0% 22%;       /* #393939 */
+    --outline: 145 5% 55%;            /* #87948b */
+    --primary-container: 157 62% 39%; /* #25a475 */
+    --primary-fixed: 157 89% 74%;     /* #85f8c4 */
+
+    /* Muscle group colors */
+    --muscle-chest: 0 72% 51%;
+    --muscle-back: 157 60% 50%;
+    --muscle-shoulders: 38 92% 50%;
+    --muscle-biceps: 157 60% 63%;
+    --muscle-triceps: 271 63% 52%;
+    --muscle-legs: 25 75% 47%;
+    --muscle-quads: 25 75% 47%;
+    --muscle-hamstrings: 20 70% 45%;
+    --muscle-glutes: 330 65% 50%;
+    --muscle-calves: 38 65% 55%;
+    --muscle-forearms: 157 50% 42%;
+    --muscle-core: 195 70% 45%;
+    --muscle-rest: 0 0% 30%;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 30 4% 89%;
+    --sidebar-primary: 157 60% 63%;
+    --sidebar-primary-foreground: 157 100% 7%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 30 4% 89%;
+    --sidebar-border: 155 10% 27%;
+    --sidebar-ring: 157 60% 63%;
+  }
+
+  /* ── LIGHT MODE (Cal AI Minimal) ── */
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
+
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 9%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
 
-    --primary: 0 0% 9%;                  /* black primary (Cal AI style) */
+    --primary: 0 0% 9%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;              /* #F5F5F5 */
+    --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 20%;
 
     --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;        /* medium gray */
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 160 84% 39%;              /* emerald #10B981 - health green */
+    --accent: 160 84% 39%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;                 /* #E5E5E5 */
+    --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 9%;
 
-    --radius: 0.875rem;
+    --surface-lowest: 0 0% 96%;
+    --surface-low: 0 0% 97%;
+    --surface-mid: 0 0% 100%;
+    --surface-high: 0 0% 98%;
+    --surface-highest: 0 0% 96%;
+    --surface-bright: 0 0% 100%;
+    --outline: 0 0% 75%;
+    --primary-container: 160 84% 39%;
+    --primary-fixed: 160 84% 39%;
 
-    /* Semantic */
-    --success: 160 84% 39%;
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 0%;
-    --streak: 25 95% 53%;               /* orange */
-    --xp: 160 84% 39%;                  /* emerald */
-
-    /* Muscle group colors */
     --muscle-chest: 0 72% 51%;
     --muscle-back: 217 71% 53%;
     --muscle-shoulders: 38 92% 50%;
@@ -62,7 +132,6 @@
     --muscle-core: 195 70% 45%;
     --muscle-rest: 0 0% 75%;
 
-    /* Sidebar */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 9%;
     --sidebar-primary: 0 0% 9%;
@@ -78,61 +147,47 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
   html, body {
     overscroll-behavior: none;
     touch-action: manipulation;
   }
+  /* Headlines use Space Grotesk */
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
 }
 
 @layer components {
-  /* --- Muscle group badges --- */
-  .muscle-badge-chest {
-    @apply bg-[hsl(var(--muscle-chest)/0.1)] text-[hsl(var(--muscle-chest)/1)];
+  /* Kinetic gradient CTA */
+  .kinetic-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-container)) 100%);
   }
-  .muscle-badge-back {
-    @apply bg-[hsl(var(--muscle-back)/0.1)] text-[hsl(var(--muscle-back)/1)];
+
+  /* Text glow for dark mode highlights */
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.4);
   }
-  .muscle-badge-shoulders {
-    @apply bg-[hsl(var(--muscle-shoulders)/0.1)] text-[hsl(var(--muscle-shoulders)/1)];
-  }
-  .muscle-badge-biceps {
-    @apply bg-[hsl(var(--muscle-biceps)/0.1)] text-[hsl(var(--muscle-biceps)/1)];
-  }
-  .muscle-badge-triceps {
-    @apply bg-[hsl(var(--muscle-triceps)/0.1)] text-[hsl(var(--muscle-triceps)/1)];
-  }
-  .muscle-badge-legs {
-    @apply bg-[hsl(var(--muscle-legs)/0.1)] text-[hsl(var(--muscle-legs)/1)];
-  }
-  .muscle-badge-quads {
-    @apply bg-[hsl(var(--muscle-quads)/0.1)] text-[hsl(var(--muscle-quads)/1)];
-  }
-  .muscle-badge-hamstrings {
-    @apply bg-[hsl(var(--muscle-hamstrings)/0.1)] text-[hsl(var(--muscle-hamstrings)/1)];
-  }
-  .muscle-badge-glutes {
-    @apply bg-[hsl(var(--muscle-glutes)/0.1)] text-[hsl(var(--muscle-glutes)/1)];
-  }
-  .muscle-badge-calves {
-    @apply bg-[hsl(var(--muscle-calves)/0.1)] text-[hsl(var(--muscle-calves)/1)];
-  }
-  .muscle-badge-forearms {
-    @apply bg-[hsl(var(--muscle-forearms)/0.1)] text-[hsl(var(--muscle-forearms)/1)];
-  }
-  .muscle-badge-core {
-    @apply bg-[hsl(var(--muscle-core)/0.1)] text-[hsl(var(--muscle-core)/1)];
-  }
-  .muscle-badge-rest {
-    @apply bg-[hsl(var(--muscle-rest)/0.1)] text-[hsl(var(--muscle-rest)/1)];
-  }
+
+  /* Muscle group badges */
+  .muscle-badge-chest { @apply bg-[hsl(var(--muscle-chest)/0.12)] text-[hsl(var(--muscle-chest)/1)]; }
+  .muscle-badge-back { @apply bg-[hsl(var(--muscle-back)/0.12)] text-[hsl(var(--muscle-back)/1)]; }
+  .muscle-badge-shoulders { @apply bg-[hsl(var(--muscle-shoulders)/0.12)] text-[hsl(var(--muscle-shoulders)/1)]; }
+  .muscle-badge-biceps { @apply bg-[hsl(var(--muscle-biceps)/0.12)] text-[hsl(var(--muscle-biceps)/1)]; }
+  .muscle-badge-triceps { @apply bg-[hsl(var(--muscle-triceps)/0.12)] text-[hsl(var(--muscle-triceps)/1)]; }
+  .muscle-badge-legs { @apply bg-[hsl(var(--muscle-legs)/0.12)] text-[hsl(var(--muscle-legs)/1)]; }
+  .muscle-badge-quads { @apply bg-[hsl(var(--muscle-quads)/0.12)] text-[hsl(var(--muscle-quads)/1)]; }
+  .muscle-badge-hamstrings { @apply bg-[hsl(var(--muscle-hamstrings)/0.12)] text-[hsl(var(--muscle-hamstrings)/1)]; }
+  .muscle-badge-glutes { @apply bg-[hsl(var(--muscle-glutes)/0.12)] text-[hsl(var(--muscle-glutes)/1)]; }
+  .muscle-badge-calves { @apply bg-[hsl(var(--muscle-calves)/0.12)] text-[hsl(var(--muscle-calves)/1)]; }
+  .muscle-badge-forearms { @apply bg-[hsl(var(--muscle-forearms)/0.12)] text-[hsl(var(--muscle-forearms)/1)]; }
+  .muscle-badge-core { @apply bg-[hsl(var(--muscle-core)/0.12)] text-[hsl(var(--muscle-core)/1)]; }
+  .muscle-badge-rest { @apply bg-[hsl(var(--muscle-rest)/0.12)] text-[hsl(var(--muscle-rest)/1)]; }
 }
 
 /* Animations */
@@ -150,8 +205,13 @@
   100% { opacity: 0; transform: translateY(-32px) scale(0.9); }
 }
 @keyframes pulse-soft {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+}
+@keyframes xpPopupSlideUp {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  70% { opacity: 1; transform: translateX(-50%) translateY(-30px); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-50px); }
 }
 
 .animate-slide-up { animation: slide-up 0.3s ease-out; }

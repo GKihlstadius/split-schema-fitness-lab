@@ -277,7 +277,7 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
         </div>
         
         {exercises.length === 0 && (
-          <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl">
+          <div className="text-center py-16 bg-card border border-border rounded-2xl">
             <Dumbbell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-2">Inga övningar</h3>
             <p className="text-muted-foreground">Det finns inga övningar för denna dag.</p>
@@ -285,10 +285,10 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
         )}
 
         {exercises.map((exercise, index) => (
-          <div key={index} className="border-b border-gray-100 pb-5 last:border-0">
+          <div key={index} className="border-b border-border pb-5 last:border-0">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-medium text-sm">
+                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium text-sm">
                   {index + 1}
                 </div>
                 
@@ -305,7 +305,7 @@ export function DayWorkoutView({ dayPlan, programName = 'Okänt program', onSave
                       <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[300px] p-0 bg-white border-gray-100">
+                  <PopoverContent className="w-[300px] p-0 bg-card border-border">
                     <Command>
                       <CommandInput placeholder="Sök övningar..." />
                       <CommandList>

@@ -81,14 +81,14 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-card flex flex-col overflow-hidden">
       {/* Header: back + dots */}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
         <div className="w-10">
           {step > 0 && (
             <button
               onClick={back}
-              className="p-2 -ml-2 text-gray-400 hover:text-gray-900 transition-colors"
+              className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
@@ -102,10 +102,10 @@ export default function Onboarding() {
               key={i}
               className={`h-2 rounded-full transition-all duration-300 ${
                 i === step
-                  ? 'w-8 bg-gray-900'
+                  ? 'w-8 bg-primary'
                   : i < step
-                    ? 'w-2 bg-gray-900/60'
-                    : 'w-2 bg-gray-200'
+                    ? 'w-2 bg-primary/60'
+                    : 'w-2 bg-border'
               }`}
             />
           ))}
@@ -115,7 +115,7 @@ export default function Onboarding() {
           {step > 0 && step < TOTAL_STEPS - 1 && (
             <button
               onClick={completeOnboarding}
-              className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
             >
               Hoppa över
             </button>
@@ -130,15 +130,15 @@ export default function Onboarding() {
           {step === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-140px)] text-center gap-8">
               {/* Logo */}
-              <div className="w-28 h-28 rounded-full bg-gray-900 flex items-center justify-center shadow-sm">
+              <div className="w-28 h-28 rounded-full bg-primary flex items-center justify-center shadow-sm">
                 <Dumbbell className="w-14 h-14 text-white" />
               </div>
 
               <div className="space-y-4 max-w-sm">
-                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                <h1 className="text-3xl font-bold text-foreground tracking-tight">
                   Välkommen till GymQuest
                 </h1>
-                <p className="text-gray-500 text-lg leading-relaxed">
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   Din personliga gym-companion med XP, achievements och smarta
                   träningsprogram
                 </p>
@@ -146,7 +146,7 @@ export default function Onboarding() {
 
               <Button
                 onClick={next}
-                className="w-full max-w-sm bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-14 text-lg font-semibold"
+                className="w-full max-w-sm bg-primary hover:bg-primary/90 text-white rounded-xl h-14 text-lg font-semibold"
               >
                 Kom igång
               </Button>
@@ -157,7 +157,7 @@ export default function Onboarding() {
           {step === 1 && (
             <div className="flex flex-col min-h-[calc(100vh-140px)]">
               <div className="pt-8 pb-6 text-center">
-                <h1 className="text-2xl font-bold text-gray-900">Vad är ditt mål?</h1>
+                <h1 className="text-2xl font-bold text-foreground">Vad är ditt mål?</h1>
               </div>
 
               <div className="flex-1 grid grid-cols-2 gap-4 content-start">
@@ -170,21 +170,21 @@ export default function Onboarding() {
                       onClick={() => setSelectedGoal(goal.id)}
                       className={`relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border transition-all duration-200 ${
                         selected
-                          ? 'border-emerald-300 bg-emerald-50'
-                          : 'border-gray-100 bg-white hover:bg-gray-50'
+                          ? 'border-primary/30 bg-primary/10'
+                          : 'border-border bg-card hover:bg-muted'
                       }`}
                     >
                       <Icon
-                        className={`w-8 h-8 ${selected ? 'text-emerald-600' : 'text-gray-400'}`}
+                        className={`w-8 h-8 ${selected ? 'text-primary' : 'text-muted-foreground'}`}
                       />
                       <span
-                        className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-500'}`}
+                        className={`text-sm font-medium ${selected ? 'text-foreground' : 'text-muted-foreground'}`}
                       >
                         {goal.label}
                       </span>
                       {selected && (
                         <div className="absolute top-3 right-3">
-                          <Check className="w-4 h-4 text-emerald-600" />
+                          <Check className="w-4 h-4 text-primary" />
                         </div>
                       )}
                     </button>
@@ -196,7 +196,7 @@ export default function Onboarding() {
                 <Button
                   onClick={next}
                   disabled={!selectedGoal}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-14 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-14 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Nästa
                 </Button>
@@ -208,7 +208,7 @@ export default function Onboarding() {
           {step === 2 && (
             <div className="flex flex-col min-h-[calc(100vh-140px)]">
               <div className="pt-8 pb-6 text-center">
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-foreground">
                   Välj ett träningsprogram
                 </h1>
               </div>
@@ -222,25 +222,25 @@ export default function Onboarding() {
                       onClick={() => setSelectedProgramId(program.id)}
                       className={`w-full text-left p-5 rounded-2xl border transition-all duration-200 ${
                         selected
-                          ? 'border-emerald-300 bg-emerald-50'
-                          : 'border-gray-100 bg-white hover:bg-gray-50'
+                          ? 'border-primary/30 bg-primary/10'
+                          : 'border-border bg-card hover:bg-muted'
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-gray-900 font-semibold text-base pr-2">
+                        <h3 className="text-foreground font-semibold text-base pr-2">
                           {program.name}
                         </h3>
-                        {selected && <Check className="w-5 h-5 text-emerald-600 shrink-0" />}
+                        {selected && <Check className="w-5 h-5 text-primary shrink-0" />}
                       </div>
 
                       <div className="flex gap-2 flex-wrap">
-                        <span className="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-500 font-medium">
+                        <span className="text-xs px-2.5 py-1 rounded-lg bg-primary/10 text-primary font-medium">
                           {program.frequency}
                         </span>
-                        <span className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 text-gray-400 font-medium">
+                        <span className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-muted-foreground font-medium">
                           {program.difficulty}
                         </span>
-                        <span className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 text-gray-400">
+                        <span className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-muted-foreground">
                           {program.focus}
                         </span>
                       </div>
@@ -253,7 +253,7 @@ export default function Onboarding() {
                 <Button
                   onClick={next}
                   disabled={!selectedProgramId}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-14 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-14 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Nästa
                 </Button>
@@ -265,15 +265,15 @@ export default function Onboarding() {
           {step === 3 && (
             <div className="flex flex-col items-center min-h-[calc(100vh-140px)]">
               <div className="pt-8 pb-6 text-center space-y-2">
-                <h1 className="text-2xl font-bold text-gray-900">Spara ditt gym</h1>
-                <p className="text-gray-400 text-base">
+                <h1 className="text-2xl font-bold text-foreground">Spara ditt gym</h1>
+                <p className="text-muted-foreground text-base">
                   Checka in när du är på gymmet och tjäna XP
                 </p>
               </div>
 
               <div className="flex-1 flex flex-col items-center gap-8 w-full max-w-sm">
-                <div className="w-20 h-20 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center">
-                  <MapPin className="w-10 h-10 text-emerald-600" />
+                <div className="w-20 h-20 rounded-full bg-muted border border-border flex items-center justify-center">
+                  <MapPin className="w-10 h-10 text-primary" />
                 </div>
 
                 <div className="w-full space-y-4">
@@ -282,7 +282,7 @@ export default function Onboarding() {
                     placeholder="Namn på ditt gym"
                     value={gymName}
                     onChange={(e) => setGymName(e.target.value)}
-                    className="h-14 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl text-base px-4"
+                    className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground rounded-xl text-base px-4"
                   />
 
                   <Button
@@ -290,8 +290,8 @@ export default function Onboarding() {
                     disabled={!gymName.trim() || savingGym || gymSaved}
                     className={`w-full rounded-xl h-14 text-base font-semibold transition-all ${
                       gymSaved
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200'
+                        ? 'bg-primary/10 text-primary border border-primary/20'
+                        : 'bg-secondary hover:bg-border text-foreground border border-border'
                     } disabled:opacity-40 disabled:cursor-not-allowed`}
                   >
                     {gymSaved ? (
@@ -310,7 +310,7 @@ export default function Onboarding() {
 
                 <button
                   onClick={completeOnboarding}
-                  className="text-sm text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2"
+                  className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors underline underline-offset-2"
                 >
                   Hoppa över
                 </button>
@@ -319,7 +319,7 @@ export default function Onboarding() {
               <div className="w-full pt-6 pb-4">
                 <Button
                   onClick={completeOnboarding}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-14 text-lg font-semibold"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-14 text-lg font-semibold"
                 >
                   Klar!
                 </Button>

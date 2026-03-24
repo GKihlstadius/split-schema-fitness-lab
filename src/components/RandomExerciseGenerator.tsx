@@ -60,7 +60,7 @@ export function RandomExerciseGenerator({ dayPlan, onApplyRandomExercises }: Ran
             <Shuffle className="h-5 w-5" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent className="bg-white border-gray-100 text-foreground">
+        <TooltipContent className="bg-card border-border text-foreground">
           <p>Slumpa nya övningar för {dayPlan.day}</p>
         </TooltipContent>
       </Tooltip>

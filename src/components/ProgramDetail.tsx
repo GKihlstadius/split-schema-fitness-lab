@@ -50,7 +50,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
     if (lowerMuscle.includes('forearm')) return 'muscle-badge-forearms';
     if (lowerMuscle.includes('core') || lowerMuscle.includes('abs')) return 'muscle-badge-core';
     if (lowerMuscle.includes('rest')) return 'muscle-badge-rest';
-    return 'bg-gray-100 text-muted-foreground';
+    return 'bg-secondary text-muted-foreground';
   };
 
   const selectedDayPlan = program.weeklyPlan.find(day => day.day === selectedDay);
@@ -99,8 +99,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
         ref={(el) => { dayCardRefs.current[day.day] = el; }}
         className={`w-full rounded-2xl border transition-all duration-200 cursor-pointer ${
           selectedDay === day.day
-            ? 'border-emerald-300 bg-emerald-50 ring-1 ring-emerald-300'
-            : 'border-gray-100 bg-white hover:bg-gray-50 hover:border-gray-200 shadow-sm'
+            ? 'border-primary/30 bg-primary/10 ring-1 ring-primary/30'
+            : 'border-border bg-card hover:bg-muted hover:border-border shadow-sm'
         }`}
         onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}
       >
@@ -149,14 +149,14 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
       {selectedDayPlan && (
         <div className="mb-12 animate-slide-up" ref={dayWorkoutRef}>
           <div className="flex items-center justify-between gap-3 mb-4">
-            <h3 className="text-lg font-semibold text-emerald-600">
+            <h3 className="text-lg font-semibold text-primary">
               Övningar — {selectedDayPlan.day}
             </h3>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
-                className="border-gray-200 bg-white hover:bg-gray-50 text-sm shadow-sm"
+                className="border-border bg-card hover:bg-muted text-sm shadow-sm"
                 onClick={copyDayPlan}
               >
                 <Copy className="h-3.5 w-3.5 mr-1.5" />
@@ -172,7 +172,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ program }) => {
               </Button>
             </div>
           </div>
-          <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4">
+          <div className="rounded-2xl border border-border bg-card shadow-sm p-4">
             <DayWorkoutView dayPlan={selectedDayPlan} programName={program.name} />
           </div>
         </div>

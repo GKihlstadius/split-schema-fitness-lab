@@ -59,7 +59,7 @@ function getWorkoutIntensity(
 }
 
 const intensityColor: Record<string, string> = {
-  none: 'bg-gray-100',
+  none: 'bg-secondary',
   light: 'bg-emerald-200',
   full: 'bg-emerald-500',
   double: 'bg-emerald-700',
@@ -153,7 +153,7 @@ const Progress: React.FC = () => {
   const dayLabels = ['M', '', 'O', '', 'F', '', ''];
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 px-4 py-8 pb-28 max-w-3xl mx-auto space-y-8">
+    <div className="min-h-screen bg-card text-foreground px-4 py-8 pb-28 max-w-3xl mx-auto space-y-8">
       <h1 className="text-2xl font-bold tracking-tight">Framsteg</h1>
 
       {/* ----------------------------------------------------------------- */}
@@ -161,7 +161,7 @@ const Progress: React.FC = () => {
       {/* ----------------------------------------------------------------- */}
       <div className="grid grid-cols-2 gap-3">
         <StatCard
-          icon={<Dumbbell className="w-5 h-5 text-emerald-600" />}
+          icon={<Dumbbell className="w-5 h-5 text-primary" />}
           value={gamification.totalWorkouts}
           label="Totala pass"
         />
@@ -187,10 +187,10 @@ const Progress: React.FC = () => {
       {/* ----------------------------------------------------------------- */}
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Träningskalender</h2>
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4 overflow-x-auto">
+        <div className="bg-card shadow-sm border border-border rounded-2xl p-4 overflow-x-auto">
           <div className="flex gap-[3px]">
             {/* Day-of-week labels */}
-            <div className="flex flex-col gap-[3px] mr-1 text-[10px] text-gray-500 pt-0">
+            <div className="flex flex-col gap-[3px] mr-1 text-[10px] text-muted-foreground pt-0">
               {dayLabels.map((label, i) => (
                 <div
                   key={i}
@@ -212,7 +212,7 @@ const Progress: React.FC = () => {
                       key={dateStr}
                       title={`${dateStr} — ${intensity}`}
                       className={`w-[14px] h-[14px] rounded-[3px] ${intensityColor[intensity]} ${
-                        current ? 'ring-2 ring-emerald-600' : ''
+                        current ? 'ring-2 ring-primary' : ''
                       }`}
                     />
                   );
@@ -222,7 +222,7 @@ const Progress: React.FC = () => {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center gap-2 mt-3 text-[10px] text-gray-400">
+          <div className="flex items-center gap-2 mt-3 text-[10px] text-muted-foreground">
             <span>Mindre</span>
             {(['none', 'light', 'full', 'double'] as const).map((level) => (
               <div
@@ -240,7 +240,7 @@ const Progress: React.FC = () => {
       {/* ----------------------------------------------------------------- */}
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Veckans volym</h2>
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4">
+        <div className="bg-card shadow-sm border border-border rounded-2xl p-4">
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={volumeData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
@@ -282,13 +282,13 @@ const Progress: React.FC = () => {
       {/* ----------------------------------------------------------------- */}
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Personliga rekord</h2>
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4">
+        <div className="bg-card shadow-sm border border-border rounded-2xl p-4">
           {sortedPRs.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-6">
+            <p className="text-sm text-muted-foreground text-center py-6">
               Inga personliga rekord ännu. Börja logga dina lyft!
             </p>
           ) : (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-border">
               {sortedPRs.map((pr) => (
                 <li
                   key={pr.id}
@@ -296,17 +296,17 @@ const Progress: React.FC = () => {
                 >
                   <div>
                     <p className="font-medium text-sm">{pr.exerciseName}</p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {format(parseISO(pr.recordedAt), 'd MMM yyyy', {
                         locale: sv,
                       })}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-emerald-600">
+                    <p className="font-semibold text-primary">
                       {pr.weight} kg
                     </p>
-                    <p className="text-xs text-gray-400">{pr.reps} reps</p>
+                    <p className="text-xs text-muted-foreground">{pr.reps} reps</p>
                   </div>
                 </li>
               ))}
@@ -321,7 +321,7 @@ const Progress: React.FC = () => {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Prestationer</h2>
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-muted-foreground">
             {unlockedCount}/{gamification.achievements.length} upplåsta
           </span>
         </div>
@@ -349,10 +349,10 @@ function StatCard({
   label: string;
 }) {
   return (
-    <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-4 flex flex-col gap-1">
+    <div className="bg-card shadow-sm border border-border rounded-2xl p-4 flex flex-col gap-1">
       {icon}
       <span className="text-2xl font-bold tracking-tight">{value}</span>
-      <span className="text-xs text-gray-400">{label}</span>
+      <span className="text-xs text-muted-foreground">{label}</span>
     </div>
   );
 }
@@ -362,20 +362,20 @@ function AchievementCard({ achievement }: { achievement: Achievement }) {
 
   return (
     <div
-      className={`relative bg-white shadow-sm border rounded-2xl p-4 flex flex-col items-center text-center gap-1 transition ${
+      className={`relative bg-card shadow-sm border rounded-2xl p-4 flex flex-col items-center text-center gap-1 transition ${
         unlocked
-          ? 'border-emerald-200'
-          : 'border-gray-100 opacity-50 grayscale'
+          ? 'border-primary/20'
+          : 'border-border opacity-50 grayscale'
       }`}
     >
       {!unlocked && (
         <div className="absolute top-2 right-2">
-          <Lock className="w-3.5 h-3.5 text-gray-500" />
+          <Lock className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
       )}
       <span className="text-2xl">{achievement.icon}</span>
       <p className="text-sm font-medium leading-tight">{achievement.name}</p>
-      <p className="text-[11px] text-gray-400 leading-snug">
+      <p className="text-[11px] text-muted-foreground leading-snug">
         {achievement.description}
       </p>
     </div>

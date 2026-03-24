@@ -30,11 +30,11 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
       <div className="flex flex-col items-center gap-2">
         <button
           disabled
-          className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100"
+          className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary"
         >
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </button>
-        <p className="text-sm text-gray-400">Söker gym...</p>
+        <p className="text-sm text-muted-foreground">Söker gym...</p>
       </div>
     );
   }
@@ -46,7 +46,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
           <Check className="h-10 w-10 text-green-400" />
         </div>
         <p className="text-base font-semibold text-green-400">Incheckad!</p>
-        {gymName && <p className="text-sm text-gray-400">{gymName}</p>}
+        {gymName && <p className="text-sm text-muted-foreground">{gymName}</p>}
       </div>
     );
   }
@@ -56,21 +56,21 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
       <div className="flex flex-col items-center gap-2">
         <button
           onClick={onCheckIn}
-          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gray-900 shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-primary shadow-lg transition-transform hover:scale-105 active:scale-95"
         >
-          <span className="absolute inset-0 animate-ping rounded-full bg-gray-900/20" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
           <div className="flex flex-col items-center">
-            <MapPin className="h-7 w-7 text-white" />
-            <span className="mt-0.5 text-xs font-bold uppercase tracking-wider text-white">
+            <MapPin className="h-7 w-7 text-primary-foreground" />
+            <span className="mt-0.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">
               Check in
             </span>
           </div>
         </button>
         {gymName && (
-          <p className="text-sm font-medium text-gray-900">{gymName}</p>
+          <p className="text-sm font-medium text-foreground">{gymName}</p>
         )}
         {distance !== null && (
-          <p className="text-xs text-gray-400">{formatDistance(distance)} bort</p>
+          <p className="text-xs text-muted-foreground">{formatDistance(distance)} bort</p>
         )}
       </div>
     );
@@ -80,13 +80,13 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
     <div className="flex flex-col items-center gap-2">
       <button
         disabled
-        className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 ring-1 ring-gray-200"
+        className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary ring-1 ring-border"
       >
-        <MapPin className="h-7 w-7 text-gray-400" />
+        <MapPin className="h-7 w-7 text-muted-foreground" />
       </button>
-      <p className="text-sm text-gray-500">Inget gym i närheten</p>
+      <p className="text-sm text-muted-foreground">Inget gym i närheten</p>
       {distance !== null && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-muted-foreground">
           Närmaste gym: {formatDistance(distance)}
         </p>
       )}

@@ -22,7 +22,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-gray-100"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex items-center justify-around px-2 pt-2 pb-2">
@@ -35,14 +35,14 @@ export function BottomNav() {
               key={path}
               to={path}
               className={`relative flex flex-col items-center justify-center gap-0.5 flex-1 py-1 transition-colors duration-200 ${
-                isActive ? 'text-emerald-600' : 'text-gray-400'
+                isActive ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
               {/* Active indicator bar */}
               <span
                 className={`absolute -top-2 h-0.5 w-6 rounded-full transition-all duration-300 ${
                   isActive
-                    ? 'bg-emerald-600 opacity-100'
+                    ? 'bg-primary opacity-100'
                     : 'bg-transparent opacity-0'
                 }`}
               />

@@ -52,7 +52,7 @@ const ForgotPassword = () => {
       <div className="w-full max-w-sm px-6">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="w-14 h-14 rounded-2xl bg-gray-900 flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
             <Dumbbell className="h-7 w-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Glömt lösenord?</h1>
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 space-y-5">
+        <div className="rounded-2xl border border-border bg-card shadow-sm p-6 space-y-5">
           {error && (
             <Alert variant="destructive" className="bg-red-50 border-red-200">
               <AlertDescription>{error}</AlertDescription>
@@ -69,9 +69,9 @@ const ForgotPassword = () => {
           )}
 
           {success && (
-            <Alert className="border-emerald-200 bg-emerald-50">
-              <CheckCircle className="h-4 w-4 text-emerald-700" />
-              <AlertDescription className="text-emerald-700 ml-2">{success}</AlertDescription>
+            <Alert className="border-primary/20 bg-primary/10">
+              <CheckCircle className="h-4 w-4 text-primary" />
+              <AlertDescription className="text-primary ml-2">{success}</AlertDescription>
             </Alert>
           )}
 
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
                     if (error) setError('');
                     if (success) setSuccess('');
                   }}
-                  className="pl-10 bg-gray-50 border-gray-200 rounded-xl h-11"
+                  className="pl-10 bg-muted border-border rounded-xl h-11"
                   disabled={isLoading}
                   required
                 />
@@ -100,19 +100,19 @@ const ForgotPassword = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-11 rounded-xl bg-gray-900 hover:bg-gray-800 text-white font-medium"
+              className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium"
               size="lg"
             >
               {isLoading ? 'Skickar...' : 'Skicka återställningslänk'}
             </Button>
           </form>
 
-          <div className="text-sm text-muted-foreground bg-gray-50 border border-gray-200 p-3 rounded-xl">
+          <div className="text-sm text-muted-foreground bg-muted border border-border p-3 rounded-xl">
             <p>Du får ett e-mail med en länk som är giltig i 1 timme.</p>
           </div>
 
-          <div className="text-center pt-2 border-t border-gray-100">
-            <Button asChild variant="link" className="text-sm text-emerald-600 hover:text-emerald-500">
+          <div className="text-center pt-2 border-t border-border">
+            <Button asChild variant="link" className="text-sm text-primary hover:text-primary">
               <Link to="/login">
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Tillbaka till inloggning

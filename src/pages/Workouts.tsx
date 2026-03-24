@@ -101,7 +101,7 @@ const Workouts = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-muted-foreground text-sm">Laddar program...</p>
         </div>
       </div>
@@ -113,8 +113,8 @@ const Workouts = () => {
       <div className="w-full max-w-screen-sm mx-auto px-4 pt-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-            <Dumbbell className="h-5 w-5 text-emerald-600" />
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Dumbbell className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">Träningsprogram</h1>
@@ -135,7 +135,7 @@ const Workouts = () => {
             <Button
               variant="outline"
               size="icon"
-              className="h-10 w-10 rounded-full border-gray-100 bg-white hover:bg-gray-50"
+              className="h-10 w-10 rounded-full border-border bg-card hover:bg-muted"
               aria-label="Visa information"
               onClick={() => setShowInfo(prev => !prev)}
             >
@@ -144,7 +144,7 @@ const Workouts = () => {
             <Button
               variant="outline"
               size="icon"
-              className="h-10 w-10 rounded-full border-gray-100 bg-white hover:bg-gray-50"
+              className="h-10 w-10 rounded-full border-border bg-card hover:bg-muted"
               aria-label="Exportera"
               onClick={copyProgramPlan}
             >
@@ -156,7 +156,7 @@ const Workouts = () => {
         {/* Info card */}
         {showInfo && (
           <div className="mb-4 max-w-md mx-auto w-full">
-            <div className="rounded-xl border border-gray-100 bg-white shadow-sm px-4 py-3 text-sm text-muted-foreground space-y-1">
+            <div className="rounded-xl border border-border bg-card shadow-sm px-4 py-3 text-sm text-muted-foreground space-y-1">
               <p>{selectedProgram.goal} &middot; {selectedProgram.frequency} &middot; {selectedProgram.difficulty}</p>
               {selectedProgram.focus && <p className="text-foreground">{selectedProgram.focus}</p>}
               {selectedProgram.description && <p>{selectedProgram.description}</p>}
